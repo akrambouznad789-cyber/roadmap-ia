@@ -1,0 +1,132 @@
+/* Un plan de métro vertical : chaque station est une parcelle, chaque ligne une famille de notions. */
+:root {
+  --fond: #F2F5F7;
+  --surface: #FFFFFF;
+  --encre: #14212B;
+  --discret: #566672;
+  --filet: #CBD5DC;
+  --ligne-depart: #566672;
+  --ligne-orange: #C9560B;
+  --ligne-verte: #0B7F44;
+  --ligne-bleue: #1460AB;
+  --ligne-jaune: #8A6A00;
+  --titre: "Overpass", "Arial Narrow", Arial, sans-serif;
+  --texte: "Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+  --chasse-fixe: "Overpass Mono", Consolas, monospace;
+  /* Deux séries de graphique, validées pour les daltonismes dans les deux thèmes. */
+  --serie-1: #1460AB;
+  --serie-2: #C9560B;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fond: #0F171D;
+    --surface: #18232B;
+    --encre: #E7EEF2;
+    --discret: #A1B1BC;
+    --filet: #33434F;
+    --ligne-depart: #A1B1BC;
+    --ligne-orange: #F08A3E;
+    --ligne-verte: #3FBF7F;
+    --ligne-bleue: #6AA9E9;
+    --ligne-jaune: #D9B341;
+    --serie-1: #5592D2;
+    --serie-2: #D97628;
+    color-scheme: dark;
+  }
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--fond);
+  color: var(--encre);
+  font-family: var(--texte);
+  font-size: 17px;
+  line-height: 1.55;
+}
+.page {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 40px max(16px, env(safe-area-inset-right, 0px)) 56px max(16px, env(safe-area-inset-left, 0px));
+  display: grid;
+  gap: 36px;
+}
+.page > * { min-width: 0; }
+h1, h2, h3 { font-family: var(--titre); font-weight: 800; line-height: 1.12; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2.3rem, 7vw, 3.4rem); letter-spacing: -0.01em; }
+h2 { font-size: 1.5rem; }
+h3 { font-size: 1.15rem; }
+p { margin: 0; }
+a { color: var(--ligne-bleue); text-underline-offset: 2px; }
+a:focus-visible { outline: 3px solid var(--ligne-bleue); outline-offset: 2px; }
+header { display: grid; gap: 12px; }
+.surtitre { font-family: var(--chasse-fixe); font-size: 0.85rem; color: var(--discret); }
+.chapeau { font-size: 1.18rem; max-width: 60ch; }
+
+.legende { display: flex; flex-wrap: wrap; gap: 8px 20px; color: var(--discret); font-size: 0.92rem; }
+.legende span { display: inline-flex; gap: 7px; align-items: center; }
+.pastille { width: 13px; height: 13px; border-radius: 50%; border: 3px solid var(--encre); background: var(--surface); }
+.pastille.en-cours { background: linear-gradient(90deg, var(--encre) 50%, var(--surface) 50%); }
+.pastille.publiee { background: var(--encre); }
+
+.plan { list-style: none; margin: 0; padding: 0; }
+.plan li { position: relative; padding-left: 46px; --ligne: var(--ligne-depart); }
+.plan li::before { content: ""; position: absolute; left: 13px; top: 0; bottom: 0; width: 7px; background: var(--ligne); }
+.plan li:last-child::before { bottom: auto; height: 26px; }
+.plan .ligne-orange { --ligne: var(--ligne-orange); }
+.plan .ligne-verte { --ligne: var(--ligne-verte); }
+.plan .ligne-bleue { --ligne: var(--ligne-bleue); }
+.plan .ligne-jaune { --ligne: var(--ligne-jaune); }
+.nom-ligne { padding-block: 18px 6px; }
+.nom-ligne h2 { font-size: 1.1rem; color: var(--ligne); }
+.station { padding-block: 10px 12px; }
+.point {
+  position: absolute; left: 3px; top: 13px; width: 27px; height: 27px;
+  border-radius: 50%; border: 6px solid var(--ligne); background: var(--surface);
+}
+.station.en-cours .point { background: linear-gradient(90deg, var(--ligne) 50%, var(--surface) 50%); }
+.station.publiee .point { background: var(--ligne); }
+.numero { font-family: var(--chasse-fixe); font-weight: 500; color: var(--discret); margin-right: 7px; }
+.station p { color: var(--discret); max-width: 60ch; }
+.etat { font-family: var(--chasse-fixe); font-size: 0.78rem; }
+
+.parcelle section { display: grid; gap: 10px; }
+.parcelle section > * { min-width: 0; }
+.parcelle h2 .numero { font-size: 1rem; }
+.parcelle h3 { margin-top: 10px; }
+
+/* Composants des pages de parcelle : figures, graphiques, tableaux, encadrés. */
+figure { margin: 0; display: grid; gap: 8px; min-width: 0; }
+figcaption, .note { color: var(--discret); font-size: 0.92rem; }
+.defile { overflow-x: auto; }
+.defile svg { display: block; width: 100%; min-width: 520px; height: auto; color: var(--encre); }
+.svg-texte { font-family: var(--chasse-fixe); font-size: 13px; fill: currentColor; }
+.svg-titre { font-family: var(--titre); font-weight: 800; font-size: 15px; fill: currentColor; }
+.boite { fill: var(--surface); stroke: var(--discret); stroke-width: 1.2; }
+.fleche { stroke: var(--discret); stroke-width: 1.5; }
+.pointe { fill: var(--discret); }
+.grille { stroke: var(--filet); stroke-width: 1; }
+.barre { fill: var(--ligne-bleue); }
+.courbe-serie-1, .courbe-serie-2 { fill: none; stroke-width: 2; }
+.courbe-serie-1 { stroke: var(--serie-1); }
+.courbe-serie-2 { stroke: var(--serie-2); stroke-dasharray: 6 4; }
+.point-serie-1, .point-serie-2 { stroke: var(--fond); stroke-width: 2; }
+.point-serie-1 { fill: var(--serie-1); }
+.point-serie-2 { fill: var(--serie-2); }
+.legende i.serie-1, .legende i.serie-2 { width: 18px; height: 3px; border-radius: 2px; }
+.legende i.serie-1 { background: var(--serie-1); }
+.legende i.serie-2 { background: repeating-linear-gradient(90deg, var(--serie-2) 0 6px, transparent 6px 10px); }
+.bascule { display: flex; flex-wrap: wrap; gap: 8px; }
+.bascule button { font: inherit; font-size: 0.95rem; padding: 6px 14px; border: 1px solid var(--filet); border-radius: 4px; background: var(--surface); color: var(--encre); cursor: pointer; }
+.bascule button[aria-pressed="true"] { background: var(--encre); color: var(--fond); border-color: var(--encre); }
+.bascule button:focus-visible, details summary:focus-visible { outline: 3px solid var(--ligne-bleue); outline-offset: 2px; }
+.tableau { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.tableau th { font-family: var(--chasse-fixe); font-weight: 500; font-size: 0.8rem; color: var(--discret); text-align: left; padding: 5px 12px 5px 0; border-bottom: 1px solid var(--filet); }
+.tableau td { padding: 6px 12px 6px 0; border-bottom: 1px solid var(--filet); }
+.tableau .nombre { text-align: right; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.encadre { background: var(--surface); border: 1px solid var(--filet); border-radius: 4px; padding: 13px 15px; display: grid; gap: 8px; }
+.etiquette { font-family: var(--chasse-fixe); font-size: 0.8rem; color: var(--discret); text-transform: uppercase; letter-spacing: 0.05em; }
+code { font-family: var(--chasse-fixe); font-size: 0.9em; overflow-wrap: anywhere; }
+details summary { cursor: pointer; color: var(--ligne-bleue); }
+.retour { font-size: 0.95rem; }
+footer { color: var(--discret); font-size: 0.92rem; border-top: 1px solid var(--filet); padding-top: 14px; display: grid; gap: 6px; }

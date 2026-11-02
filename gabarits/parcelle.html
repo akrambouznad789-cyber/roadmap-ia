@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>{{TITRE}} | Parcours IA</title>
+<meta name="description" content="{{IDEE}}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Overpass:wght@800&family=Overpass+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<main class="page parcelle">
+  <p class="retour"><a href="../../index.html">Retour au parcours</a></p>
+
+  <header>
+    <p class="surtitre">Station {{NUMERO}} · {{DATE}}</p>
+    <h1>{{TITRE}}</h1>
+    <p class="chapeau">{{IDEE}}</p>
+  </header>
+
+  <section id="regarde">
+    <h2><span class="numero">1</span>Regarder</h2>
+    {{RESSOURCES}}
+  </section>
+
+  <section id="demo">
+    <h2><span class="numero">2</span>Exploration par le code</h2>
+    <p class="surtitre">Mise en situation : {{MISE_EN_SITUATION}}</p>
+    {{DEMO}}
+  </section>
+
+  <section id="main">
+    <h2><span class="numero">3</span>Ma pièce à la main</h2>
+    <p>À ÉCRIRE PAR AKRAM : ce que j'ai fait moi-même, sans IA.</p>
+    {{LIEN_CODE}}
+  </section>
+
+  <section id="mots">
+    <h2><span class="numero">4</span>En mes mots</h2>
+    <p>À ÉCRIRE PAR AKRAM : ce que j'ai compris, ce qui m'a surpris, ce que je ferais ensuite.</p>
+  </section>
+
+  <section id="sources">
+    <h2>Sources</h2>
+    {{SOURCES}}
+  </section>
+
+  <footer>
+    <p>Démo construite avec Claude Code. La pièce à la main et le texte sont de moi, sauf mention contraire.</p>
+  </footer>
+</main>
+</body>
+</html>

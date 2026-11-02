@@ -1,0 +1,16 @@
+# Contexte privé : il reste sur ce PC et n'ira jamais sur GitHub.
+CLAUDE.md
+CLAUDE.local.md
+contexte/
+.claude/settings.local.json
+
+# Données des parcelles : jamais dans le dépôt, seulement les petits CSV de résultats.
+parcelles/*/donnees/
+
+# Fichiers de travail
+.vscode/
+.captures/
+.venv/
+__pycache__/
+.pytest_cache/
+*.pyc

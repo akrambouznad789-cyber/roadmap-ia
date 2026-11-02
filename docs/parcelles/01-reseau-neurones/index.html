@@ -1,0 +1,238 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Le réseau de neurones | Parcours IA</title>
+<meta name="description" content="Station 1 du parcours IA : comprendre un réseau de neurones, puis le mettre en situation sur les débits de circulation des routes du Québec.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Overpass:wght@800&family=Overpass+Mono:wght@500&display=swap">
+<link rel="stylesheet" href="../../style.css">
+</head>
+<body>
+<main class="page parcelle">
+  <p class="retour"><a href="../../index.html">Retour au parcours</a></p>
+
+  <header>
+    <p class="surtitre">Station 1 · Ligne orange : comment un modèle apprend · novembre 2026</p>
+    <h1>Le réseau de neurones</h1>
+    <p class="chapeau">Des petits calculs empilés, dont on ajuste les poids. Mise en situation : un réseau estime le débit à la 30e heure de 3 680 sections de route du Québec, puis affronte une règle simple et une forêt aléatoire.</p>
+  </header>
+
+  <section id="regarde">
+    <h2><span class="numero">1</span>Regarder</h2>
+    <p>Les trois premières vidéos de la série Neural Networks de 3Blue1Brown :</p>
+    <ol>
+      <li><a href="https://www.youtube.com/watch?v=aircAruvnKk">But what is a neural network?</a> : la structure d'un réseau</li>
+      <li><a href="https://www.youtube.com/watch?v=IHZwWFHWa-w">Gradient descent, how neural networks learn</a> : apprendre en minimisant un coût</li>
+      <li><a href="https://www.youtube.com/watch?v=Ilg3gGewQ5U">What is backpropagation really doing?</a> : le calcul des coups de pouce</li>
+    </ol>
+  </section>
+
+  <section id="demo">
+    <h2><span class="numero">2</span>Exploration par le code</h2>
+    <p class="surtitre">Mise en situation : estimer le débit à la 30e heure des routes du Québec</p>
+
+    <h3>Le réseau</h3>
+    <p>Pour chaque section de route, trois débits entrent et un seul nombre sort : le débit à la 30e heure, celui qui sert à dimensionner une route.</p>
+    <figure>
+      <div class="defile">
+        <svg viewBox="0 0 640 150" role="img" aria-label="Le réseau : 3 entrées, une couche cachée de 32 neurones, une de 16, et 1 sortie, soit 673 poids et biais.">
+          <rect class="boite" x="4" y="34" width="136" height="64" rx="3"/>
+          <text class="svg-titre" x="72" y="60" text-anchor="middle">3 entrées</text>
+          <text class="svg-texte" x="72" y="82" text-anchor="middle">DJMA, DJME, DJMH</text>
+          <line class="fleche" x1="143" y1="66" x2="158" y2="66"/><polygon class="pointe" points="166,66 157,61 157,71"/>
+          <rect class="boite" x="168" y="34" width="136" height="64" rx="3"/>
+          <text class="svg-titre" x="236" y="60" text-anchor="middle">32 neurones</text>
+          <text class="svg-texte" x="236" y="82" text-anchor="middle">ReLU</text>
+          <line class="fleche" x1="307" y1="66" x2="322" y2="66"/><polygon class="pointe" points="330,66 321,61 321,71"/>
+          <rect class="boite" x="332" y="34" width="136" height="64" rx="3"/>
+          <text class="svg-titre" x="400" y="60" text-anchor="middle">16 neurones</text>
+          <text class="svg-texte" x="400" y="82" text-anchor="middle">ReLU</text>
+          <line class="fleche" x1="471" y1="66" x2="486" y2="66"/><polygon class="pointe" points="494,66 485,61 485,71"/>
+          <rect class="boite" x="496" y="34" width="136" height="64" rx="3"/>
+          <text class="svg-titre" x="564" y="60" text-anchor="middle">1 sortie</text>
+          <text class="svg-texte" x="564" y="82" text-anchor="middle">30e heure</text>
+          <text class="svg-texte" x="320" y="132" text-anchor="middle">673 poids et biais : 128 + 528 + 17</text>
+        </svg>
+      </div>
+    </figure>
+
+    <h3>Il apprend</h3>
+    <p>100 passages sur 2 944 sections, par mini-lots de 100, avec une descente de gradient. Le coût est la moyenne des carrés des écarts, sur des valeurs mises à l'échelle.</p>
+    <figure>
+      <div class="legende"><span><i class="serie-1"></i>2 944 sections d'entraînement</span><span><i class="serie-2"></i>736 sections de test</span></div>
+      <div class="defile" id="graphique-courbe"></div>
+      <figcaption>Coût mesuré toutes les 10 époques. À l'époque 0, le réseau n'a encore rien appris : son coût vaut environ 1, autant que de toujours répondre la moyenne. Le coût de test suit celui d'entraînement, donc le réseau ne fait pas que mémoriser.</figcaption>
+    </figure>
+    <details>
+      <summary>Voir les valeurs</summary>
+      <div class="defile"><table class="tableau" id="tableau-courbe"><thead><tr><th>Époque</th><th class="nombre">Coût entraînement</th><th class="nombre">Coût test</th></tr></thead><tbody></tbody></table></div>
+    </details>
+
+    <h3>Qui gagne ?</h3>
+    <p>Trois modèles apprennent sur les mêmes 2 944 sections, avec les mêmes entrées, puis sont notés sur 736 sections qu'ils n'ont jamais vues. Change l'unité de la note :</p>
+    <div class="bascule" role="group" aria-label="Unité de l'erreur">
+      <button type="button" id="bouton-vehicules" aria-pressed="true">En véhicules</button>
+      <button type="button" id="bouton-pourcentage" aria-pressed="false">En %</button>
+    </div>
+    <figure>
+      <div class="defile" id="graphique-scores"></div>
+      <figcaption id="legende-scores">Erreur moyenne sur les 736 sections de test. Plus la barre est courte, meilleur est le modèle.</figcaption>
+    </figure>
+    <div class="defile">
+      <table class="tableau" id="tableau-scores"><thead><tr><th>Modèle</th><th class="nombre">Erreur moyenne en véhicules</th><th class="nombre">Erreur moyenne en %</th></tr></thead><tbody></tbody></table>
+    </div>
+    <p>En véhicules, le réseau fait mieux que la règle. En %, c'est l'inverse. La forêt gagne dans les deux unités.</p>
+
+    <h3>Pourquoi la forêt gagne</h3>
+    <div class="encadre">
+      <p class="etiquette">Explication rédigée par Claude, à ma demande</p>
+      <p>Sur 3 680 sections, 2 369 ont presque exactement la même saisonnalité (DJME / DJMH ≈ 1,20). Des mesures prises sur le terrain donneraient plutôt des valeurs étalées.</p>
+      <figure>
+        <div class="defile" id="graphique-familles"></div>
+        <figcaption>Nombre de sections par tranche de saisonnalité de 0,05. Seules les tranches d'au moins 20 sections sont montrées : elles regroupent 3 588 sections sur 3 680.</figcaption>
+      </figure>
+      <div class="defile">
+        <table class="tableau" id="tableau-familles"><thead><tr><th>Saisonnalité</th><th class="nombre">Sections</th><th class="nombre">30e heure / DJMA (médiane)</th></tr></thead><tbody></tbody></table>
+      </div>
+      <p>L'explication la plus probable : le ministère range les sections en familles et applique les facteurs de chaque famille. La forêt pose des questions par seuils, comme « saisonnalité &gt; 1,35 ? », et retrouve ces familles. Elle a donc appris la recette de l'estimation, pas le trafic réel. Cette hypothèse vient des données ; elle n'a pas été vérifiée dans la documentation du ministère.</p>
+    </div>
+  </section>
+
+  <section id="main">
+    <h2><span class="numero">3</span>Ma pièce à la main</h2>
+    <p>Dans ce modèle, j'ai créé un premier essai de réseau de neurones à partir de 3 variables, pour entraîner un modèle primitif et lui faire comprendre la corrélation avec la 30e heure. Par rétroaction, j'ai compris plusieurs facteurs qui expliquent pourquoi ça ne marche pas vraiment bien, entre autres parce que la corrélation entre ces 3 variables n'est pas exacte. Une piste : essayer des variables qui caractérisent la route et dont la corrélation est déjà prouvée.</p>
+    <p>J'ai vraiment appris à comprendre les lignes de code, ainsi qu'à mettre en place la base d'un réseau de neurones. Cela dit, il ne peut pas être utilisé pour n'importe quel genre de tâche.</p>
+    <p>Le code : <code>parcelles/01-reseau-neurones/reseau_neurones_30e_heure.py</code> dans le dépôt.</p>
+  </section>
+
+  <section id="mots">
+    <h2><span class="numero">4</span>En mes mots</h2>
+    <p class="etiquette">Rédigé par Claude à ma demande, à partir de mes idées pendant la session</p>
+    <ul>
+      <li><strong>Compris :</strong> j'ai appris à lire chaque ligne du code d'un réseau de neurones et à en monter la base.</li>
+      <li><strong>Surpris :</strong> la forêt aléatoire gagne de loin, parce qu'elle retrouve la recette d'estimation du ministère, et les autoroutes pèsent beaucoup plus que les petites routes dans l'erreur du réseau.</li>
+      <li><strong>Ensuite :</strong> j'essaierais des variables qui décrivent la route elle-même, comme son type ou sa position, plutôt que des débits.</li>
+    </ul>
+  </section>
+
+  <section id="sources">
+    <h2>Sources</h2>
+    <ul>
+      <li>Données : <a href="https://www.donneesquebec.ca/recherche/dataset/debit-de-circulation">Débit de circulation</a>, ministère des Transports et de la Mobilité durable du Québec, sous licence <a href="https://creativecommons.org/licenses/by/4.0/deed.fr">CC BY 4.0</a>. Débits de 2025 ; ce sont des estimations du ministère. Les données ne sont pas copiées dans le dépôt, seulement les résultats.</li>
+      <li>Vidéos : <a href="https://www.3blue1brown.com/topics/neural-networks">3Blue1Brown, série Neural Networks</a>.</li>
+      <li>Outils : <a href="https://pytorch.org/">PyTorch</a> pour le réseau, <a href="https://scikit-learn.org/">scikit-learn</a> pour la forêt aléatoire.</li>
+    </ul>
+  </section>
+
+  <footer>
+    <p>Démo construite avec Claude Code. J'ai tapé le code du réseau à la main, ligne par ligne, à partir des lignes et des explications données par Claude, qui a aussi corrigé mes erreurs. La préparation des données, la comparaison des trois modèles et l'explication de la victoire de la forêt viennent de Claude. La section « En mes mots » a été rédigée par Claude à ma demande ; « Ma pièce à la main » est mon texte, corrigé pour la langue.</p>
+  </footer>
+</main>
+
+<script>
+// Valeurs copiées des fichiers de résultats produits par le script de la station :
+// courbe_apprentissage.csv, resultats.csv et familles_saisonnalite.csv.
+const COURBE_APPRENTISSAGE = [
+  [0, 0.9752, 0.9618], [10, 0.0197, 0.0191], [20, 0.0166, 0.0165], [30, 0.0153, 0.0150],
+  [40, 0.0145, 0.0144], [50, 0.0138, 0.0133], [60, 0.0130, 0.0126], [70, 0.0125, 0.0123],
+  [80, 0.0120, 0.0112], [90, 0.0114, 0.0110], [99, 0.0110, 0.0103],
+];
+const SCORES = [
+  { modele: "Réseau de neurones", vehicules: 91, pourcentage: 15.9 },
+  { modele: "Règle 0,121 × DJMA", vehicules: 228, pourcentage: 9.8 },
+  { modele: "Forêt aléatoire", vehicules: 34, pourcentage: 1.9 },
+];
+const FAMILLES = [
+  [1.05, 21, 0.078], [1.10, 45, 0.084], [1.15, 40, 0.102], [1.20, 2369, 0.119], [1.25, 143, 0.120],
+  [1.45, 86, 0.126], [1.50, 449, 0.128], [1.65, 69, 0.168], [1.95, 72, 0.164], [2.00, 79, 0.167], [2.05, 215, 0.170],
+];
+
+const enFrancais = (nombre, decimales) => nombre.toLocaleString("fr-CA", { minimumFractionDigits: decimales, maximumFractionDigits: decimales });
+
+function dessinerCourbe() {
+  const gauche = 56, droite = 600, haut = 16, bas = 250;
+  const xEcran = (epoque) => gauche + (epoque / 100) * (droite - gauche);
+  const yEcran = (cout) => bas - cout * (bas - haut);
+  const morceaux = [];
+  for (const cout of [0, 0.25, 0.5, 0.75, 1]) {
+    morceaux.push(`<line class="grille" x1="${gauche}" y1="${yEcran(cout)}" x2="${droite}" y2="${yEcran(cout)}"/>`);
+    morceaux.push(`<text class="svg-texte" x="${gauche - 8}" y="${yEcran(cout) + 4}" text-anchor="end">${enFrancais(cout, 2)}</text>`);
+  }
+  for (const epoque of [0, 20, 40, 60, 80, 100]) {
+    morceaux.push(`<text class="svg-texte" x="${xEcran(epoque)}" y="${bas + 20}" text-anchor="middle">${epoque}</text>`);
+  }
+  morceaux.push(`<text class="svg-texte" x="${(gauche + droite) / 2}" y="${bas + 40}" text-anchor="middle">époque</text>`);
+  for (const [colonne, classe, nom] of [[1, "serie-1", "entraînement"], [2, "serie-2", "test"]]) {
+    const points = COURBE_APPRENTISSAGE.map((ligne) => `${xEcran(ligne[0])},${yEcran(ligne[colonne])}`).join(" ");
+    morceaux.push(`<polyline class="courbe-${classe}" points="${points}"/>`);
+    for (const ligne of COURBE_APPRENTISSAGE) {
+      morceaux.push(`<circle class="point-${classe}" cx="${xEcran(ligne[0])}" cy="${yEcran(ligne[colonne])}" r="4.5"><title>Époque ${ligne[0]}, coût ${nom} : ${enFrancais(ligne[colonne], 4)}</title></circle>`);
+    }
+  }
+  morceaux.push(`<text class="svg-texte" x="${xEcran(3)}" y="${yEcran(0.96) + 4}">réseau pas encore entraîné</text>`);
+  const dernier = COURBE_APPRENTISSAGE[COURBE_APPRENTISSAGE.length - 1];
+  morceaux.push(`<text class="svg-texte" x="${xEcran(dernier[0])}" y="${yEcran(0) - 14}" text-anchor="end">après 100 époques : ${enFrancais(dernier[1], 3)} et ${enFrancais(dernier[2], 3)}</text>`);
+  document.getElementById("graphique-courbe").innerHTML =
+    `<svg viewBox="0 0 640 300" role="img" aria-label="Le coût passe d'environ 1 à environ 0,01 au fil des époques, pour l'entraînement comme pour le test.">${morceaux.join("")}</svg>`;
+  document.querySelector("#tableau-courbe tbody").innerHTML = COURBE_APPRENTISSAGE
+    .map(([epoque, entrainement, test]) => `<tr><td>${epoque}</td><td class="nombre">${enFrancais(entrainement, 4)}</td><td class="nombre">${enFrancais(test, 4)}</td></tr>`)
+    .join("");
+}
+
+function dessinerScores(unite) {
+  const gauche = 170, droite = 560;
+  const valeurMaximale = Math.max(...SCORES.map((score) => score[unite]));
+  const formater = (valeur) => unite === "vehicules" ? `${valeur} véhicules` : `${enFrancais(valeur, 1)} %`;
+  const morceaux = SCORES.map((score, indice) => {
+    const y = 14 + indice * 46;
+    const longueur = (score[unite] / valeurMaximale) * (droite - gauche);
+    return `<text class="svg-texte" x="${gauche - 12}" y="${y + 19}" text-anchor="end">${score.modele}</text>`
+      + `<rect class="barre" x="${gauche}" y="${y}" width="${longueur}" height="28" rx="3"><title>${score.modele} : ${formater(score[unite])}</title></rect>`
+      + `<text class="svg-texte" x="${gauche + longueur + 8}" y="${y + 19}">${formater(score[unite])}</text>`;
+  });
+  document.getElementById("graphique-scores").innerHTML =
+    `<svg viewBox="0 0 680 150" role="img" aria-label="Erreur moyenne des trois modèles ${unite === "vehicules" ? "en véhicules" : "en pourcentage"}.">${morceaux.join("")}</svg>`;
+  document.getElementById("bouton-vehicules").setAttribute("aria-pressed", String(unite === "vehicules"));
+  document.getElementById("bouton-pourcentage").setAttribute("aria-pressed", String(unite === "pourcentage"));
+}
+
+function dessinerFamilles() {
+  const gauche = 56, droite = 600, haut = 16, bas = 190;
+  const saisonnaliteMinimale = 1.0, saisonnaliteMaximale = 2.2, largeurTranche = 0.05;
+  const xEcran = (saisonnalite) => gauche + (saisonnalite - saisonnaliteMinimale) / (saisonnaliteMaximale - saisonnaliteMinimale) * (droite - gauche);
+  const sectionsMaximum = Math.max(...FAMILLES.map((famille) => famille[1]));
+  const largeurBarre = xEcran(saisonnaliteMinimale + largeurTranche) - xEcran(saisonnaliteMinimale) - 2;
+  const morceaux = [`<line class="grille" x1="${gauche}" y1="${bas}" x2="${droite}" y2="${bas}"/>`];
+  for (const [saisonnalite, sections, ratio] of FAMILLES) {
+    const hauteur = (sections / sectionsMaximum) * (bas - haut);
+    morceaux.push(`<rect class="barre" x="${xEcran(saisonnalite) - largeurBarre / 2}" y="${bas - hauteur}" width="${largeurBarre}" height="${hauteur}" rx="1"><title>Saisonnalité ${enFrancais(saisonnalite, 2)} : ${sections.toLocaleString("fr-CA")} sections, 30e heure / DJMA médian ${enFrancais(ratio, 3)}</title></rect>`);
+    if (sections >= 200) {
+      morceaux.push(`<text class="svg-texte" x="${xEcran(saisonnalite) + largeurBarre / 2 + 6}" y="${bas - hauteur + 12}">${sections.toLocaleString("fr-CA")}</text>`);
+    }
+  }
+  for (const graduation of [1.0, 1.2, 1.4, 1.6, 1.8, 2.0, 2.2]) {
+    morceaux.push(`<text class="svg-texte" x="${xEcran(graduation)}" y="${bas + 20}" text-anchor="middle">${enFrancais(graduation, 1)}</text>`);
+  }
+  morceaux.push(`<text class="svg-texte" x="${(gauche + droite) / 2}" y="${bas + 40}" text-anchor="middle">saisonnalité = DJME / DJMH</text>`);
+  document.getElementById("graphique-familles").innerHTML =
+    `<svg viewBox="0 0 640 240" role="img" aria-label="Trois pics nets : 2 369 sections autour de 1,20, 449 autour de 1,50 et 215 autour de 2,05.">${morceaux.join("")}</svg>`;
+  document.querySelector("#tableau-familles tbody").innerHTML = FAMILLES
+    .filter(([, sections]) => sections >= 200)
+    .map(([saisonnalite, sections, ratio]) => `<tr><td>${enFrancais(saisonnalite, 2)}</td><td class="nombre">${sections.toLocaleString("fr-CA")}</td><td class="nombre">${enFrancais(ratio, 3)}</td></tr>`)
+    .join("");
+}
+
+document.querySelector("#tableau-scores tbody").innerHTML = SCORES
+  .map((score) => `<tr><td>${score.modele}</td><td class="nombre">${score.vehicules}</td><td class="nombre">${enFrancais(score.pourcentage, 1)} %</td></tr>`)
+  .join("");
+document.getElementById("bouton-vehicules").addEventListener("click", () => dessinerScores("vehicules"));
+document.getElementById("bouton-pourcentage").addEventListener("click", () => dessinerScores("pourcentage"));
+dessinerCourbe();
+dessinerScores("vehicules");
+dessinerFamilles();
+</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(python outils/*)",
+      "Bash(python -m pytest*)",
+      "Bash(python -m http.server*)",
+      "Bash(ollama list)",
+      "Bash(ollama ps)",
+      "Bash(ollama show *)",
+      "Bash(git status*)",
+      "Bash(git diff*)",
+      "Bash(git log*)",
+      "PowerShell(python outils/*)",
+      "PowerShell(python -m pytest*)",
+      "WebFetch(domain:docs.ollama.com)",
+      "WebFetch(domain:ollama.com)",
+      "WebFetch(domain:huggingface.co)",
+      "WebFetch(domain:pytorch.org)",
+      "WebFetch(domain:karpathy.ai)"
+    ],
+    "ask": [
+      "Bash(git push*)",
+      "PowerShell(git push*)",
+      "Bash(ollama pull *)",
+      "Bash(ollama rm *)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Bash|PowerShell",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python \"$CLAUDE_PROJECT_DIR/outils/garde_git_push.py\"",
+            "timeout": 60,
+            "onFailure": "block"
+          }
+        ]
+      }
+    ]
+  }
+}
