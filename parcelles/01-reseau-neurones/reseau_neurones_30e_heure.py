@@ -73,7 +73,7 @@ optimiseur = torch.optim.SGD(reseau.parameters(), lr=0.01)
 taille_mini_lot = 100
 nombre_epoques = 100
 
-courbe_apprentissage = []  # ajouté par Claude : garde les coûts pour le graphique de la page
+courbe_apprentissage = []  # ajouté par l'assistant IA : garde les coûts pour le graphique de la page
 
 for epoque in range(nombre_epoques):
     ordre_mini_lots = torch.randperm(len(entrees_entrainement))
@@ -84,7 +84,7 @@ for epoque in range(nombre_epoques):
             cout_entrainement = fonction_cout(reseau(entrees_entrainement), sortie_entrainement)
             cout_test = fonction_cout(reseau(entrees_test), sortie_test)
         print(f"époque {epoque} : coût entraînement {cout_entrainement.item():.4f}, coût test {cout_test.item():.4f}")
-        courbe_apprentissage.append((epoque, round(cout_entrainement.item(), 4), round(cout_test.item(), 4)))  # ajouté par Claude
+        courbe_apprentissage.append((epoque, round(cout_entrainement.item(), 4), round(cout_test.item(), 4)))  # ajouté par l'assistant IA
 
     # range(0, 2944, 100) donne 0, 100, …, 2900 : 30 débuts de lots ; le dernier lot n'a que 44 sections.
     for debut in range(0,len (entrees_entrainement), taille_mini_lot):
@@ -101,14 +101,14 @@ for epoque in range(nombre_epoques):
 # `sortie` (en véhicules), pas `sortie_test` (mise à l'échelle) : la note se donne en véhicules.
 vraie_30e_heure_test = sortie[indices_test]
 
-resultats = []  # ajouté par Claude : garde les notes pour le tableau de la page
+resultats = []  # ajouté par l'assistant IA : garde les notes pour le tableau de la page
 
 
 def afficher_erreur(nom_modele, prediction):
     ecart = (prediction - vraie_30e_heure_test).abs()
     erreur_relative = (ecart / vraie_30e_heure_test).mean()
     print(f"{nom_modele} : erreur moyenne de {ecart.mean().item():.0f} véhicules, soit {100 * erreur_relative.item():.1f} %")
-    resultats.append((nom_modele, round(ecart.mean().item()), round(100 * erreur_relative.item(), 1)))  # ajouté par Claude
+    resultats.append((nom_modele, round(ecart.mean().item()), round(100 * erreur_relative.item(), 1)))  # ajouté par l'assistant IA
 
 
 with torch.no_grad():
@@ -131,7 +131,7 @@ prediction_foret = torch.tensor(foret.predict(entrees[indices_test]), dtype=torc
 afficher_erreur("Forêt aléatoire", prediction_foret)
 
 
-# Ajouté par Claude : les petits CSV de résultats qui alimentent la page de la station.
+# Ajouté par l'assistant IA : les petits CSV de résultats qui alimentent la page de la station.
 pd.DataFrame(resultats, columns=["modele", "erreur_vehicules", "erreur_pourcentage"]).to_csv(
     "parcelles/01-reseau-neurones/resultats.csv", index=False)
 pd.DataFrame(courbe_apprentissage, columns=["epoque", "cout_entrainement", "cout_test"]).to_csv(
