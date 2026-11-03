@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Parcours IA d'Akram Bouznad</title>
-<meta name="description" content="Mon apprentissage de l'IA en public, une station à la fois, des réseaux de neurones jusqu'aux agents.">
+<meta name="description" content="Feuille de route en intelligence artificielle : des réseaux de neurones aux agents LLM, avec des cas pratiques en transport.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Overpass:wght@800&family=Overpass+Mono:wght@500&display=swap">
@@ -13,9 +13,8 @@
 <body>
 <main class="page">
   <header>
-    <p class="surtitre">Apprendre en public</p>
+    <p class="surtitre">Feuille de route</p>
     <h1>Parcours IA</h1>
-    <p class="chapeau">À chaque étape, une recherche de ressources théoriques en ligne, combinée à l'intelligence agentique, permet de cerner les concepts. Viennent ensuite une exploration par le code sur un vrai cas, le lancement du code sur un cas pratique, puis la documentation des résultats et une analyse rétroactive.</p>
   </header>
 
   <div class="legende">
@@ -25,54 +24,54 @@
   </div>
 
   <ol class="plan">
-    <li class="nom-ligne ligne-orange"><h2>Ligne orange : comment un modèle apprend</h2></li>
+    <li class="nom-ligne ligne-orange"><h2>Fondements de l'apprentissage profond</h2></li>
     <li class="station ligne-orange publiee"><span class="point"></span>
-      <h3><span class="numero">1</span><a href="parcelles/01-reseau-neurones/index.html">Le réseau de neurones</a></h3>
-      <p>Des petits calculs empilés, dont on ajuste les poids.</p>
-      <p>Exploration par le code : estimer le débit à la 30e heure des routes du Québec.</p>
+      <h3><span class="numero">1</span>Réseaux de neurones : perceptron multicouche</h3>
+      <p class="notions">couches denses · ReLU, sigmoïde · coût MSE · descente de gradient stochastique · mini-lots · normalisation</p>
+      <p>Cas pratique : estimation du débit à la 30e heure sur les débits de circulation du MTMD.</p>
     </li>
     <li class="station ligne-orange"><span class="point"></span>
-      <h3><span class="numero">2</span>La rétropropagation</h3>
-      <p>Comment l'erreur remonte le réseau pour corriger chaque poids.</p>
+      <h3><span class="numero">2</span>Rétropropagation et différentiation automatique</h3>
+      <p class="notions">dérivation en chaîne · graphe de calcul · gradients · autograd</p>
     </li>
 
-    <li class="nom-ligne ligne-verte"><h2>Ligne verte : comment un LLM fonctionne</h2></li>
+    <li class="nom-ligne ligne-verte"><h2>Modèles de langage</h2></li>
     <li class="station ligne-verte"><span class="point"></span>
-      <h3><span class="numero">3</span>Des mots aux nombres</h3>
-      <p>Le texte devient des jetons, puis des vecteurs.</p>
+      <h3><span class="numero">3</span>Tokenisation et plongements vectoriels</h3>
+      <p class="notions">BPE · embeddings · similarité cosinus · espaces sémantiques</p>
     </li>
     <li class="station ligne-verte"><span class="point"></span>
-      <h3><span class="numero">4</span>L'attention et le Transformer</h3>
-      <p>Chaque mot regarde les autres pour décider lesquels comptent.</p>
+      <h3><span class="numero">4</span>Mécanisme d'attention et architecture Transformer</h3>
+      <p class="notions">auto-attention · requêtes, clés, valeurs · attention multi-têtes · encodage positionnel</p>
     </li>
 
-    <li class="nom-ligne ligne-bleue"><h2>Ligne bleue : construire avec un LLM</h2></li>
+    <li class="nom-ligne ligne-bleue"><h2>Applications des LLM</h2></li>
     <li class="station ligne-bleue"><span class="point"></span>
-      <h3><span class="numero">5</span>Utiliser un LLM avec rigueur</h3>
-      <p>Le modèle devient un composant qu'on teste.</p>
+      <h3><span class="numero">5</span>Intégration des LLM : prompts et sorties structurées</h3>
+      <p class="notions">conception de prompts · sorties JSON validées · coût en jetons · hallucinations · tests</p>
     </li>
     <li class="station ligne-bleue"><span class="point"></span>
-      <h3><span class="numero">6</span>Le RAG</h3>
-      <p>Le modèle cherche les bons passages avant de répondre.</p>
+      <h3><span class="numero">6</span>Génération augmentée par récupération (RAG)</h3>
+      <p class="notions">découpage · recherche vectorielle · reclassement · ancrage des réponses</p>
     </li>
     <li class="station ligne-bleue en-cours"><span class="point"></span>
-      <h3><span class="numero">7</span>Les agents et leurs outils</h3>
-      <p>Une boucle : le modèle choisit un outil, lit le résultat et recommence.</p>
+      <h3><span class="numero">7</span>Agents LLM et appel d'outils</h3>
+      <p class="notions">boucle ReAct · appel de fonctions · planification · mémoire</p>
     </li>
     <li class="station ligne-bleue en-cours"><span class="point"></span>
-      <h3><span class="numero">8</span>L'évaluation</h3>
-      <p>Prouver qu'un agent s'améliore, avec des tâches réalistes et l'analyse des échecs.</p>
+      <h3><span class="numero">8</span>Évaluation des LLM et des agents</h3>
+      <p class="notions">jeux de test · grilles de notation · LLM juge · analyse des échecs</p>
     </li>
 
-    <li class="nom-ligne ligne-jaune"><h2>Ligne jaune : mettre en service</h2></li>
+    <li class="nom-ligne ligne-jaune"><h2>Mise en production</h2></li>
     <li class="station ligne-jaune en-cours"><span class="point"></span>
-      <h3><span class="numero">9</span>Déployer pour de vrai</h3>
-      <p>Un service qui tourne, qu'on surveille et qu'on met à jour.</p>
+      <h3><span class="numero">9</span>MLOps : déploiement et surveillance</h3>
+      <p class="notions">API FastAPI · conteneurs Docker · CI/CD · surveillance en service</p>
     </li>
   </ol>
 
   <footer>
-    <p><a href="https://github.com/akrambouznad789-cyber">Mon GitHub</a></p>
+    <p><a href="https://github.com/akrambouznad789-cyber/roadmap-ia">Dépôt GitHub</a></p>
   </footer>
 </main>
 </body>

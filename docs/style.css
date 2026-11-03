@@ -89,6 +89,7 @@ header { display: grid; gap: 12px; }
 .numero { font-family: var(--chasse-fixe); font-weight: 500; color: var(--discret); margin-right: 7px; }
 .station p { color: var(--discret); max-width: 60ch; }
 .etat { font-family: var(--chasse-fixe); font-size: 0.78rem; }
+.station .notions { font-family: var(--chasse-fixe); font-size: 0.8rem; }
 
 .parcelle section { display: grid; gap: 10px; }
 .parcelle section > * { min-width: 0; }

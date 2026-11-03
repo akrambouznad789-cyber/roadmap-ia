@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Le réseau de neurones | Parcours IA</title>
-<meta name="description" content="Station 1 du parcours IA : comprendre un réseau de neurones, puis le mettre en situation sur les débits de circulation des routes du Québec.">
+<title>Estimation du débit à la 30e heure | Parcours IA</title>
+<meta name="description" content="Exemple pratique : un perceptron multicouche estime le débit à la 30e heure de sections de route du Québec, comparé à une règle simple et à une forêt aléatoire.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Overpass:wght@800&family=Overpass+Mono:wght@500&display=swap">
@@ -15,24 +15,24 @@
   <p class="retour"><a href="../../index.html">Retour au parcours</a></p>
 
   <header>
-    <p class="surtitre">Station 1 · Ligne orange : comment un modèle apprend</p>
-    <h1>Le réseau de neurones</h1>
-    <p class="chapeau">Des petits calculs empilés, dont on ajuste les poids. Mise en situation : un réseau estime le débit à la 30e heure de 3 680 sections de route du Québec, puis affronte une règle simple et une forêt aléatoire.</p>
+    <p class="surtitre">Exemple pratique · Station 1 : réseaux de neurones</p>
+    <h1>Estimation du débit à la 30e heure</h1>
+    <p class="chapeau">Un perceptron multicouche estime le débit à la 30e heure de 3 680 sections de route du Québec. Il est ensuite comparé à une règle simple et à une forêt aléatoire.</p>
   </header>
 
   <section id="regarde">
-    <h2><span class="numero">1</span>Regarder</h2>
-    <p>Les trois premières vidéos de la série Neural Networks de 3Blue1Brown :</p>
-    <ol>
-      <li><a href="https://www.youtube.com/watch?v=aircAruvnKk">But what is a neural network?</a> : la structure d'un réseau</li>
-      <li><a href="https://www.youtube.com/watch?v=IHZwWFHWa-w">Gradient descent, how neural networks learn</a> : apprendre en minimisant un coût</li>
-      <li><a href="https://www.youtube.com/watch?v=Ilg3gGewQ5U">What is backpropagation really doing?</a> : le calcul des coups de pouce</li>
-    </ol>
+    <h2><span class="numero">1</span>Notions théoriques</h2>
+    <ul>
+      <li><strong>Architecture :</strong> perceptron multicouche, couches denses, activation ReLU</li>
+      <li><strong>Fonction de coût :</strong> erreur quadratique moyenne (MSE)</li>
+      <li><strong>Optimisation :</strong> descente de gradient stochastique par mini-lots, rétropropagation par l'autograd de PyTorch</li>
+      <li><strong>Préparation :</strong> séparation entraînement / test, normalisation calculée sur l'entraînement seulement</li>
+      <li><strong>Évaluation :</strong> erreur absolue moyenne, erreur relative moyenne, comparaison à des modèles de référence</li>
+    </ul>
   </section>
 
   <section id="demo">
     <h2><span class="numero">2</span>Exploration par le code</h2>
-    <p class="surtitre">Mise en situation : estimer le débit à la 30e heure des routes du Québec</p>
 
     <h3>Le réseau</h3>
     <p>Pour chaque section de route, trois débits entrent et un seul nombre sort : le débit à la 30e heure, celui qui sert à dimensionner une route.</p>
@@ -102,14 +102,14 @@
   </section>
 
   <section id="main">
-    <h2><span class="numero">3</span>Ma pièce à la main</h2>
+    <h2><span class="numero">3</span>Mise en œuvre</h2>
     <p>Dans ce modèle, j'ai créé un premier essai de réseau de neurones à partir de 3 variables, pour entraîner un modèle primitif et lui faire comprendre la corrélation avec la 30e heure. Par rétroaction, j'ai compris plusieurs facteurs qui expliquent pourquoi ça ne marche pas vraiment bien, entre autres parce que la corrélation entre ces 3 variables n'est pas exacte. Une piste : essayer des variables qui caractérisent la route et dont la corrélation est déjà prouvée.</p>
     <p>J'ai vraiment appris à comprendre les lignes de code, ainsi qu'à mettre en place la base d'un réseau de neurones. Cela dit, il ne peut pas être utilisé pour n'importe quel genre de tâche.</p>
-    <p>Le code : <code>parcelles/01-reseau-neurones/reseau_neurones_30e_heure.py</code> dans le dépôt.</p>
+    <p>Le code : <a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/parcelles/01-reseau-neurones"><code>parcelles/01-reseau-neurones/</code></a> dans le dépôt.</p>
   </section>
 
   <section id="mots">
-    <h2><span class="numero">4</span>En mes mots</h2>
+    <h2><span class="numero">4</span>Analyse rétroactive</h2>
     <p class="etiquette">Rédigé par l'assistant IA à ma demande, à partir de mes idées</p>
     <ul>
       <li><strong>Compris :</strong> j'ai appris à lire chaque ligne du code d'un réseau de neurones et à en monter la base.</li>
@@ -122,7 +122,6 @@
     <h2>Sources</h2>
     <ul>
       <li>Données : <a href="https://www.donneesquebec.ca/recherche/dataset/debit-de-circulation">Débit de circulation</a>, ministère des Transports et de la Mobilité durable du Québec, sous licence <a href="https://creativecommons.org/licenses/by/4.0/deed.fr">CC BY 4.0</a>. Débits de 2025 ; ce sont des estimations du ministère. Les données ne sont pas copiées dans le dépôt, seulement les résultats.</li>
-      <li>Vidéos : <a href="https://www.3blue1brown.com/topics/neural-networks">3Blue1Brown, série Neural Networks</a>.</li>
       <li>Outils : <a href="https://pytorch.org/">PyTorch</a> pour le réseau, <a href="https://scikit-learn.org/">scikit-learn</a> pour la forêt aléatoire.</li>
     </ul>
   </section>
