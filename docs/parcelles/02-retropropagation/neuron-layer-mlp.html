@@ -1,0 +1,872 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Neuron, Layer, MLP | Parcours IA</title>
+<meta name="description" content="Visuel pas à pas des classes Neuron, Layer et MLP de micrograd : chaque ligne de code reliée au morceau de réseau qu'elle fabrique.">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&amp;family=Overpass+Mono:wght@500&amp;family=Overpass:wght@800&amp;display=swap">
+<style>
+/* Mise en page : une vue d'ensemble, puis un pas-à-pas par classe où la ligne de code, le morceau du dessin
+   et le petit calcul s'allument ensemble. Couleurs fixes partout : x bleu, w orange, b vert, tanh/sortie violet. */
+:root {
+  --fond: #F2F5F7;
+  --surface: #FFFFFF;
+  --encre: #14212B;
+  --discret: #566672;
+  --filet: #CBD5DC;
+  --bleu: #1460AB;
+  --orange: #C9560B;
+  --vert: #0B7F44;
+  --violet: #7A3FB0;
+  --surligne: #FFE08A;
+  --titre: "Overpass", "Arial Narrow", Arial, sans-serif;
+  --texte: "Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
+  --chasse-fixe: "Overpass Mono", Consolas, monospace;
+  /* Consolas d'abord pour le code : elle a les traits └──┘ et les flèches, donc les dessins en texte restent alignés. */
+  --chasse-code: Consolas, "Cascadia Mono", Menlo, "DejaVu Sans Mono", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fond: #0F171D; --surface: #18232B; --encre: #E7EEF2; --discret: #A1B1BC; --filet: #33434F;
+    --bleu: #6AA9E9; --orange: #E08A45; --vert: #3FBF7F; --violet: #C39BEA; --surligne: #5C4A0E;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fond: #0F171D; --surface: #18232B; --encre: #E7EEF2; --discret: #A1B1BC; --filet: #33434F;
+  --bleu: #6AA9E9; --orange: #E08A45; --vert: #3FBF7F; --violet: #C39BEA; --surligne: #5C4A0E;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--fond); color: var(--encre); font-family: var(--texte); font-size: 17px; line-height: 1.55; }
+.feuille {
+  max-width: 1120px; margin: 0 auto; display: grid; gap: 48px;
+  padding-block: 40px 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.feuille > * { min-width: 0; }
+h1, h2, h3 { font-family: var(--titre); font-weight: 800; line-height: 1.12; margin: 0; text-wrap: balance; }
+h1 { font-size: clamp(2.1rem, 6.5vw, 3.1rem); letter-spacing: -0.01em; }
+h2 { font-size: 1.6rem; }
+h3 { font-size: 1.1rem; }
+p { margin: 0; max-width: 68ch; }
+code { font-family: var(--chasse-code); font-size: 0.92em; }
+header, section { display: grid; gap: 14px; }
+section > *, header > * { min-width: 0; }
+.surtitre, .etiquette { font-family: var(--chasse-fixe); font-size: 0.82rem; color: var(--discret); }
+.etiquette { text-transform: uppercase; letter-spacing: 0.05em; }
+.chapeau { font-size: 1.2rem; }
+.encadre { background: var(--surface); border: 1px solid var(--filet); border-radius: 6px; padding: 14px 16px; display: grid; gap: 6px; }
+.retour { font-size: 0.95rem; }
+.retour a { color: var(--bleu); }
+.note-basse { color: var(--discret); font-size: 0.92rem; }
+
+/* Couleurs des quatre ingrédients, les mêmes dans le code, la formule et les dessins */
+.cx { color: var(--bleu); font-weight: 700; }
+.cw { color: var(--orange); font-weight: 700; }
+.cb { color: var(--vert); font-weight: 700; }
+.co { color: var(--violet); font-weight: 700; }
+.legende-couleurs { display: flex; flex-wrap: wrap; gap: 6px 22px; font-size: 0.95rem; }
+
+/* Vue d'ensemble : quatre cartes emboîtées */
+.poupees { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; }
+.poupee { background: var(--surface); border: 1px solid var(--filet); border-radius: 6px; padding: 12px 14px; display: grid; gap: 6px; align-content: start; }
+.poupee h3 { font-family: var(--chasse-code); font-size: 1.05rem; }
+.poupee svg { width: 100%; height: auto; display: block; }
+.poupee p { font-size: 0.93rem; }
+.zoom { font-family: var(--chasse-fixe); font-size: 0.78rem; color: var(--discret); }
+
+.tableau { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+.tableau th { font-family: var(--chasse-fixe); font-weight: 500; font-size: 0.78rem; color: var(--discret); text-align: left; padding: 6px 14px 6px 0; border-bottom: 1px solid var(--filet); }
+.tableau td { padding: 8px 14px 8px 0; border-bottom: 1px solid var(--filet); vertical-align: top; }
+.defile-tableau { overflow-x: auto; }
+
+/* Pas-à-pas */
+.pas-a-pas {
+  display: grid; gap: 14px;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas: "barre" "explication" "figure" "code";
+}
+@media (min-width: 920px) {
+  .pas-a-pas {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    grid-template-areas: "barre barre" "code figure" "explication explication";
+  }
+}
+.barre {
+  grid-area: barre; position: sticky; top: 0; z-index: 2;
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: var(--fond); padding-block: 8px; border-bottom: 1px solid var(--filet);
+}
+.barre button {
+  font: inherit; font-size: 0.95rem; cursor: pointer;
+  background: var(--encre); color: var(--fond); border: 0; border-radius: 6px; padding: 8px 14px; min-height: 40px;
+}
+.barre button:disabled { opacity: 0.3; cursor: default; }
+.barre button:focus-visible { outline: 3px solid var(--bleu); outline-offset: 2px; }
+.compteur { font-family: var(--chasse-fixe); font-size: 0.85rem; color: var(--discret); white-space: nowrap; }
+.titre-etape { font-family: var(--titre); font-weight: 800; font-size: 1.08rem; flex: 1 1 260px; min-width: 0; }
+
+.code {
+  grid-area: code; margin: 0; background: var(--surface); border: 1px solid var(--filet); border-radius: 6px;
+  padding: 14px; overflow-x: auto; font-family: var(--chasse-code); font-size: 12.5px; line-height: 1.7; align-self: start;
+}
+.code [data-k] { border-radius: 3px; transition: background-color 0.2s, box-shadow 0.2s; }
+.code [data-k].actif, .formule [data-k].actif { background: var(--surligne); box-shadow: 0 0 0 2px var(--surligne); }
+.code .commentaire { color: var(--discret); }
+
+.figure { grid-area: figure; background: var(--surface); border: 1px solid var(--filet); border-radius: 6px; padding: 10px; display: grid; gap: 8px; align-self: start; min-width: 0; }
+.defile { overflow-x: auto; }
+.figure svg { display: block; width: 100%; min-width: 460px; height: auto; color: var(--encre); }
+.formule { font-family: var(--chasse-code); font-size: 1.02rem; text-align: center; max-width: none; padding: 4px 0 2px; }
+.formule [data-k] { border-radius: 3px; transition: background-color 0.2s, box-shadow 0.2s; }
+
+.explication { grid-area: explication; display: grid; gap: 10px; background: var(--surface); border: 1px solid var(--filet); border-left: 4px solid var(--encre); border-radius: 6px; padding: 14px 16px; }
+.jouet { margin: 0; font-family: var(--chasse-code); font-size: 14px; line-height: 1.6; overflow-x: auto; white-space: pre; }
+
+/* Dessins */
+.svg-texte { font-family: var(--chasse-code); font-size: 13px; fill: currentColor; }
+.svg-petit { font-family: var(--chasse-code); font-size: 11px; fill: var(--discret); }
+.svg-nom { font-family: var(--chasse-code); font-size: 13px; fill: var(--discret); }
+.svg-titre { font-family: var(--titre); font-weight: 800; font-size: 14px; fill: currentColor; }
+.halo { paint-order: stroke; stroke: var(--surface); stroke-width: 5px; stroke-linejoin: round; }
+.f-x { fill: var(--bleu); } .f-w { fill: var(--orange); } .f-b { fill: var(--vert); } .f-o { fill: var(--violet); }
+.rond { fill: var(--surface); stroke-width: 2; }
+.rond-x { stroke: var(--bleu); } .rond-o { stroke: var(--violet); } .rond-n { stroke: var(--encre); }
+.boite-b { fill: var(--surface); stroke: var(--vert); stroke-width: 2; }
+.boite { fill: var(--surface); stroke: var(--filet); stroke-width: 1.5; }
+.arete { stroke: var(--filet); stroke-width: 1.5; fill: none; }
+.arete-w { stroke: var(--orange); stroke-width: 1.8; fill: none; }
+.fleche { stroke: currentColor; stroke-width: 1.5; fill: none; }
+.courbe-tanh { stroke: var(--violet); stroke-width: 2; fill: none; }
+.axe { stroke: var(--filet); stroke-width: 1; }
+.point-tanh { fill: var(--violet); stroke: var(--surface); stroke-width: 2; }
+
+/* Ce qui s'allume à l'étape courante */
+svg .actif .rond, svg .rond.actif, svg .actif .boite-b, svg .boite-b.actif, svg .actif .boite, svg .boite.actif { stroke-width: 4; }
+svg .actif .arete, svg .arete.actif { stroke: var(--orange); stroke-width: 2.6; }
+svg .actif .arete-w, svg .arete-w.actif { stroke-width: 3.4; }
+svg text.actif, svg .actif text { paint-order: stroke; stroke: var(--surligne); stroke-width: 4px; stroke-linejoin: round; font-weight: 700; }
+[data-des], [data-avant] { transition: opacity 0.35s; }
+.cache { opacity: 0; }
+
+/* Les 41 paramètres */
+.boutons { display: flex; flex-wrap: wrap; gap: 8px 18px; align-items: flex-end; padding: 4px 2px; }
+.groupe-boutons { display: grid; gap: 4px; }
+.groupe-boutons .etiquette { text-transform: none; letter-spacing: 0; }
+.rangee { display: flex; flex-wrap: wrap; gap: 5px; }
+.neurone-boutons { display: flex; gap: 2px; }
+.bouton-w, .bouton-b { width: 11px; height: 11px; border-radius: 2px; }
+.bouton-w { background: var(--orange); }
+.bouton-b { background: var(--vert); }
+
+.matrice { margin: 0; font-family: var(--chasse-code); font-size: 14px; line-height: 1.6; overflow-x: auto; white-space: pre; background: var(--surface); border: 1px solid var(--filet); border-radius: 6px; padding: 14px; }
+
+.pieges { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 12px; }
+footer { color: var(--discret); font-size: 0.92rem; border-top: 1px solid var(--filet); padding-top: 14px; display: grid; gap: 6px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
+</head>
+<body>
+<main class="feuille">
+
+  <header>
+    <p class="retour"><a href="index.html">Retour à la station 2</a></p>
+    <p class="surtitre">Visuel · Station 2 : rétropropagation · micrograd d'Andrej Karpathy</p>
+    <h1>Neuron, Layer, MLP</h1>
+    <p class="chapeau">Un <code>Neuron</code> fait un calcul, une <code>Layer</code> en fait plusieurs côte à côte, et le <code>MLP</code> enchaîne les <code>Layer</code>. Trois boîtes emboîtées, construites avec la classe <code>Value</code>.</p>
+    <p class="legende-couleurs">
+      <span><span class="cx">x</span> les entrées</span>
+      <span><span class="cw">w</span> les poids</span>
+      <span><span class="cb">b</span> le biais</span>
+      <span><span class="co">tanh, out</span> la sortie</span>
+    </p>
+    <p class="note-basse">Ces quatre couleurs restent les mêmes partout : dans le code, dans la formule et dans les dessins.</p>
+  </header>
+
+  <!-- ============ VUE D'ENSEMBLE ============ -->
+  <section aria-labelledby="titre-ensemble">
+    <h2 id="titre-ensemble">Des poupées russes</h2>
+    <div class="poupees">
+      <div class="poupee">
+        <span class="zoom">la plus grosse boîte</span>
+        <h3>MLP</h3>
+        <svg viewBox="0 0 200 110" role="img" aria-label="Un MLP : trois couches côte à côte, de 4, 4 et 1 neurones">
+          <rect x="22" y="8" width="40" height="94" rx="6" class="boite" style="stroke: var(--encre); stroke-width: 3"/>
+          <rect x="80" y="8" width="40" height="94" rx="6" class="boite"/>
+          <rect x="138" y="8" width="40" height="94" rx="6" class="boite"/>
+          <g fill="currentColor" style="color: var(--discret)">
+            <circle cx="42" cy="24" r="7"/><circle cx="42" cy="45" r="7"/><circle cx="42" cy="66" r="7"/><circle cx="42" cy="87" r="7"/>
+            <circle cx="100" cy="24" r="7"/><circle cx="100" cy="45" r="7"/><circle cx="100" cy="66" r="7"/><circle cx="100" cy="87" r="7"/>
+            <circle cx="158" cy="55" r="7"/>
+          </g>
+        </svg>
+        <p><code>MLP(3, [4, 4, 1])</code> contient 3 <code>Layer</code>.</p>
+      </div>
+      <div class="poupee">
+        <span class="zoom">→ on ouvre une couche</span>
+        <h3>Layer</h3>
+        <svg viewBox="0 0 200 110" role="img" aria-label="Une couche : 4 neurones empilés">
+          <rect x="70" y="4" width="60" height="102" rx="6" class="boite"/>
+          <g fill="currentColor" style="color: var(--discret)">
+            <circle cx="100" cy="47" r="9"/><circle cx="100" cy="70" r="9"/><circle cx="100" cy="93" r="9"/>
+          </g>
+          <circle cx="100" cy="22" r="11" fill="var(--surface)" stroke="var(--encre)" stroke-width="3"/>
+        </svg>
+        <p><code>Layer(3, 4)</code> contient 4 <code>Neuron</code>.</p>
+      </div>
+      <div class="poupee">
+        <span class="zoom">→ on ouvre un neurone</span>
+        <h3>Neuron</h3>
+        <svg viewBox="0 0 200 110" role="img" aria-label="Un neurone : 3 poids sur 3 flèches entrantes et un biais">
+          <line x1="18" y1="16" x2="130" y2="50" class="arete-w" style="stroke-width: 4"/>
+          <line x1="18" y1="50" x2="130" y2="50" class="arete-w"/>
+          <line x1="18" y1="84" x2="130" y2="50" class="arete-w"/>
+          <line x1="130" y1="90" x2="130" y2="50" style="stroke: var(--vert); stroke-width: 2"/>
+          <circle cx="130" cy="50" r="20" class="rond rond-n"/>
+          <text x="58" y="20" class="svg-texte f-w halo">w1</text>
+          <text x="58" y="45" class="svg-texte f-w halo">w2</text>
+          <text x="58" y="86" class="svg-texte f-w halo">w3</text>
+          <rect x="116" y="88" width="28" height="18" rx="4" class="boite-b"/>
+          <text x="130" y="101" text-anchor="middle" class="svg-texte f-b">b</text>
+        </svg>
+        <p><code>Neuron(3)</code> contient 3 <span class="cw">w</span> et 1 <span class="cb">b</span>.</p>
+      </div>
+      <div class="poupee">
+        <span class="zoom">→ on ouvre un poids</span>
+        <h3>Value</h3>
+        <svg viewBox="0 0 200 110" role="img" aria-label="Une Value dessinée comme dans draw_dot : nom, data et grad">
+          <rect x="6" y="36" width="188" height="36" rx="3" class="boite" style="stroke: var(--encre)"/>
+          <line x1="40" y1="36" x2="40" y2="72" class="axe" style="stroke: var(--encre)"/>
+          <line x1="114" y1="36" x2="114" y2="72" class="axe" style="stroke: var(--encre)"/>
+          <text x="23" y="59" text-anchor="middle" class="svg-texte f-w">w1</text>
+          <text x="77" y="59" text-anchor="middle" class="svg-texte">data 0.5</text>
+          <text x="154" y="59" text-anchor="middle" class="svg-texte">grad 0.0</text>
+        </svg>
+        <p>Chaque <span class="cw">w</span> et chaque <span class="cb">b</span> est une <code>Value</code> : la classe de base de micrograd, la boîte que <code>draw_dot</code> dessine.</p>
+      </div>
+    </div>
+    <p>Le réseau entier est donc un grand graphe de <code>Value</code>. C'est pour ça que <code>backward()</code> peut le remonter d'un bout à l'autre.</p>
+  </section>
+
+  <!-- ============ DEUX MOMENTS ============ -->
+  <section aria-labelledby="titre-moments">
+    <h2 id="titre-moments">Deux moments : construire, puis calculer</h2>
+    <div class="defile-tableau">
+      <table class="tableau">
+        <thead><tr><th>Ce qu'on écrit</th><th>Python lance</th><th>Ce qui se passe</th><th>Combien de fois</th></tr></thead>
+        <tbody>
+          <tr><td><code>n = MLP(3, [4, 4, 1])</code></td><td><code>__init__</code></td><td><strong>On construit</strong> : tous les poids <span class="cw">w</span> et biais <span class="cb">b</span> sont tirés au hasard.</td><td>Une fois</td></tr>
+          <tr><td><code>n(x)</code></td><td><code>__call__</code></td><td><strong>On calcule</strong> : <span class="cx">x</span> traverse le réseau et un nombre sort.</td><td>À chaque appel</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Les noms entourés de <code>__</code> sont des méthodes que Python lance tout seul, comme <code>__add__</code> et <code>__mul__</code> dans la classe <code>Value</code>. En trafic : <code>__init__</code>, c'est bâtir l'échangeur ; <code>__call__</code>, c'est y faire passer une heure de trafic. On bâtit une fois, on fait passer du trafic autant qu'on veut.</p>
+  </section>
+
+  <!-- ============ 1. NEURON ============ -->
+  <section aria-labelledby="titre-neuron">
+    <p class="etiquette">Boîte 1</p>
+    <h2 id="titre-neuron">Neuron : une intersection</h2>
+    <p>Trois rues entrent (<span class="cx">x</span>), chacune compte plus ou moins (<span class="cw">w</span>), il y a un trafic de base (<span class="cb">b</span>), et ce qui sort plafonne comme une capacité : toujours entre -1 et 1 (<span class="co">tanh</span>).</p>
+
+    <div class="pas-a-pas" id="pas-neuron">
+      <div class="barre">
+        <button type="button" class="precedent" aria-label="Étape précédente">◀</button>
+        <span class="compteur"></span>
+        <button type="button" class="suivant" aria-label="Étape suivante">Suivant ▶</button>
+        <span class="titre-etape"></span>
+      </div>
+
+<pre class="code"><code>class Neuron:
+
+  <span data-k="n-def-init">def __init__(self, nin):</span>
+    <span data-k="n-w"><span class="cw">self.w</span> = [Value(random.uniform(-1,1)) for _ in range(nin)]</span>
+    <span data-k="n-b"><span class="cb">self.b</span> = Value(random.uniform(-1,1))</span>
+
+  <span data-k="n-def-call">def __call__(self, <span class="cx">x</span>):</span>
+    <span data-k="n-sum">act = sum(</span>(<span data-k="n-mul"><span class="cw">wi</span>*<span class="cx">xi</span></span> <span data-k="n-zip">for <span class="cw">wi</span>, <span class="cx">xi</span> in zip(<span class="cw">self.w</span>, <span class="cx">x</span>)</span>)<span data-k="n-sum">, <span class="cb">self.b</span>)</span>
+    <span data-k="n-tanh"><span class="co">out</span> = act.<span class="co">tanh</span>()</span>
+    <span data-k="n-return">return <span class="co">out</span></span>
+
+  <span data-k="n-def-params">def parameters(self):</span>
+    <span data-k="n-params">return <span class="cw">self.w</span> + [<span class="cb">self.b</span>]</span></code></pre>
+
+      <div class="figure">
+        <div class="defile">
+          <svg viewBox="0 0 600 262" role="img" aria-label="Un neurone : 3 entrées pondérées, un biais, une somme, puis tanh">
+            <g data-k="svg-entrees">
+              <line x1="80" y1="40" x2="340" y2="130" class="arete-w"/>
+              <line x1="80" y1="130" x2="340" y2="130" class="arete-w"/>
+              <line x1="80" y1="220" x2="340" y2="130" class="arete-w"/>
+            </g>
+            <g data-k="svg-x">
+              <circle cx="80" cy="40" r="22" class="rond rond-x"/>
+              <circle cx="80" cy="130" r="22" class="rond rond-x"/>
+              <circle cx="80" cy="220" r="22" class="rond rond-x"/>
+              <text x="80" y="45" text-anchor="middle" class="svg-texte f-x" data-des="3">2.0</text>
+              <text x="80" y="135" text-anchor="middle" class="svg-texte f-x" data-des="3">3.0</text>
+              <text x="80" y="225" text-anchor="middle" class="svg-texte f-x" data-des="3">-1.0</text>
+            </g>
+            <text x="34" y="45" text-anchor="middle" class="svg-nom">x1</text>
+            <text x="34" y="135" text-anchor="middle" class="svg-nom">x2</text>
+            <text x="34" y="225" text-anchor="middle" class="svg-nom">x3</text>
+
+            <g data-k="svg-w" data-des="1">
+              <text x="182" y="70" text-anchor="middle" class="svg-texte f-w halo">w1 = 0.5</text>
+              <text x="182" y="123" text-anchor="middle" class="svg-texte f-w halo">w2 = -0.5</text>
+              <text x="182" y="179" text-anchor="middle" class="svg-texte f-w halo">w3 = 1.0</text>
+            </g>
+            <g data-k="svg-prod" data-des="5">
+              <text x="268" y="99" text-anchor="middle" class="svg-texte halo">1.0</text>
+              <text x="268" y="123" text-anchor="middle" class="svg-texte halo">-1.5</text>
+              <text x="268" y="151" text-anchor="middle" class="svg-texte halo">-1.0</text>
+            </g>
+
+            <g data-k="svg-b" data-des="2">
+              <line x1="340" y1="166" x2="340" y2="216" style="stroke: var(--vert); stroke-width: 2"/>
+              <rect x="306" y="216" width="68" height="28" rx="5" class="boite-b"/>
+              <text x="340" y="235" text-anchor="middle" class="svg-texte f-b">b = 0.5</text>
+            </g>
+
+            <g data-k="svg-somme">
+              <circle cx="340" cy="130" r="36" class="rond rond-n"/>
+              <text x="340" y="136" text-anchor="middle" class="svg-titre" data-avant="6">Σ</text>
+              <text x="340" y="135" text-anchor="middle" class="svg-texte" data-des="6">-1.0</text>
+            </g>
+            <text x="340" y="84" text-anchor="middle" class="svg-nom">act</text>
+
+            <line x1="376" y1="130" x2="404" y2="130" class="fleche"/>
+            <g data-k="svg-tanh">
+              <rect x="406" y="92" width="84" height="76" rx="5" class="boite"/>
+              <line x1="412" y1="135" x2="484" y2="135" class="axe"/>
+              <line x1="448" y1="108" x2="448" y2="162" class="axe"/>
+              <path id="courbe-tanh-neuron" class="courbe-tanh" d=""/>
+              <circle id="point-tanh-neuron" r="4.5" class="point-tanh" data-des="7"/>
+            </g>
+            <text x="448" y="85" text-anchor="middle" class="svg-texte f-o">tanh</text>
+            <line x1="490" y1="130" x2="518" y2="130" class="fleche"/>
+
+            <g data-k="svg-out">
+              <circle cx="548" cy="130" r="28" class="rond rond-o"/>
+              <text x="548" y="135" text-anchor="middle" class="svg-texte f-o" data-des="7">-0.76</text>
+            </g>
+            <text x="548" y="88" text-anchor="middle" class="svg-nom">out</text>
+          </svg>
+        </div>
+        <p class="formule">
+          <span data-k="svg-out" class="co">out</span> =
+          <span data-k="n-tanh" class="co">tanh</span>(
+          <span data-k="svg-prod"><span data-k="svg-w" class="cw">w1</span>·<span data-k="svg-x" class="cx">x1</span></span> +
+          <span data-k="svg-prod"><span data-k="svg-w" class="cw">w2</span>·<span data-k="svg-x" class="cx">x2</span></span> +
+          <span data-k="svg-prod"><span data-k="svg-w" class="cw">w3</span>·<span data-k="svg-x" class="cx">x3</span></span> +
+          <span data-k="svg-b" class="cb">b</span> )
+        </p>
+      </div>
+
+      <div class="explication" aria-live="polite">
+        <p class="texte-etape"></p>
+        <pre class="jouet"></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ 2. LAYER ============ -->
+  <section aria-labelledby="titre-layer">
+    <p class="etiquette">Boîte 2</p>
+    <h2 id="titre-layer">Layer : un rang d'intersections</h2>
+    <p>Quatre intersections reçoivent toutes les mêmes trois rues. Chacune a ses propres réglages (<span class="cw">w</span>, <span class="cb">b</span>), donc chacune sort un débit différent.</p>
+
+    <div class="pas-a-pas" id="pas-layer">
+      <div class="barre">
+        <button type="button" class="precedent" aria-label="Étape précédente">◀</button>
+        <span class="compteur"></span>
+        <button type="button" class="suivant" aria-label="Étape suivante">Suivant ▶</button>
+        <span class="titre-etape"></span>
+      </div>
+
+<pre class="code"><code>class Layer:
+
+  <span data-k="c-def-init">def __init__(self, nin, nout):</span>
+    <span data-k="c-neurons">self.neurons = [Neuron(nin) for _ in range(nout)]</span>
+
+  <span data-k="c-def-call">def __call__(self, <span class="cx">x</span>):</span>
+    <span data-k="c-outs"><span class="co">outs</span> = [n(<span class="cx">x</span>) for n in self.neurons]</span>
+    <span data-k="c-return">return <span class="co">outs</span>[0] if len(<span class="co">outs</span>) == 1 else <span class="co">outs</span></span>
+
+  <span data-k="c-def-params">def parameters(self):</span>
+    <span data-k="c-params">return [p for neuron in self.neurons for p in neuron.parameters()]</span></code></pre>
+
+      <div class="figure">
+        <div class="defile">
+          <svg id="svg-layer" viewBox="0 0 600 300" role="img" aria-label="Une couche : 3 entrées reliées à chacun des 4 neurones"></svg>
+        </div>
+      </div>
+
+      <div class="explication" aria-live="polite">
+        <p class="texte-etape"></p>
+        <pre class="jouet"></pre>
+      </div>
+    </div>
+
+    <h3>La même couche, vue comme 3Blue1Brown</h3>
+    <p>Au chapitre 1 de 3Blue1Brown, le passage d'une couche à l'autre est un calcul vectoriel. Le voici : chaque <strong>ligne</strong> de la matrice <span class="cw">W</span>, ce sont les 3 poids d'un <code>Neuron</code>.</p>
+<pre class="matrice" id="matrice-layer"></pre>
+    <p class="note-basse">4 neurones = 4 lignes. 3 entrées = 3 colonnes. Une ligne de <span class="cw">W</span> multipliée par <span class="cx">x</span>, plus son <span class="cb">b</span>, puis <span class="co">tanh</span> : c'est exactement ce que fait un <code>Neuron</code>.</p>
+  </section>
+
+  <!-- ============ 3. MLP ============ -->
+  <section aria-labelledby="titre-mlp">
+    <p class="etiquette">Boîte 3</p>
+    <h2 id="titre-mlp">MLP : la chaîne de montage</h2>
+    <p>MLP veut dire <em>multi-layer perceptron</em> : un réseau à plusieurs couches. Ce qui sort d'un rang d'intersections devient le trafic qui entre dans le rang suivant.</p>
+
+    <div class="pas-a-pas" id="pas-mlp">
+      <div class="barre">
+        <button type="button" class="precedent" aria-label="Étape précédente">◀</button>
+        <span class="compteur"></span>
+        <button type="button" class="suivant" aria-label="Étape suivante">Suivant ▶</button>
+        <span class="titre-etape"></span>
+      </div>
+
+<pre class="code"><code>class MLP:
+
+  <span data-k="m-def-init">def __init__(self, nin, nouts):</span>
+    <span data-k="m-sz">sz = [nin] + nouts</span>
+    <span data-k="m-layers">self.layers = [Layer(sz[i], sz[i+1]) for i in range(len(nouts))]</span>
+
+  <span data-k="m-def-call">def __call__(self, <span class="cx">x</span>):</span>
+    <span data-k="m-for">for layer in self.layers:</span>
+      <span data-k="m-x"><span class="cx">x</span> = layer(<span class="cx">x</span>)</span>
+    <span data-k="m-return">return <span class="cx">x</span></span>
+
+  <span data-k="m-def-params">def parameters(self):</span>
+    <span data-k="m-params">return [p for layer in self.layers for p in layer.parameters()]</span>
+
+<span data-k="m-usage-x"><span class="cx">x</span> = [2.0, 3.0, -1.0]</span>
+<span data-k="m-usage-n">n = MLP(3, [4, 4, 1])</span>
+<span data-k="m-usage-appel">n(<span class="cx">x</span>)</span></code></pre>
+
+      <div class="figure">
+        <div class="defile">
+          <svg id="svg-mlp" viewBox="0 0 640 310" role="img" aria-label="Le MLP : 3 entrées, puis des couches de 4, 4 et 1 neurones"></svg>
+        </div>
+        <div class="boutons" id="boutons-mlp" data-des="7" aria-label="Les 41 paramètres du MLP"></div>
+      </div>
+
+      <div class="explication" aria-live="polite">
+        <p class="texte-etape"></p>
+        <pre class="jouet"></pre>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ PIÈGES ============ -->
+  <section aria-labelledby="titre-pieges">
+    <h2 id="titre-pieges">Ce que ces classes ne font pas</h2>
+    <div class="pieges">
+      <div class="encadre">
+        <p class="etiquette">L'erreur classique</p>
+        <h3><code>Layer(3, 4)</code>, ce n'est pas 3 neurones</h3>
+        <p>Le 3, c'est combien d'entrées reçoit <strong>chaque</strong> neurone (<code>nin</code>). Le 4, c'est combien de neurones il y a (<code>nout</code>). Pareil dans <code>MLP(3, [4, 4, 1])</code> : le 3 n'est pas une couche de neurones, c'est juste la taille de <span class="cx">x</span>.</p>
+      </div>
+      <div class="encadre">
+        <p class="etiquette">Ce qu'elles ne font pas</p>
+        <h3>Elles calculent, elles n'apprennent pas</h3>
+        <p><code>MLP(...)</code> construit le réseau avec des poids au hasard ; <code>n(x)</code> fait juste passer <span class="cx">x</span> dedans. Les poids ne bougent que dans la boucle d'entraînement qui vient après : la perte, <code>loss.backward()</code>, puis chaque <code>p</code> de <code>n.parameters()</code> fait un petit pas contre son <code>grad</code>. C'est pour ça que <code>parameters()</code> existe.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Code : micrograd d'Andrej Karpathy, tel qu'écrit dans sa vidéo <em>The spelled-out intro to neural networks and backpropagation</em>.</p>
+    <p>Le neurone de la boîte 1 a des poids choisis pour se calculer à la main. Les autres poids sont tirés au hasard par la page entre -1 et 1, comme <code>random.uniform(-1, 1)</code>, puis arrondis à 0,1. Page faite par l'assistant IA.</p>
+  </footer>
+</main>
+
+<script>
+// ---------- Le réseau de démonstration ----------
+const ENTREES_X = [2.0, 3.0, -1.0];
+const NEURONE_CALCULE_A_LA_MAIN = { poids: [0.5, -0.5, 1.0], biais: 0.5 };
+const TAILLES_DES_COUCHES = [3, 4, 4, 1];
+// Graine fixe : les mêmes poids « au hasard » à chaque ouverture, pour que les chiffres de la page ne changent pas.
+const GRAINE_DU_HASARD = 4;
+
+function creerGenerateurAleatoire(graine) {
+  // mulberry32 : un petit générateur pseudo-aléatoire qu'on peut rejouer avec la même graine.
+  return function () {
+    graine |= 0; graine = graine + 0x6D2B79F5 | 0;
+    let t = Math.imul(graine ^ graine >>> 15, 1 | graine);
+    t = t + Math.imul(t ^ t >>> 7, 61 | t) ^ t;
+    return ((t ^ t >>> 14) >>> 0) / 4294967296;
+  };
+}
+
+function tirerPoidsEntreMoinsUnEtUn(generateur) {
+  const poids = Math.round((generateur() * 2 - 1) * 10) / 10;
+  return poids === 0 ? 0 : poids; // évite d'afficher « -0 »
+}
+
+function construireReseau() {
+  const generateur = creerGenerateurAleatoire(GRAINE_DU_HASARD);
+  const couches = [];
+  for (let indexCouche = 0; indexCouche < TAILLES_DES_COUCHES.length - 1; indexCouche++) {
+    const nombreEntrees = TAILLES_DES_COUCHES[indexCouche];
+    const nombreNeurones = TAILLES_DES_COUCHES[indexCouche + 1];
+    const neurones = [];
+    for (let indexNeurone = 0; indexNeurone < nombreNeurones; indexNeurone++) {
+      // Le tout premier neurone du réseau est celui de la boîte 1, pour garder le fil d'une section à l'autre.
+      if (indexCouche === 0 && indexNeurone === 0) { neurones.push(NEURONE_CALCULE_A_LA_MAIN); continue; }
+      neurones.push({
+        poids: Array.from({ length: nombreEntrees }, () => tirerPoidsEntreMoinsUnEtUn(generateur)),
+        biais: tirerPoidsEntreMoinsUnEtUn(generateur),
+      });
+    }
+    couches.push(neurones);
+  }
+  return couches;
+}
+
+function calculerNeurone(neurone, entrees) {
+  const act = neurone.poids.reduce((somme, poids, k) => somme + poids * entrees[k], neurone.biais);
+  return Math.tanh(act);
+}
+
+const COUCHES = construireReseau();
+// SORTIES_PAR_ETAGE[0] = x ; SORTIES_PAR_ETAGE[1] = sortie de la couche 1 ; etc.
+const SORTIES_PAR_ETAGE = [ENTREES_X];
+for (const couche of COUCHES) {
+  const entrees = SORTIES_PAR_ETAGE[SORTIES_PAR_ETAGE.length - 1];
+  SORTIES_PAR_ETAGE.push(couche.map(neurone => calculerNeurone(neurone, entrees)));
+}
+
+function formater(valeur, decimales = 2) {
+  const texte = valeur.toFixed(decimales);
+  return Number(texte) === 0 ? (0).toFixed(decimales) : texte;
+}
+const formaterListe = valeurs => '[' + valeurs.map(v => formater(v)).join(', ') + ']';
+const formaterEntrees = valeurs => '[' + valeurs.map(v => v.toFixed(1)).join(', ') + ']';
+const enCouleur = (classe, texte) => `<span class="${classe}">${texte}</span>`;
+
+// ---------- Petits outils SVG ----------
+const ESPACE_SVG = 'http://www.w3.org/2000/svg';
+function ajouterSvg(parent, balise, attributs, texte) {
+  const element = document.createElementNS(ESPACE_SVG, balise);
+  for (const [nom, valeur] of Object.entries(attributs)) element.setAttribute(nom, valeur);
+  if (texte !== undefined) element.textContent = texte;
+  parent.appendChild(element);
+  return element;
+}
+function ordonneesCentrees(nombre, centre, ecart) {
+  return Array.from({ length: nombre }, (_, k) => centre + (k - (nombre - 1) / 2) * ecart);
+}
+
+// ---------- Courbe tanh du neurone ----------
+(function dessinerCourbeTanh() {
+  const gaucheX = 412, droiteX = 484, centreY = 135, demiHauteur = 22, actMax = 3;
+  const versX = act => gaucheX + (act + actMax) / (2 * actMax) * (droiteX - gaucheX);
+  const versY = sortie => centreY - sortie * demiHauteur;
+  const points = [];
+  for (let act = -actMax; act <= actMax + 1e-9; act += 0.1) points.push(`${versX(act).toFixed(1)},${versY(Math.tanh(act)).toFixed(1)}`);
+  document.getElementById('courbe-tanh-neuron').setAttribute('d', 'M' + points.join(' L'));
+  const point = document.getElementById('point-tanh-neuron');
+  point.setAttribute('cx', versX(-1).toFixed(1));
+  point.setAttribute('cy', versY(Math.tanh(-1)).toFixed(1));
+})();
+
+// ---------- Dessin de la couche ----------
+(function dessinerCouche() {
+  const svg = document.getElementById('svg-layer');
+  const yEntrees = ordonneesCentrees(3, 150, 72);
+  const yNeurones = ordonneesCentrees(4, 150, 68);
+  const xEntrees = 80, xNeurones = 320;
+  const groupeAretes = ajouterSvg(svg, 'g', { 'data-k': 'svg-c-aretes', 'data-des': '1' });
+  for (const yN of yNeurones) for (const yE of yEntrees) ajouterSvg(groupeAretes, 'line', { x1: xEntrees, y1: yE, x2: xNeurones, y2: yN, class: 'arete' });
+
+  const groupeEntrees = ajouterSvg(svg, 'g', { 'data-k': 'svg-c-entrees' });
+  yEntrees.forEach((y, k) => {
+    ajouterSvg(svg, 'text', { x: 34, y: y + 5, 'text-anchor': 'middle', class: 'svg-nom' }, `x${k + 1}`);
+    ajouterSvg(groupeEntrees, 'circle', { cx: xEntrees, cy: y, r: 22, class: 'rond rond-x' });
+    ajouterSvg(groupeEntrees, 'text', { x: xEntrees, y: y + 5, 'text-anchor': 'middle', class: 'svg-texte f-x' }, ENTREES_X[k].toFixed(1));
+  });
+
+  const groupeNeurones = ajouterSvg(svg, 'g', { 'data-k': 'svg-c-neurones', 'data-des': '1' });
+  yNeurones.forEach((y, k) => {
+    ajouterSvg(groupeNeurones, 'circle', { cx: xNeurones, cy: y, r: 24, class: 'rond rond-n' });
+    ajouterSvg(groupeNeurones, 'text', { x: xNeurones, y: y + 5, 'text-anchor': 'middle', class: 'svg-nom' }, `n${k + 1}`);
+  });
+
+  ajouterSvg(svg, 'text', { x: 420, y: 22, 'text-anchor': 'middle', class: 'svg-nom', 'data-des': '2' }, 'outs');
+  const groupeSorties = ajouterSvg(svg, 'g', { 'data-k': 'svg-c-outs', 'data-des': '2' });
+  yNeurones.forEach((y, k) => {
+    ajouterSvg(groupeSorties, 'line', { x1: xNeurones + 26, y1: y, x2: 388, y2: y, class: 'fleche' });
+    ajouterSvg(groupeSorties, 'text', { x: 420, y: y + 5, 'text-anchor': 'middle', class: 'svg-texte f-o' }, formater(SORTIES_PAR_ETAGE[1][k]));
+  });
+  ajouterSvg(svg, 'text', { x: 462, y: yNeurones[0] + 5, class: 'svg-petit', 'data-des': '1' }, '← le neurone');
+  ajouterSvg(svg, 'text', { x: 476, y: yNeurones[0] + 20, class: 'svg-petit', 'data-des': '1' }, 'de la boîte 1');
+})();
+
+// ---------- Matrice W · x + b ----------
+(function ecrireMatrice() {
+  const couche = COUCHES[0];
+  const largeurPoids = 5;
+  const lignes = couche.map((neurone, k) => {
+    const poids = neurone.poids.map(p => p.toFixed(1).padStart(largeurPoids)).join('');
+    const entree = k < 3 ? ENTREES_X[k].toFixed(1).padStart(5) : '     ';
+    const biais = neurone.biais.toFixed(1).padStart(5);
+    const sortie = formater(SORTIES_PAR_ETAGE[1][k]).padStart(6);
+    const signe = k === 1 ? ' · ' : '   ';
+    const plus = k === 1 ? ' + ' : '   ';
+    const fleche = k === 1 ? ' → tanh → ' : '          ';
+    // x n'a que 3 lignes : à la 4e, on laisse la colonne vide (8 espaces = « [ » + 5 caractères + « ] »).
+    const colonneX = k < 3 ? `[${enCouleur('cx', entree)} ]` : ' '.repeat(8);
+    return `n${k + 1}  [${enCouleur('cw', poids)} ]${signe}${colonneX}${plus}[${enCouleur('cb', biais)} ]${fleche}[${enCouleur('co', sortie)} ]`;
+  });
+  // En-tête placé au-dessus de chaque colonne : W commence à 7, x à 28, b à 39, outs à 56.
+  const entete = ' '.repeat(7) + enCouleur('cw', 'W (4 × 3)') + ' '.repeat(12) + enCouleur('cx', 'x')
+    + ' '.repeat(10) + enCouleur('cb', 'b') + ' '.repeat(16) + enCouleur('co', 'outs');
+  document.getElementById('matrice-layer').innerHTML = entete + '\n' + lignes.join('\n');
+})();
+
+// ---------- Dessin du MLP ----------
+(function dessinerMlp() {
+  const svg = document.getElementById('svg-mlp');
+  const xColonnes = [70, 240, 410, 580];
+  const titres = ['x', 'Layer(3, 4)', 'Layer(4, 4)', 'Layer(4, 1)'];
+  const yParColonne = TAILLES_DES_COUCHES.map(n => ordonneesCentrees(n, 168, 66));
+
+  // Arêtes de chaque couche (elles relient la colonne précédente à la sienne)
+  for (let c = 0; c < 3; c++) {
+    const groupe = ajouterSvg(svg, 'g', { 'data-k': `svg-m-c${c}`, 'data-des': '2' });
+    for (const y2 of yParColonne[c + 1]) for (const y1 of yParColonne[c]) {
+      ajouterSvg(groupe, 'line', { x1: xColonnes[c], y1, x2: xColonnes[c + 1], y2, class: 'arete' });
+    }
+  }
+  // Titres des colonnes
+  titres.forEach((titre, c) => ajouterSvg(svg, 'text', { x: xColonnes[c], y: 24, 'text-anchor': 'middle', class: c === 0 ? 'svg-texte f-x' : 'svg-texte', 'data-des': c === 0 ? '0' : '2' }, titre));
+  // Nœuds : les valeurs apparaissent au tour de boucle qui les calcule (étapes 3, 4, 5)
+  TAILLES_DES_COUCHES.forEach((taille, c) => {
+    const estEntree = c === 0;
+    const estSortie = c === TAILLES_DES_COUCHES.length - 1;
+    const groupe = ajouterSvg(svg, 'g', { 'data-k': estEntree ? 'svg-m-x' : (estSortie ? 'svg-m-sortie' : `svg-m-n${c}`), 'data-des': estEntree ? '0' : '2' });
+    yParColonne[c].forEach((y, k) => {
+      ajouterSvg(groupe, 'circle', { cx: xColonnes[c], cy: y, r: 23, class: 'rond ' + (estEntree ? 'rond-x' : (estSortie ? 'rond-o' : 'rond-n')) });
+      const valeur = SORTIES_PAR_ETAGE[c][k];
+      ajouterSvg(groupe, 'text', {
+        x: xColonnes[c], y: y + 5, 'text-anchor': 'middle',
+        class: 'svg-texte ' + (estEntree ? 'f-x' : 'f-o'),
+        'data-des': estEntree ? '3' : String(2 + c),
+      }, estEntree ? valeur.toFixed(1) : formater(valeur));
+    });
+  });
+})();
+
+// ---------- Les 41 paramètres en petits carrés ----------
+(function dessinerParametres() {
+  const conteneur = document.getElementById('boutons-mlp');
+  COUCHES.forEach((couche, c) => {
+    const groupe = document.createElement('div');
+    groupe.className = 'groupe-boutons';
+    const nombre = couche.reduce((total, neurone) => total + neurone.poids.length + 1, 0);
+    groupe.innerHTML = `<span class="etiquette">${['Layer(3, 4)', 'Layer(4, 4)', 'Layer(4, 1)'][c]} : ${nombre}</span>`;
+    const rangee = document.createElement('div');
+    rangee.className = 'rangee';
+    for (const neurone of couche) {
+      const paquet = document.createElement('div');
+      paquet.className = 'neurone-boutons';
+      paquet.innerHTML = '<i class="bouton-w"></i>'.repeat(neurone.poids.length) + '<i class="bouton-b"></i>';
+      rangee.appendChild(paquet);
+    }
+    groupe.appendChild(rangee);
+    conteneur.appendChild(groupe);
+  });
+})();
+
+// ---------- Moteur du pas-à-pas ----------
+// Chaque étape dit quelles pièces s'allument (cles). Les éléments data-des="n" n'apparaissent qu'à partir de l'étape n,
+// les éléments data-avant="n" disparaissent à l'étape n.
+function brancherPasAPas(idConteneur, etapes) {
+  const conteneur = document.getElementById(idConteneur);
+  const section = conteneur.closest('section');
+  const boutonPrecedent = conteneur.querySelector('.precedent');
+  const boutonSuivant = conteneur.querySelector('.suivant');
+  let indexEtape = 0;
+
+  function afficherEtape() {
+    const etape = etapes[indexEtape];
+    section.querySelectorAll('[data-k]').forEach(el => el.classList.toggle('actif', etape.cles.includes(el.dataset.k)));
+    section.querySelectorAll('[data-des]').forEach(el => el.classList.toggle('cache', indexEtape < Number(el.dataset.des)));
+    section.querySelectorAll('[data-avant]').forEach(el => el.classList.toggle('cache', indexEtape >= Number(el.dataset.avant)));
+    conteneur.querySelector('.titre-etape').innerHTML = etape.titre;
+    conteneur.querySelector('.texte-etape').innerHTML = etape.texte;
+    conteneur.querySelector('.jouet').innerHTML = etape.jouet;
+    conteneur.querySelector('.compteur').textContent = `${indexEtape + 1} / ${etapes.length}`;
+    boutonPrecedent.disabled = indexEtape === 0;
+    boutonSuivant.disabled = indexEtape === etapes.length - 1;
+  }
+  boutonPrecedent.addEventListener('click', () => { indexEtape = Math.max(0, indexEtape - 1); afficherEtape(); });
+  boutonSuivant.addEventListener('click', () => { indexEtape = Math.min(etapes.length - 1, indexEtape + 1); afficherEtape(); });
+  afficherEtape();
+}
+
+const X = t => enCouleur('cx', t), W = t => enCouleur('cw', t), B = t => enCouleur('cb', t), O = t => enCouleur('co', t);
+
+// ---------- Étapes : Neuron ----------
+brancherPasAPas('pas-neuron', [
+  {
+    titre: 'Neuron(3) : on fabrique un neurone à 3 entrées',
+    cles: ['n-def-init', 'svg-entrees'],
+    texte: '<code>nin</code> veut dire <em>number of inputs</em>, le nombre d\'entrées. Ici <code>nin = 3</code> : le neurone recevra 3 nombres.',
+    jouet: `n = Neuron(3)\n           └── nin = 3  →  3 flèches qui entrent`,
+  },
+  {
+    titre: 'self.w : un poids par entrée',
+    cles: ['n-w', 'svg-w'],
+    texte: `La boucle tourne <code>nin</code> fois et crée chaque fois une <code>Value</code> tirée au hasard entre -1 et 1. Le <code>_</code> veut dire « je n'ai pas besoin du numéro du tour ». Ici, les poids sont choisis pour que le calcul se refasse à la main.`,
+    jouet: `range(3)  →  0, 1, 2              3 tours, donc 3 poids\n\nself.w = [${W('Value(0.5)')}, ${W('Value(-0.5)')}, ${W('Value(1.0)')}]\n             ${W('w1')}           ${W('w2')}            ${W('w3')}`,
+  },
+  {
+    titre: 'self.b : le biais',
+    cles: ['n-b', 'svg-b'],
+    texte: 'Une seule <code>Value</code> de plus : le biais. Le neurone est maintenant construit. Il n\'a encore rien calculé.',
+    jouet: `self.b = ${B('Value(0.5)')}\n\nle neurone contient : 3 ${W('w')} + 1 ${B('b')}`,
+  },
+  {
+    titre: 'n(x) lance __call__ : le neurone calcule',
+    cles: ['n-def-call', 'svg-x'],
+    texte: `Écrire <code>n(x)</code>, c'est demander à Python de lancer <code>__call__</code>. On passe de « construire » à « calculer ».`,
+    jouet: `${X('x')} = [${X('2.0')}, ${X('3.0')}, ${X('-1.0')}]\n\nn(${X('x')})   revient à   n.__call__(${X('x')})`,
+  },
+  {
+    titre: 'zip : chaque poids avec son entrée',
+    cles: ['n-zip', 'svg-w', 'svg-x'],
+    texte: '<code>zip</code> prend deux listes et les assemble deux par deux, comme une fermeture éclair. <code>wi</code> et <code>xi</code> sont les deux morceaux de chaque paire.',
+    jouet: `self.w   [ ${W('0.5')},  ${W('-0.5')},   ${W('1.0')}]\n${X('x')}        [ ${X('2.0')},   ${X('3.0')},  ${X('-1.0')}]\n            ↓      ↓      ↓\nzip  →   (${W('0.5')}, ${X('2.0')})  (${W('-0.5')}, ${X('3.0')})  (${W('1.0')}, ${X('-1.0')})\n           ${W('wi')}   ${X('xi')}`,
+  },
+  {
+    titre: 'wi*xi : chaque entrée multipliée par son poids',
+    cles: ['n-mul', 'svg-prod'],
+    texte: 'Un poids fort donne beaucoup d\'importance à son entrée. Un poids négatif la retourne.',
+    jouet: `${W(' 0.5')} × ${X(' 2.0')}  =   1.0\n${W('-0.5')} × ${X(' 3.0')}  =  -1.5\n${W(' 1.0')} × ${X('-1.0')}  =  -1.0`,
+  },
+  {
+    titre: 'sum(…, self.b) : on additionne, en partant du biais',
+    cles: ['n-sum', 'svg-somme', 'svg-b'],
+    texte: 'Le 2<sup>e</sup> argument de <code>sum</code>, c\'est le point de départ. Sans lui, <code>sum</code> partirait de 0 ; ici, il part de <code>self.b</code>.',
+    jouet: `act = ${B('0.5')} + 1.0 + (-1.5) + (-1.0)\n      └── ${B('b')}, le point de départ\n\nact = -1.0`,
+  },
+  {
+    titre: 'tanh : on écrase entre -1 et 1',
+    cles: ['n-tanh', 'svg-tanh', 'svg-out'],
+    texte: 'Peu importe la taille de <code>act</code>, la sortie reste entre -1 et 1. C\'est la fonction d\'activation, comme dans le Playground.',
+    jouet: `act = -1.0   →   ${O('tanh(-1.0)')} = ${O(formater(Math.tanh(-1), 4))}\nact = 10.0   →   ${O('tanh(10.0)')} ≈ ${O('1.0')}      ça plafonne`,
+  },
+  {
+    titre: 'return out : un seul nombre sort',
+    cles: ['n-return', 'svg-out'],
+    texte: 'Trois nombres sont entrés, un seul sort. Et c\'est une <code>Value</code> : elle garde en mémoire tout le calcul qui l\'a produite.',
+    jouet: `n(${X('x')})  →  ${O(`Value(data=${formater(Math.tanh(-1), 4)}…)`)}`,
+  },
+  {
+    titre: 'parameters() : la liste des boutons à régler',
+    cles: ['n-def-params', 'n-params', 'svg-w', 'svg-b'],
+    texte: `Le <code>+</code> colle deux listes bout à bout. Ce sont les 4 seules <code>Value</code> que l'entraînement aura le droit de modifier. ${X('x')} n'en fait pas partie : on ne change pas les données.`,
+    jouet: `self.w         + [self.b]\n[${W('w1')}, ${W('w2')}, ${W('w3')}]   + [${B('b')}]\n\n= [${W('w1')}, ${W('w2')}, ${W('w3')}, ${B('b')}]        4 Value`,
+  },
+]);
+
+// ---------- Étapes : Layer ----------
+const sortiesCouche1 = SORTIES_PAR_ETAGE[1];
+brancherPasAPas('pas-layer', [
+  {
+    titre: 'Layer(3, 4) : 4 neurones, 3 entrées chacun',
+    cles: ['c-def-init', 'svg-c-entrees'],
+    texte: '<code>nin</code> : combien d\'entrées reçoit chaque neurone. <code>nout</code> : combien de neurones dans la couche, donc combien de nombres sortent.',
+    jouet: `Layer(3, 4)\n      │  └── nout = 4 neurones, donc 4 sorties\n      └───── nin  = 3 entrées pour chacun`,
+  },
+  {
+    titre: 'self.neurons : la boucle fabrique 4 neurones',
+    cles: ['c-neurons', 'svg-c-neurones', 'svg-c-aretes'],
+    texte: 'Chaque tour appelle <code>Neuron(3)</code> : un neurone complet, avec ses 3 poids et son biais à lui. Le neurone 1 est celui de la boîte 1 ; les 3 autres ont des poids tirés au hasard.',
+    jouet: `range(4)  →  4 tours\n\nself.neurons = [Neuron(3), Neuron(3), Neuron(3), Neuron(3)]\n                3 ${W('w')} + 1 ${B('b')}  3 ${W('w')} + 1 ${B('b')}  3 ${W('w')} + 1 ${B('b')}  3 ${W('w')} + 1 ${B('b')}`,
+  },
+  {
+    titre: 'n(x) pour chaque neurone : le même x pour tous',
+    cles: ['c-outs', 'svg-c-aretes', 'svg-c-entrees', 'svg-c-outs'],
+    texte: 'Les 4 neurones reçoivent exactement le même <code>x</code>. Ils sortent des nombres différents parce que leurs poids sont différents.',
+    jouet: `${X('x')} = ${X(formaterEntrees(ENTREES_X))}          le même pour les 4\n\n` +
+      sortiesCouche1.map((v, k) => `n${k + 1}(${X('x')})  →  ${O(formater(v).padStart(5))}`).join('\n') +
+      `\n\n${O('outs')} = ${O(formaterListe(sortiesCouche1))}`,
+  },
+  {
+    titre: 'return : une liste, ou un seul nombre',
+    cles: ['c-return'],
+    texte: 'S\'il n\'y a qu\'un neurone, on rend le nombre seul plutôt qu\'une liste d\'un seul nombre. Ça sert à la dernière couche du MLP, qui n\'a qu\'un neurone.',
+    jouet: `len(outs) == 4  →  return outs      →  ${O(formaterListe(sortiesCouche1))}\nlen(outs) == 1  →  return outs[0]   →  ${O(formater(sortiesCouche1[0]))}     et non [${formater(sortiesCouche1[0])}]`,
+  },
+  {
+    titre: 'parameters() : tout dans une seule liste',
+    cles: ['c-def-params', 'c-params', 'svg-c-neurones'],
+    texte: 'Deux <code>for</code> dans une seule liste : on vide chaque neurone, l\'un après l\'autre, dans la même liste. On obtient une liste à plat, pas une liste de listes.',
+    jouet: `for neuron in self.neurons:          4 neurones\n    for p in neuron.parameters():    4 Value chacun\n        on garde p\n\n→ [${W('w w w')} ${B('b')} | ${W('w w w')} ${B('b')} | ${W('w w w')} ${B('b')} | ${W('w w w')} ${B('b')}]    16 Value`,
+  },
+]);
+
+// ---------- Étapes : MLP ----------
+const etages = SORTIES_PAR_ETAGE;
+const decrireListe = valeurs => valeurs.length === 1 ? formater(valeurs[0]) : formaterListe(valeurs);
+brancherPasAPas('pas-mlp', [
+  {
+    titre: 'MLP(3, [4, 4, 1]) : la recette du réseau',
+    cles: ['m-def-init', 'm-usage-n', 'svg-m-x'],
+    texte: '<code>nin</code> : la taille de <code>x</code>. <code>nouts</code> : une liste, la taille de chaque couche dans l\'ordre.',
+    jouet: `MLP(3, [4, 4, 1])\n    │   └── nouts : 3 couches, de 4, 4 et 1 neurones\n    └────── nin   : x contient 3 nombres`,
+  },
+  {
+    titre: 'sz = [nin] + nouts : toutes les tailles bout à bout',
+    cles: ['m-sz'],
+    texte: 'Le <code>+</code> colle les deux listes. <code>sz</code> donne maintenant la taille de chaque étage, de l\'entrée jusqu\'à la sortie.',
+    jouet: `[3] + [4, 4, 1]  =  [3, 4, 4, 1]\n                     ${X('x')}  couche 1, 2, 3`,
+  },
+  {
+    titre: 'self.layers : une fenêtre qui glisse sur sz',
+    cles: ['m-layers', 'svg-m-c0', 'svg-m-c1', 'svg-m-c2'],
+    texte: '<code>range(len(nouts))</code> donne 0, 1, 2 : 3 couches. Le <code>sz[i+1]</code> d\'une couche redevient le <code>sz[i]</code> de la suivante : chaque couche a autant d\'entrées que la précédente a de neurones. C\'est ce qui permet de les brancher.',
+    jouet: `sz =  [3, 4, 4, 1]\ni = 0  └──┘           Layer(3, 4)\ni = 1     └──┘        Layer(4, 4)\ni = 2        └──┘     Layer(4, 1)`,
+  },
+  {
+    titre: 'Tour 1 de la boucle : x traverse la couche 1',
+    cles: ['m-for', 'm-x', 'svg-m-c0', 'svg-m-x', 'svg-m-n1'],
+    texte: '<code>x = layer(x)</code> : la sortie de la couche remplace <code>x</code>. Au tour suivant, c\'est elle qui entre. Le nom reste <code>x</code>, mais sa taille change.',
+    jouet: `tour 1 : layer = Layer(3, 4)\n${X('x')} = ${X(formaterEntrees(etages[0]))}           3 nombres\n${X('x')} = layer(${X('x')})  →  ${formaterListe(etages[1])}    4 nombres`,
+  },
+  {
+    titre: 'Tour 2 : la sortie de la couche 1 entre dans la couche 2',
+    cles: ['m-for', 'm-x', 'svg-m-c1', 'svg-m-n1', 'svg-m-n2'],
+    texte: 'C\'est la chaîne de montage : chaque poste reçoit ce que le poste d\'avant a produit.',
+    jouet: `tour 2 : layer = Layer(4, 4)\n${X('x')} = ${formaterListe(etages[1])}    4 nombres\n${X('x')} = layer(${X('x')})  →  ${formaterListe(etages[2])}    4 nombres`,
+  },
+  {
+    titre: 'Tour 3 : la dernière couche n\'a qu\'un neurone',
+    cles: ['m-for', 'm-x', 'svg-m-c2', 'svg-m-n2', 'svg-m-sortie'],
+    texte: 'Un seul neurone : grâce au <code>return outs[0]</code> de <code>Layer</code>, on récupère un nombre, pas une liste d\'un nombre.',
+    jouet: `tour 3 : layer = Layer(4, 1)\n${X('x')} = ${formaterListe(etages[2])}    4 nombres\n${X('x')} = layer(${X('x')})  →  ${O(decrireListe(etages[3]))}    1 nombre`,
+  },
+  {
+    titre: 'return x : la prédiction du réseau',
+    cles: ['m-return', 'm-usage-appel', 'svg-m-sortie'],
+    texte: 'Un seul nombre : ce que le réseau prédit pour ce <code>x</code>. Avec des poids tirés au hasard, il ne veut encore rien dire.',
+    jouet: `n(${X('[2.0, 3.0, -1.0]')})  →  ${O(`Value(data=${formater(etages[3][0], 4)}…)`)}\n\n3 nombres  →  4  →  4  →  1`,
+  },
+  {
+    titre: 'parameters() : les 41 boutons du réseau',
+    cles: ['m-def-params', 'm-params', 'svg-m-c0', 'svg-m-c1', 'svg-m-c2'],
+    texte: 'Même idée que dans <code>Layer</code>, un étage plus haut : on vide chaque couche dans une seule liste. C\'est cette liste que l\'entraînement va parcourir pour faire bouger chaque poids.',
+    jouet: `Layer(3, 4) : 4 neurones × (3 ${W('w')} + 1 ${B('b')})  =  16\nLayer(4, 4) : 4 neurones × (4 ${W('w')} + 1 ${B('b')})  =  20\nLayer(4, 1) : 1 neurone  × (4 ${W('w')} + 1 ${B('b')})  =   5\n                                      total  41`,
+  },
+]);
+</script>
+</body>
+</html>
