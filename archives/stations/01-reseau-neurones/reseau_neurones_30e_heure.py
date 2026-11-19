@@ -1,7 +1,7 @@
 from sklearn.ensemble import RandomForestRegressor
 import pandas as pd
 import torch
-sections = pd.read_csv("parcelles/01-reseau-neurones/donnees/sections_2025.csv")
+sections = pd.read_csv("archives/stations/01-reseau-neurones/donnees/sections_2025.csv")
 
 print(sections.head())
 print(len(sections), 'sections')
@@ -133,6 +133,6 @@ afficher_erreur("Forêt aléatoire", prediction_foret)
 
 # Ajouté par l'assistant IA : les petits CSV de résultats qui alimentent la page de la station.
 pd.DataFrame(resultats, columns=["modele", "erreur_vehicules", "erreur_pourcentage"]).to_csv(
-    "parcelles/01-reseau-neurones/resultats.csv", index=False)
+    "archives/stations/01-reseau-neurones/resultats.csv", index=False)
 pd.DataFrame(courbe_apprentissage, columns=["epoque", "cout_entrainement", "cout_test"]).to_csv(
-    "parcelles/01-reseau-neurones/courbe_apprentissage.csv", index=False)
+    "archives/stations/01-reseau-neurones/courbe_apprentissage.csv", index=False)

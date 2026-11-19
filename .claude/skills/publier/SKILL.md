@@ -15,6 +15,9 @@ Le site devient son portfolio public : une erreur ici se voit par des recruteurs
 5. Crée le commit, avec un message clair, en suivant les règles d'attribution de la session.
 6. Fais le `git push`, puis vérifie la page en ligne.
 
+## Quand Akram pousse lui-même (projets)
+Pour un projet, c'est lui qui tape les commandes. Il lance les vérifications des étapes 1 et 2, vous relisez ensemble à l'étape 3, puis, s'il est d'accord avec ce qui part, il écrit le commit (sans ligne de co-auteur) et fait le `git push`. La garde de `.claude/settings.json` ne voit pas ses commandes à lui : ces vérifications ne se sautent pas. Détail : la section « Le push, c'est lui » de `/projet`.
+
 ## Première publication
 Il n'y a pas encore de dépôt distant, et `gh` n'est pas installé.
 1. Akram crée le dépôt public `roadmap-ia` sur github.com, sans README.

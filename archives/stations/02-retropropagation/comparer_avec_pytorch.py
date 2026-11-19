@@ -1,7 +1,7 @@
 """Entraîne le même petit réseau avec micrograd et avec PyTorch, sur les débits de la station 1, puis compare les pertes.
 
 Usage, depuis la racine du dépôt :
-    .venv/Scripts/python parcelles/02-retropropagation/comparer_avec_pytorch.py
+    .venv/Scripts/python archives/stations/02-retropropagation/comparer_avec_pytorch.py
 
 Mêmes sections, mêmes poids de départ, même pas d'apprentissage : si les deux moteurs font le même calcul,
 leurs deux courbes de perte se superposent. Écrit `comparaison_pertes.csv` à côté du script.
@@ -33,7 +33,7 @@ GRAINE = 0
 
 def lire_sections():
     if not CHEMIN_DONNEES.exists():
-        sys.exit(f"Données introuvables : {CHEMIN_DONNEES}. Lancer d'abord parcelles/01-reseau-neurones/preparer_donnees.py.")
+        sys.exit(f"Données introuvables : {CHEMIN_DONNEES}. Lancer d'abord archives/stations/01-reseau-neurones/preparer_donnees.py.")
     with open(CHEMIN_DONNEES, encoding="utf-8") as fichier:
         sections = list(csv.DictReader(fichier))
     random.Random(GRAINE).shuffle(sections)

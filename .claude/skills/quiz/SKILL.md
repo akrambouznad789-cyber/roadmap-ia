@@ -1,18 +1,18 @@
 ---
 name: quiz
-description: Vérifie qu'Akram a compris une station avant de la fermer. Utiliser quand il dit « /quiz », « teste-moi » ou « est-ce que j'ai compris », ou à la fin d'une parcelle.
-argument-hint: "[numéro de station]"
+description: Vérifie qu'Akram a compris un projet avant de le fermer. Utiliser quand il dit « /quiz », « teste-moi » ou « est-ce que j'ai compris », ou à la fin d'un projet.
+argument-hint: "[P1 à P7]"
 ---
 
-# Quiz d'une station
+# Quiz d'un projet
 
-Station : $ARGUMENTS. Sans numéro, prends la dernière station travaillée.
+Projet : $ARGUMENTS. Sans argument, prends le projet en cours dans `contexte/etat.md`.
 
 Pose **trois questions, une à la fois**, et attends sa réponse avant la suivante :
 1. Expliquer l'idée à quelqu'un qui n'y connaît rien.
-2. Prédire ce qui se passe si on change quelque chose dans sa propre démo.
-3. Une question d'entrevue réaliste, tirée de `contexte/marche.md` quand c'est possible.
+2. Prédire ce qui se passe si on change quelque chose dans son propre code.
+3. Une question d'entrevue réaliste sur une compétence que le projet prouve (fiches de `contexte/projets.md`, métiers de l'atlas).
 
 Après chaque réponse, dis ce qui est juste, puis ce qui manque, en deux ou trois phrases. Ne donne pas la réponse avant qu'il ait essayé.
 
-À la fin, dis clairement si la station est acquise. Note les trous dans `contexte/journal.md` pour les revoir plus tard. C'est un outil pour lui : aucun résultat de quiz ne va sur le site.
+À la fin, dis clairement si le projet est acquis. Note les trous dans `contexte/journal.md` pour les revoir plus tard. C'est un outil pour lui : aucun résultat de quiz ne va sur le site.

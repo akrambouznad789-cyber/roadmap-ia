@@ -1,0 +1,6 @@
+modele,morceau,exactitude,auc
+Toujours en retard,validation,0.5405169628432956,
+Règle du mode,validation,0.6873667205169628,
+"Boosting, toutes les colonnes (fuite)",validation,1.0,1.0
+Boosting honnête,validation,0.7054281098546042,0.7546946160337905
+Boosting honnête,test scellé,0.7219007755755262,0.7736820248100259

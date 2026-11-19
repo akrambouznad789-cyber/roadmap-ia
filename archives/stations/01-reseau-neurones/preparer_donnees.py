@@ -1,7 +1,7 @@
 """Extrait des débits de circulation du MTQ un tableau simple pour entraîner un réseau de neurones.
 
 Usage :
-    python parcelles/01-reseau-neurones/preparer_donnees.py C:/chemin/vers/DebitCirculation.gpkg
+    python archives/stations/01-reseau-neurones/preparer_donnees.py C:/chemin/vers/DebitCirculation.gpkg
 
 Garde les sections qui ont, pour l'année la plus récente, un DJMA, un DJME, un DJMH et un débit à la 30e heure.
 Le CSV produit va dans `donnees/`, que git ignore : les données ne vont jamais dans le dépôt.

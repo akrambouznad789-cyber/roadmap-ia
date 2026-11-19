@@ -1,6 +1,6 @@
 # Roadmap IA
 
-Apprentissage de l'intelligence artificielle par étapes, des réseaux de neurones jusqu'aux agents LLM, appliqué au transport et aux données.
+Apprentissage de l'intelligence artificielle par étapes, des réseaux de neurones jusqu'à l'affinage d'un modèle de langage ouvert qui tourne en local.
 
 **Site : https://akrambouznad789-cyber.github.io/roadmap-ia/**
 
@@ -14,34 +14,35 @@ Apprentissage de l'intelligence artificielle par étapes, des réseaux de neuron
 |---|---|---|
 | | **Fondements de l'apprentissage profond** | |
 | 1 | Réseaux de neurones : perceptron multicouche | Publiée |
-| 2 | Rétropropagation et différentiation automatique | À venir |
+| 2 | Rétropropagation et différentiation automatique | Publiée |
 | | **Modèles de langage** | |
-| 3 | Tokenisation et plongements vectoriels | À venir |
+| 3 | Modélisation du langage et plongements vectoriels | À venir |
 | 4 | Mécanisme d'attention et architecture Transformer | À venir |
-| | **Applications des LLM** | |
-| 5 | Intégration des LLM : prompts et sorties structurées | À venir |
-| 6 | Génération augmentée par récupération (RAG) | À venir |
-| 7 | Agents LLM et appel d'outils | En cours |
-| 8 | Évaluation des LLM et des agents | En cours |
-| | **Mise en production** | |
-| 9 | MLOps : déploiement et surveillance | En cours |
+| | **Modèles ouverts : exécution et évaluation** | |
+| 5 | Exécution locale de modèles ouverts | À venir |
+| 6 | Intégration des LLM : prompts et sorties structurées | À venir |
+| 7 | Évaluation des LLM | À venir |
+| | **Spécialisation d'un modèle ouvert** | |
+| 8 | Affinage supervisé : LoRA et QLoRA | À venir |
+| 9 | Déploiement d'un modèle affiné | À venir |
 
 ## Exemples pratiques
 
 | Station | Exemple | Page |
 |---|---|---|
 | 1 | Estimation du débit à la 30e heure à partir des débits de circulation publics du Québec | [Voir](https://akrambouznad789-cyber.github.io/roadmap-ia/parcelles/01-reseau-neurones/) |
+| 2 | Un moteur de rétropropagation maison entraîne un petit réseau sur 200 sections de route du Québec, avec les mêmes pertes que PyTorch | [Voir](https://akrambouznad789-cyber.github.io/roadmap-ia/parcelles/02-retropropagation/) |
 
 ## Codes des exemples
 
-Le code de chaque exemple est rangé par station dans [`parcelles/`](parcelles/).
+Le code de chaque exemple est rangé par station dans [`archives/stations/`](archives/stations/).
 
 ## Contenu du dépôt
 
 | Dossier | Contenu |
 |---|---|
 | `docs/` | Le site |
-| `parcelles/` | Le code et les résultats de chaque exemple, par station |
+| `archives/stations/` | Le code et les résultats de chaque exemple, par station |
 | `outils/`, `tests/` | Outils de mesure et de vérification des pages avant publication, avec leurs tests |
 | `gabarits/` | Modèle de page des exemples |
 

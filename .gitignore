@@ -4,8 +4,9 @@ CLAUDE.local.md
 contexte/
 .claude/settings.local.json
 
-# Données des parcelles : jamais dans le dépôt, seulement les petits CSV de résultats.
-parcelles/*/donnees/
+# Données des stations et des projets : jamais dans le dépôt, seulement les petits CSV de résultats.
+archives/stations/*/donnees/
+projets/*/donnees/
 
 # Fichiers de travail
 .vscode/
@@ -14,3 +15,7 @@ parcelles/*/donnees/
 __pycache__/
 .pytest_cache/
 *.pyc
+
+# Notebooks de référence copiés depuis les cours : restent sur ce PC.
+archives/stations/*/reference/
+projets/*/reference/

@@ -1,6 +1,6 @@
 # Station 1 · Estimation du débit à la 30e heure
 
-Un perceptron multicouche (3 → 32 → 16 → 1) estime le débit à la 30e heure d'une section de route à partir de son DJMA, de son DJME et de son DJMH. Il est comparé à une règle simple (ratio médian × DJMA) et à une forêt aléatoire. [Page de l'exemple](https://akrambouznad789-cyber.github.io/roadmap-ia/parcelles/01-reseau-neurones/)
+Un perceptron multicouche (3 → 32 → 16 → 1) estime le débit à la 30e heure d'une section de route à partir de son DJMA, de son DJME et de son DJMH. Il est comparé à une règle simple (ratio médian × DJMA) et à une forêt aléatoire. [Page de l'exemple](https://akrambouznad789-cyber.github.io/roadmap-ia/archives/stations/01-reseau-neurones/)
 
 ## Fichiers
 
@@ -22,9 +22,9 @@ Un perceptron multicouche (3 → 32 → 16 → 1) estime le débit à la 30e heu
 Depuis la racine du dépôt, avec Python, PyTorch, pandas et scikit-learn :
 
 ```
-python parcelles/01-reseau-neurones/preparer_donnees.py chemin/vers/DebitCirculation.gpkg
-python parcelles/01-reseau-neurones/reseau_neurones_30e_heure.py
-python parcelles/01-reseau-neurones/analyser_familles.py
+python archives/stations/01-reseau-neurones/preparer_donnees.py chemin/vers/DebitCirculation.gpkg
+python archives/stations/01-reseau-neurones/reseau_neurones_30e_heure.py
+python archives/stations/01-reseau-neurones/analyser_familles.py
 ```
 
 La graine est fixée : les résultats sont identiques d'une exécution à l'autre.

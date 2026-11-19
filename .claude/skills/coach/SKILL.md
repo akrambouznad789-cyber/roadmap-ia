@@ -1,6 +1,6 @@
 ---
 name: coach
-description: Aide Akram pendant sa pièce à la main sans écrire la solution à sa place. Utiliser quand il dit « /coach », « je bloque », « aide-moi sans me donner la réponse » ou qu'il travaille sur la pièce à la main d'une station.
+description: Aide Akram pendant la pièce sans aide d'un projet sans écrire la solution à sa place. Utiliser quand il dit « /coach », « je bloque », « aide-moi sans me donner la réponse » ou qu'il travaille sur l'étape « Sans aide » d'un projet.
 ---
 
 # Coach pour la pièce à la main
@@ -18,4 +18,4 @@ Pour une erreur d'exécution : demande-lui de lire le message, puis de dire ce q
 
 Quand ça marche, demande-lui d'expliquer pourquoi. Note dans `contexte/journal.md` ce qui a bloqué.
 
-S'il demande clairement la solution, donne-la sans discuter, puis note sur la page de la station que cette pièce a été faite avec l'IA.
+S'il demande clairement la solution, donne-la sans discuter, puis note-le dans `contexte/journal.md`. Rien de l'apprentissage ne va dans son README ni sur ses pages.

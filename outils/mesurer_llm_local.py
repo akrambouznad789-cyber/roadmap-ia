@@ -19,7 +19,7 @@ from pathlib import Path
 
 URL_OLLAMA_PAR_DEFAUT = "http://localhost:11434"
 CHEMIN_RESULTATS_PAR_DEFAUT = (
-    Path(__file__).resolve().parent.parent / "parcelles" / "00-llm-local" / "resultats.csv"
+    Path(__file__).resolve().parent.parent / "archives" / "stations" / "00-llm-local" / "resultats.csv"
 )
 CONSIGNE_PAR_DEFAUT = "Explique ce qu'est un jumeau numérique en 3 phrases."
 NOMBRE_MAX_JETONS_PAR_DEFAUT = 128

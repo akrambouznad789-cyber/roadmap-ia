@@ -1,7 +1,7 @@
 """Regroupe les sections par saisonnalité (DJME / DJMH) pour montrer les familles de facteurs du ministère.
 
 Usage :
-    .venv/Scripts/python parcelles/01-reseau-neurones/analyser_familles.py
+    .venv/Scripts/python archives/stations/01-reseau-neurones/analyser_familles.py
 
 Écrit `familles_saisonnalite.csv` : des comptes et des médianes agrégés, jamais les sections elles-mêmes.
 """

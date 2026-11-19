@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Parcours IA d'Akram Bouznad</title>
-<meta name="description" content="Feuille de route en intelligence artificielle : des réseaux de neurones aux agents LLM, avec des cas pratiques en transport.">
+<meta name="description" content="Feuille de route en intelligence artificielle : des réseaux de neurones à l'affinage d'un modèle de langage ouvert, avec des cas pratiques.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Overpass:wght@800&family=Overpass+Mono:wght@500&display=swap">
@@ -38,36 +38,36 @@
 
     <li class="nom-ligne ligne-verte"><h2>Modèles de langage</h2></li>
     <li class="station ligne-verte"><span class="point"></span>
-      <h3><span class="numero">3</span>Tokenisation et plongements vectoriels</h3>
-      <p class="notions">BPE · embeddings · similarité cosinus · espaces sémantiques</p>
+      <h3><span class="numero">3</span>Modélisation du langage et plongements vectoriels</h3>
+      <p class="notions">modèle de langage · entropie croisée · embeddings · similarité cosinus · normalisation par lots</p>
     </li>
     <li class="station ligne-verte"><span class="point"></span>
       <h3><span class="numero">4</span>Mécanisme d'attention et architecture Transformer</h3>
-      <p class="notions">auto-attention · requêtes, clés, valeurs · attention multi-têtes · encodage positionnel</p>
+      <p class="notions">auto-attention · requêtes, clés, valeurs · attention multi-têtes · encodage positionnel · tokenisation BPE</p>
     </li>
 
-    <li class="nom-ligne ligne-bleue"><h2>Applications des LLM</h2></li>
+    <li class="nom-ligne ligne-bleue"><h2>Modèles ouverts : exécution et évaluation</h2></li>
     <li class="station ligne-bleue"><span class="point"></span>
-      <h3><span class="numero">5</span>Intégration des LLM : prompts et sorties structurées</h3>
-      <p class="notions">conception de prompts · sorties JSON validées · coût en jetons · hallucinations · tests</p>
+      <h3><span class="numero">5</span>Exécution locale de modèles ouverts</h3>
+      <p class="notions">quantification · format GGUF · inférence sur processeur · jetons par seconde · mémoire</p>
     </li>
     <li class="station ligne-bleue"><span class="point"></span>
-      <h3><span class="numero">6</span>Génération augmentée par récupération (RAG)</h3>
-      <p class="notions">découpage · recherche vectorielle · reclassement · ancrage des réponses</p>
+      <h3><span class="numero">6</span>Intégration des LLM : prompts et sorties structurées</h3>
+      <p class="notions">conception de prompts · sorties JSON validées · hallucinations · modèle de référence</p>
     </li>
-    <li class="station ligne-bleue en-cours"><span class="point"></span>
-      <h3><span class="numero">7</span>Agents LLM et appel d'outils</h3>
-      <p class="notions">boucle ReAct · appel de fonctions · planification · mémoire</p>
-    </li>
-    <li class="station ligne-bleue en-cours"><span class="point"></span>
-      <h3><span class="numero">8</span>Évaluation des LLM et des agents</h3>
+    <li class="station ligne-bleue"><span class="point"></span>
+      <h3><span class="numero">7</span>Évaluation des LLM</h3>
       <p class="notions">jeux de test · grilles de notation · LLM juge · analyse des échecs</p>
     </li>
 
-    <li class="nom-ligne ligne-jaune"><h2>Mise en production</h2></li>
-    <li class="station ligne-jaune en-cours"><span class="point"></span>
-      <h3><span class="numero">9</span>MLOps : déploiement et surveillance</h3>
-      <p class="notions">API FastAPI · conteneurs Docker · CI/CD · surveillance en service</p>
+    <li class="nom-ligne ligne-jaune"><h2>Spécialisation d'un modèle ouvert</h2></li>
+    <li class="station ligne-jaune"><span class="point"></span>
+      <h3><span class="numero">8</span>Affinage supervisé : LoRA et QLoRA</h3>
+      <p class="notions">jeux d'instructions · gabarits de conversation · LoRA, QLoRA · surapprentissage · comparaison au modèle de base</p>
+    </li>
+    <li class="station ligne-jaune"><span class="point"></span>
+      <h3><span class="numero">9</span>Déploiement d'un modèle affiné</h3>
+      <p class="notions">fusion des adaptateurs · conversion GGUF · service local · API FastAPI</p>
     </li>
   </ol>
 

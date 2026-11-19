@@ -17,4 +17,4 @@ Akram est très visuel et n'aime pas les longs textes.
 5. Dis ce que le concept **ne fait pas**, ou l'erreur classique.
 6. Termine par une seule question qui vérifie qu'il a compris.
 
-Si une ressource de `contexte/carte.md` couvre bien le concept, donne le lien. Ne cite que des faits vérifiés, et dis-le quand tu n'es pas sûr.
+Si une ressource de `contexte/projets.md` couvre bien le concept, donne le lien. Ne cite que des faits vérifiés, et dis-le quand tu n'es pas sûr.

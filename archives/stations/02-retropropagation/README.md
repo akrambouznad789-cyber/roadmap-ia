@@ -1,6 +1,6 @@
 # Station 2 · Un moteur de rétropropagation maison, vérifié contre PyTorch
 
-Un moteur de rétropropagation reproduit à partir de micrograd d'Andrej Karpathy entraîne un petit réseau (3 → 4 → 4 → 1, 41 paramètres) sur 200 sections de route du Québec. Le même réseau, construit en PyTorch avec les mêmes poids de départ, obtient les mêmes pertes à chaque époque. [Page de l'exemple](https://akrambouznad789-cyber.github.io/roadmap-ia/parcelles/02-retropropagation/)
+Un moteur de rétropropagation reproduit à partir de micrograd d'Andrej Karpathy entraîne un petit réseau (3 → 4 → 4 → 1, 41 paramètres) sur 200 sections de route du Québec. Le même réseau, construit en PyTorch avec les mêmes poids de départ, obtient les mêmes pertes à chaque époque. [Page de l'exemple](https://akrambouznad789-cyber.github.io/roadmap-ia/archives/stations/02-retropropagation/)
 
 ## Fichiers
 
@@ -15,14 +15,14 @@ Un moteur de rétropropagation reproduit à partir de micrograd d'Andrej Karpath
 
 ## Données
 
-[Débit de circulation](https://www.donneesquebec.ca/recherche/dataset/debit-de-circulation), ministère des Transports et de la Mobilité durable du Québec, licence CC BY 4.0. Le script lit le CSV préparé à la station 1 (`parcelles/01-reseau-neurones/donnees/sections_2025.csv`), qui n'est pas versionné : le produire d'abord avec `parcelles/01-reseau-neurones/preparer_donnees.py`.
+[Débit de circulation](https://www.donneesquebec.ca/recherche/dataset/debit-de-circulation), ministère des Transports et de la Mobilité durable du Québec, licence CC BY 4.0. Le script lit le CSV préparé à la station 1 (`archives/stations/01-reseau-neurones/donnees/sections_2025.csv`), qui n'est pas versionné : le produire d'abord avec `archives/stations/01-reseau-neurones/preparer_donnees.py`.
 
 ## Reproduire
 
 Depuis la racine du dépôt, avec Python et PyTorch :
 
 ```
-python parcelles/02-retropropagation/comparer_avec_pytorch.py
+python archives/stations/02-retropropagation/comparer_avec_pytorch.py
 ```
 
 Les sections et les poids de départ sont tirés avec une graine fixe : les pertes sont identiques d'une exécution à l'autre. Les durées dépendent de la machine.
