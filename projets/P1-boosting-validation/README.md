@@ -1,72 +1,92 @@
-# P1 · Boosting, validation et fuites
+# P1 · Boosting de gradient, validation temporelle et fuite de données
 
-Au moment où un client passe sa commande, peut-on prédire si sa livraison arrivera en retard, sans utiliser d'information connue seulement après coup ?
+Prédire, au moment où la commande est passée, si une livraison arrivera en retard. Classification binaire sur 180 519 lignes de commande (DataCo Smart Supply Chain, 2015 à 2018).
 
-Le but est de réduire l'erreur de prédiction **honnêtement** : un modèle qui semble parfait parce qu'il voit la réponse (une fuite de données) ne sert à rien en production.
+## En bref
 
-**État :** terminé.
+- **Fuite détectée.** Trois variables connues seulement après la livraison donnaient une exactitude de 100 % ; elles ont été retirées.
+- **Résultat sur le test** (juillet 2017 à janvier 2018, évalué une seule fois) : **72,2 % d'exactitude, AUC de 0,774**.
+- **Une règle métier fait presque aussi bien.** Classer d'après le seul mode d'expédition donne 68,7 % sur la validation, contre 70,5 % pour le boosting : cette variable porte l'essentiel du signal.
 
-## Compétences mobilisées
-
-| Compétence | Ce qui est fait dans ce projet |
-|---|---|
-| Préparation des données | Chargement d'un CSV encodé en latin-1, retrait des données personnelles, variables tirées de la date de commande |
-| Apprentissage supervisé | Classification binaire par boosting de gradient (`HistGradientBoostingClassifier`), variables catégorielles natives |
-| Bases de référence | Comparaison à deux règles simples : « toujours en retard » et une règle métier sur le mode d'expédition |
-| Validation dans le temps | Entraînement sur le passé, validation sur la période suivante, test scellé ouvert une seule fois |
-| Détection de fuites de données | Repérage et retrait des colonnes connues seulement après la livraison |
-| Évaluation | Exactitude et AUC ROC ; importance des variables par permutation ; courbe d'apprentissage arbre par arbre |
-| Visualisation | Trois figures de synthèse, charte graphique commune aux projets |
-| Reproductibilité | Source citée, licence respectée, commande de téléchargement et empreinte SHA-256 du fichier |
-
-**Mots clés :** gradient boosting, data leakage, temporal validation, baseline, ROC AUC, permutation importance, overfitting, supply chain.
-
-**Outils :** Python 3.14, pandas, scikit-learn, matplotlib, Jupyter (VS Code), git.
-
-## Données
-- **Source :** Constante, F., Silva, F. et Pereira, A. (2019). *DataCo Smart Supply Chain for Big Data Analysis*. Mendeley Data, V5. 180 519 lignes de commande, de janvier 2015 à janvier 2018.
-- **DOI :** https://doi.org/10.17632/8gx2fvg2k6.5
-- **Licence :** [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.fr) : utilisation libre, y compris commerciale, à condition de citer les auteurs et d'indiquer les modifications apportées. Seule modification : le retrait des colonnes d'identité des clients.
-- **Les données ne sont pas dans ce dépôt.** Pour les obtenir (PowerShell, depuis la racine du dépôt) :
-  ```
-  curl.exe -L -o projets/P1-boosting-validation/donnees/DataCoSupplyChainDataset.csv "https://data.mendeley.com/public-files/datasets/8gx2fvg2k6/files/72784be5-36d3-44fe-b75d-0edbf1999f65/file_downloaded"
-  ```
-  Puis vérifier avec `Get-FileHash` : l'empreinte SHA-256 attendue est `FA6D022ED437155E1A2F0378710602848703C8A7F203F7FF5D77805BF8480AA6`.
-
-## Méthode
-1. Récupérer les données et vérifier leur intégrité.
-2. Les explorer : cible, répartition, période couverte.
-3. Retirer les données personnelles.
-4. Découper dans le temps : entraînement (2015-2016), validation (1er semestre 2017), test scellé (juillet 2017 à janvier 2018).
-5. Établir deux bases de référence à battre.
-6. Entraîner un boosting avec toutes les colonnes, puis traquer les fuites.
-7. Réentraîner un modèle honnête et le comparer aux bases.
-8. Ouvrir le test une seule fois et rapporter le résultat.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="resultats/scores_validation_sombre.png">
+  <img alt="Exactitude sur la validation : toujours en retard 54,1 %, règle du mode d'expédition 68,7 %, boosting sans fuite 70,5 %, boosting avec fuite 100 %" src="resultats/scores_validation_clair.png" width="720">
+</picture>
 
 ## Résultats
 
-| Modèle | Morceau | Exactitude | AUC |
-|---|---|---|---|
-| Toujours « en retard » | validation | 54,1 % | — |
-| Règle du mode d'expédition | validation | 68,7 % | — |
-| Boosting, toutes les colonnes (fuite) | validation | 100 % | 1,000 |
-| Boosting honnête | validation | 70,5 % | 0,755 |
-| Boosting honnête | test scellé | 72,2 % | 0,774 |
+| Modèle | Jeu | Exactitude | AUC |
+|---|---|---:|---:|
+| Toujours « en retard » (classe majoritaire) | validation | 54,1 % | — |
+| Règle : mode d'expédition | validation | 68,7 % | — |
+| Boosting, avec fuite | validation | 100 % | 1,000 |
+| Boosting, sans fuite | validation | 70,5 % | 0,755 |
+| **Boosting, sans fuite** | **test** | **72,2 %** | **0,774** |
 
-![Scores et fuite](resultats/scores_et_fuite.png)
+Validation : 1er semestre 2017 (30 950 lignes). Test : juillet 2017 à janvier 2018 (24 369 lignes). Détail : [`resultats/scores.csv`](resultats/scores.csv).
 
-- Trois colonnes connues seulement après la livraison (`Delivery Status`, `Days for shipping (real)`, `Order Status`) donnaient un score parfait : elles ont été retirées.
-- Sans fuite, le boosting ne bat la règle du mode que de 1,8 point : le mode d'expédition porte presque tout le signal.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="resultats/importance_variables_sombre.png">
+  <img alt="Importance par permutation : le mode d'expédition domine, l'heure de la commande arrive deuxième" src="resultats/importance_variables_clair.png" width="720">
+</picture>
 
-![Importance des variables](resultats/importance_variables.png)
+Le mode d'expédition explique l'essentiel de la performance ; l'heure de la commande arrive deuxième, loin derrière.
 
-Le mode d'expédition domine de loin ; l'heure de la commande arrive deuxième.
+<picture>
+  <source media="(prefers-color-scheme: dark)" srcset="resultats/courbe_apprentissage_sombre.png">
+  <img alt="AUC selon le nombre d'arbres : l'entraînement monte de 0,79 à 0,92, la validation reste vers 0,75" src="resultats/courbe_apprentissage_clair.png" width="720">
+</picture>
 
-![Le boosting arbre après arbre](resultats/boosting_arbre_par_arbre.png)
+Sur la validation, l'AUC atteint son maximum (0,759) dès le premier arbre puis décroît lentement, alors qu'elle passe de 0,79 à 0,92 sur l'entraînement : au-delà des premiers arbres, le modèle surapprend.
 
-Sur la validation, l'AUC atteint 0,76 dès le premier arbre puis redescend doucement jusqu'à 0,75 au 300e : les arbres suivants n'ajoutent pas d'information utile.
+## Méthode
 
-Tableau complet : [`resultats/scores.csv`](resultats/scores.csv). Carnet : [`P1_boosting_validation.ipynb`](P1_boosting_validation.ipynb).
+1. **Intégrité des données** : téléchargement par commande et contrôle de l'empreinte SHA-256.
+2. **Confidentialité** : retrait des colonnes d'identité (prénom, nom, adresse, courriel, mot de passe) avant toute analyse.
+3. **Découpage temporel** : entraînement 2015-2016, validation au 1er semestre 2017, test de juillet 2017 à janvier 2018, ouvert une seule fois.
+4. **Bases de référence** : classe majoritaire et règle métier sur le mode d'expédition.
+5. **Modèle** : `HistGradientBoostingClassifier` (scikit-learn), variables catégorielles natives ; les variables de plus de 255 modalités sont encodées en entiers.
+6. **Détection de fuite** : chaque variable passe le test « est-elle connue au moment de la commande ? ». Retirées : `Delivery Status`, `Days for shipping (real)`, `Order Status`.
+7. **Interprétation** : importance par permutation sur l'AUC, courbe d'apprentissage selon le nombre d'arbres.
+
+## Compétences démontrées
+
+| Compétence | Mise en œuvre |
+|---|---|
+| Préparation des données | Encodage latin-1, retrait des données personnelles, variables temporelles (mois, jour, heure) |
+| Apprentissage supervisé | Boosting de gradient sur données tabulaires mixtes |
+| Validation | Découpage temporel, test évalué une seule fois, comparaison à des bases simples |
+| Fuite de données | Détection et retrait de variables postérieures à la prédiction |
+| Évaluation et interprétation | Exactitude, AUC ROC, importance par permutation, diagnostic de surapprentissage |
+| Reproductibilité | Versions figées, téléchargement scripté, empreinte des données |
+
+**Mots clés :** gradient boosting, temporal validation, data leakage, baseline, ROC AUC, permutation importance, overfitting, supply chain.
+
+## Reproduire
+
+Depuis la racine du dépôt (PowerShell) :
+
+```powershell
+python -m venv .venv
+.venv\Scripts\activate
+pip install -r projets/P1-boosting-validation/requirements.txt
+curl.exe -L -o projets/P1-boosting-validation/donnees/DataCoSupplyChainDataset.csv "https://data.mendeley.com/public-files/datasets/8gx2fvg2k6/files/72784be5-36d3-44fe-b75d-0edbf1999f65/file_downloaded"
+Get-FileHash projets/P1-boosting-validation/donnees/DataCoSupplyChainDataset.csv
+```
+
+L'empreinte SHA-256 attendue est `FA6D022ED437155E1A2F0378710602848703C8A7F203F7FF5D77805BF8480AA6`. Exécuter ensuite toutes les cellules de [`P1_boosting_validation.ipynb`](P1_boosting_validation.ipynb) : environ une minute sur un portable sans GPU. Les figures utilisent la charte commune du dépôt ([`style/`](../../style/)).
+
+```
+P1-boosting-validation/
+├── P1_boosting_validation.ipynb   le carnet, de la donnée brute aux figures
+├── requirements.txt               versions exactes
+├── donnees/                       non versionné (voir ci-dessus)
+└── resultats/                     scores.csv et figures (versions claire et sombre)
+```
+
+## Données et licence
+
+Constante, F., Silva, F. et Pereira, A. (2019). *DataCo Smart Supply Chain for Big Data Analysis*. Mendeley Data, V5. https://doi.org/10.17632/8gx2fvg2k6.5 — licence [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.fr). Seule modification : le retrait des colonnes d'identité des clients.
 
 ---
-Texte de ce README rédigé avec l'assistant IA, à partir de la méthode et des résultats du projet ; le code et les résultats sont ceux de l'auteur.
+Rédaction de ce README assistée par IA ; code, analyses et résultats de l'auteur.

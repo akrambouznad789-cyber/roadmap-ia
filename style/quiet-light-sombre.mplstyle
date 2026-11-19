@@ -1,0 +1,18 @@
+# Variante sombre de la charte « Quiet Light indigo », à charger PAR-DESSUS quiet-light.mplstyle.
+# Sert à la version sombre des figures (GitHub en thème sombre).
+
+text.color: E6E6EE
+figure.facecolor: 1C1C24
+savefig.facecolor: 1C1C24
+axes.facecolor: 1C1C24
+axes.edgecolor: 3A3A4A
+axes.labelcolor: A3A3B5
+axes.titlecolor: E6E6EE
+axes.prop_cycle: cycler('color', ['7C7CE8', 'C47A38', '2FA898'])
+grid.color: 2E2E3A
+xtick.color: 3A3A4A
+ytick.color: 3A3A4A
+xtick.labelcolor: A3A3B5
+ytick.labelcolor: A3A3B5
+legend.labelcolor: E6E6EE
+patch.edgecolor: 1C1C24

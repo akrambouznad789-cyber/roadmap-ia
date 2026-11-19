@@ -1,10 +1,5 @@
-# Charte des figures des projets : thème Quiet Light, avec un violet tiré vers le bleu (indigo).
-# Usage dans un carnet de projets/PN-nom/ :
-#     import matplotlib.font_manager as fm
-#     for police in Path("../../style/polices").glob("*.ttf"):
-#         fm.fontManager.addfont(police)
-#     plt.style.use("../../style/quiet-light.mplstyle")
-#
+# Charte des figures des projets : thème Quiet Light, avec un violet tiré vers le bleu (indigo). Version claire.
+# Ne pas charger à la main : passer par style/charte.py (charger_charte, sauver_clair_et_sombre).
 # Ordre des séries, à garder fixe : indigo, orange, sarcelle.
 # Validé le 2026-11-18 avec le validateur de la compétence dataviz (lisible pour les daltoniens, contraste >= 3:1 sur blanc).
 
