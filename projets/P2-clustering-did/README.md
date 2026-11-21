@@ -129,6 +129,13 @@ P2-clustering-did/
 └── resultats/               tableaux CSV et figures (versions claire et sombre)
 ```
 
+## Analyse rétroactive
+
+*Texte de l'auteur, corrigé par l'assistant IA.*
+
+- **Compris :** comment regrouper des stations avec la méthode des K-moyennes.
+- **Surpris :** tout le flux de cyclistes ne s'est pas reporté sur la nouvelle piste.
+
 ## Données et licence
 
 - BIXI Montréal, *Historique des déplacements*, année 2025, [bixi.com/fr/donnees-ouvertes](https://bixi.com/fr/donnees-ouvertes/) — licence [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.fr) ([fiche Données Québec](https://www.donneesquebec.ca/recherche/dataset/vmtl-bixi-historique-des-deplacements)), attribution « BIXI Montréal », usage non commercial. Seuls des agrégats sont publiés ici : les profils moyens des trois groupes.

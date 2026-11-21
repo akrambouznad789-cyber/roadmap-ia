@@ -84,6 +84,13 @@ P1-boosting-validation/
 └── resultats/                     scores.csv et figures (versions claire et sombre)
 ```
 
+## Analyse rétroactive
+
+*Texte composé par l'assistant IA à partir des mots de l'auteur, à sa demande.*
+
+- **Compris :** le gradient boosting, avec ses arbres et ses petits pas vers le bon gradient en utilisant la pseudo-erreur, contrairement à une régression linéaire. Et qu'un modèle à 100 % peut tricher : il était entraîné sur des variables qui lui donnaient déjà la réponse.
+- **Surpris :** la première classe arrive en retard dans 95 % des cas. Plus la promesse est courte, plus on la rate.
+
 ## Données et licence
 
 Constante, F., Silva, F. et Pereira, A. (2019). *DataCo Smart Supply Chain for Big Data Analysis*. Mendeley Data, V5. https://doi.org/10.17632/8gx2fvg2k6.5 — licence [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/deed.fr). Seule modification : le retrait des colonnes d'identité des clients.
