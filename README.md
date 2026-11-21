@@ -4,6 +4,15 @@ Apprentissage de l'intelligence artificielle par étapes, des réseaux de neuron
 
 **Site : https://akrambouznad789-cyber.github.io/roadmap-ia/**
 
+## Projets d'application
+
+Chaque projet porte le nom de ses méthodes ; le jeu de données n'est que le cas pratique.
+
+| Projet | Question | Méthodes |
+|---|---|---|
+| [P1 · Boosting, validation et fuites](projets/P1-boosting-validation/) | Au moment de la commande, peut-on prédire qu'une livraison sera en retard ? | Boosting de gradient, validation temporelle, détection de fuite |
+| [P2 · Clustering et différence de différences](projets/P2-clustering-did/) | Les stations BIXI ont-elles des profils d'usage ? Le REV Saint-Denis a-t-il pris des cyclistes à la piste Brébeuf ? | K-moyennes, ACP, différence de différences |
+
 ## Méthode
 
 À chaque étape, une recherche de ressources théoriques en ligne, combinée à l'intelligence agentique, permet de cerner les concepts. Viennent ensuite une exploration par le code sur un vrai cas, le lancement du code sur un cas pratique, puis la documentation des résultats et une analyse rétroactive.
@@ -41,6 +50,8 @@ Le code de chaque exemple est rangé par station dans [`archives/stations/`](arc
 
 | Dossier | Contenu |
 |---|---|
+| `projets/` | Les projets d'application, un dossier par projet : carnets, résultats et README |
+| `style/` | La charte commune des figures |
 | `docs/` | Le site |
 | `archives/stations/` | Le code et les résultats de chaque exemple, par station |
 | `outils/`, `tests/` | Outils de mesure et de vérification des pages avant publication, avec leurs tests |
