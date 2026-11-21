@@ -10,6 +10,7 @@
   --ligne-verte: #0B7F44;
   --ligne-bleue: #1460AB;
   --ligne-jaune: #8A6A00;
+  --ligne-projets: #4F4FC4;
   --titre: "Overpass", "Arial Narrow", Arial, sans-serif;
   --texte: "Atkinson Hyperlegible", "Segoe UI", Arial, sans-serif;
   --chasse-fixe: "Overpass Mono", Consolas, monospace;
@@ -30,6 +31,7 @@
     --ligne-verte: #3FBF7F;
     --ligne-bleue: #6AA9E9;
     --ligne-jaune: #D9B341;
+    --ligne-projets: #9C9CF2;
     --serie-1: #5592D2;
     --serie-2: #D97628;
     color-scheme: dark;
@@ -77,6 +79,8 @@ header { display: grid; gap: 12px; }
 .plan .ligne-verte { --ligne: var(--ligne-verte); }
 .plan .ligne-bleue { --ligne: var(--ligne-bleue); }
 .plan .ligne-jaune { --ligne: var(--ligne-jaune); }
+.plan .ligne-projets { --ligne: var(--ligne-projets); }
+.bloc { display: grid; gap: 12px; }
 .nom-ligne { padding-block: 18px 6px; }
 .nom-ligne h2 { font-size: 1.1rem; color: var(--ligne); }
 .station { padding-block: 10px 12px; }

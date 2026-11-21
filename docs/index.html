@@ -20,8 +20,32 @@
   <div class="legende">
     <span><i class="pastille"></i> À venir</span>
     <span><i class="pastille en-cours"></i> En cours</span>
-    <span><i class="pastille publiee"></i> Publiée</span>
+    <span><i class="pastille publiee"></i> Publié</span>
   </div>
+
+  <section class="bloc" aria-labelledby="projets-titre">
+    <h2 id="projets-titre">Projets d'application</h2>
+    <p class="note">Chaque projet porte le nom de ses méthodes ; le jeu de données n'est que le cas pratique. Code, résultats et README sur GitHub.</p>
+    <ol class="plan">
+      <li class="station ligne-projets publiee"><span class="point"></span>
+        <h3><span class="numero">P1</span><a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/projets/P1-boosting-validation">Boosting, validation et fuites</a></h3>
+        <p class="notions">boosting de gradient · validation temporelle · détection de fuite · importance par permutation</p>
+        <p>Cas pratique : les retards de livraison (DataCo, 180 519 lignes). Fuite détectée et retirée ; 72,2 % d'exactitude et AUC de 0,774 sur le test.</p>
+      </li>
+      <li class="station ligne-projets publiee"><span class="point"></span>
+        <h3><span class="numero">P2</span><a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/projets/P2-clustering-did">Clustering et différence de différences</a></h3>
+        <p class="notions">K-moyennes · ACP · différence de différences · tendances parallèles · test placebo</p>
+        <p>Cas pratique : le vélo à Montréal. Trois profils de stations BIXI ; effet du REV Saint-Denis sur la piste Brébeuf : de −38 % à −64 % de passages.</p>
+      </li>
+      <li class="station ligne-projets"><span class="point"></span>
+        <h3><span class="numero">P3 à P7</span>À venir</h3>
+        <p>Apprentissage profond avec PyTorch, Transformer, IA embarquée, réseaux de neurones sur graphe et affinage d'un modèle de langage ouvert.</p>
+      </li>
+    </ol>
+  </section>
+
+  <section class="bloc" aria-labelledby="stations-titre">
+    <h2 id="stations-titre">Stations du parcours</h2>
 
   <ol class="plan">
     <li class="nom-ligne ligne-orange"><h2>Fondements de l'apprentissage profond</h2></li>
@@ -70,6 +94,7 @@
       <p class="notions">fusion des adaptateurs · conversion GGUF · service local · API FastAPI</p>
     </li>
   </ol>
+  </section>
 
   <footer>
     <p><a href="https://github.com/akrambouznad789-cyber/roadmap-ia">Dépôt GitHub</a></p>
