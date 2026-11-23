@@ -1,0 +1,25 @@
+reglage,epoque,erreur_validation_min
+"adam 0,003",1,3.86
+"adam 0,003",2,3.69
+"adam 0,003",3,3.73
+"adam 0,003",4,3.73
+"adam 0,003",5,3.76
+"adam 0,1",1,3.76
+"adam 0,1",2,3.73
+"adam 0,1",3,3.78
+"adam 0,1",4,3.77
+"adam 0,1",5,4.04
+"sgd 0,01",1,6.03
+"adam 0,0001",1,11.26
+"reseau carte, adam 0,01",1,6.17
+"reseau carte, adam 0,01",2,5.99
+"reseau carte, adam 0,01",3,5.87
+"reseau carte, adam 0,01",4,5.58
+"reseau carte, adam 0,01",5,5.26
+"reseau carte, adam 0,01",6,5.17
+"reseau carte, adam 0,01",7,5.2
+"reseau carte, adam 0,01",8,5.01
+"reseau carte, adam 0,01",9,5.19
+"reseau carte, adam 0,01",10,5.06
+"reseau carte, adam 0,01",11,5.07
+"reseau carte, adam 0,01",12,4.93

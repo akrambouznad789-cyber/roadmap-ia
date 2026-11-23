@@ -23,11 +23,12 @@ STYLE_CLAIR = [DOSSIER_STYLE / "quiet-light.mplstyle"]
 STYLE_SOMBRE = [DOSSIER_STYLE / "quiet-light.mplstyle", DOSSIER_STYLE / "quiet-light-sombre.mplstyle"]
 
 # Couleurs par rôle. « accent » = ce qu'on veut montrer ; « neutre » = le contexte (bases, comparaisons) ;
-# « trait » = lignes et contours secondaires. Accent et second validés pour les daltoniens (script dataviz).
+# « trait » = lignes et contours secondaires. Accent, second et troisième (indigo, orange, sarcelle : l'ordre fixe
+# des séries) validés pour les daltoniens (script dataviz).
 COULEURS = {
-    "clair": {"accent": "#4F4FC4", "second": "#C0702A", "neutre": "#C9C9D6", "trait": "#6B6B7E",
+    "clair": {"accent": "#4F4FC4", "second": "#C0702A", "troisieme": "#008B7E", "neutre": "#C9C9D6", "trait": "#6B6B7E",
               "texte": "#333333", "secondaire": "#6B6B7E"},
-    "sombre": {"accent": "#7C7CE8", "second": "#C47A38", "neutre": "#4A4A5E", "trait": "#A3A3B5",
+    "sombre": {"accent": "#7C7CE8", "second": "#C47A38", "troisieme": "#2FA898", "neutre": "#4A4A5E", "trait": "#A3A3B5",
                "texte": "#E6E6EE", "secondaire": "#A3A3B5"},
 }
 

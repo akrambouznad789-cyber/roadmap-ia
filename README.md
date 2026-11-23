@@ -12,6 +12,7 @@ Chaque projet porte le nom de ses méthodes ; le jeu de données n'est que le ca
 |---|---|---|
 | [P1 · Boosting, validation et fuites](projets/P1-boosting-validation/) | Au moment de la commande, peut-on prédire qu'une livraison sera en retard ? | Boosting de gradient, validation temporelle, détection de fuite |
 | [P2 · Clustering et différence de différences](projets/P2-clustering-did/) | Les stations BIXI ont-elles des profils d'usage ? Le REV Saint-Denis a-t-il pris des cyclistes à la piste Brébeuf ? | K-moyennes, ACP, différence de différences |
+| [P3 · Réseau PyTorch et plongements](projets/P3-pytorch-plongements/) | Un réseau qui apprend la durée des trajets BIXI redessine-t-il la carte de Montréal dans ses plongements de stations ? | Réseau PyTorch, plongements, boosting de gradient, validation temporelle, mesure en local |
 
 ## Méthode
 

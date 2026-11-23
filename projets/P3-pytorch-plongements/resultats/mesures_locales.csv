@@ -1,0 +1,5 @@
+mesure,boosting,reseau
+entrainement_s,3.861,5.367
+predire_200000_trajets_s,0.347,0.033
+predire_1_trajet_ms,1.444,0.12
+taille_ko,358.468,91.864
