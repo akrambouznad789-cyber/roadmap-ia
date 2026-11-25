@@ -10,8 +10,21 @@
       "Bash(git status*)",
       "Bash(git diff*)",
       "Bash(git log*)",
+      "Bash(git add*)",
+      "Bash(git commit*)",
+      "Bash(git push*)",
+      "Bash(git remote*)",
+      "Bash(git -C *)",
       "PowerShell(python outils/*)",
       "PowerShell(python -m pytest*)",
+      "PowerShell(git status*)",
+      "PowerShell(git diff*)",
+      "PowerShell(git log*)",
+      "PowerShell(git add*)",
+      "PowerShell(git commit*)",
+      "PowerShell(git push*)",
+      "PowerShell(git remote*)",
+      "PowerShell(git -C *)",
       "WebFetch(domain:docs.ollama.com)",
       "WebFetch(domain:ollama.com)",
       "WebFetch(domain:huggingface.co)",
@@ -19,8 +32,6 @@
       "WebFetch(domain:karpathy.ai)"
     ],
     "ask": [
-      "Bash(git push*)",
-      "PowerShell(git push*)",
       "Bash(ollama pull *)",
       "Bash(ollama rm *)"
     ]

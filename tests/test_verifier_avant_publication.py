@@ -14,6 +14,22 @@ PAGE_PARCELLE_VALIDE = """<!doctype html>
 <section id="mots">Mon explication.</section><section id="sources"></section>
 </body></html>"""
 
+PAGE_JOUR_VALIDE = """<!doctype html>
+<html lang="fr"><head><title>Jour 1</title></head><body>
+<section id="notions"></section><section id="demo"></section><section id="main"></section>
+<section id="mots">Mes mots.</section><section id="sources"></section>
+</body></html>"""
+
+
+def carnet_avec_sortie(texte_de_sortie):
+    """Un carnet Jupyter minimal (JSON) dont l'unique cellule affiche `texte_de_sortie`."""
+    sortie_echappee = texte_de_sortie.replace("\\", "\\\\")
+    return (
+        '{"cells": [{"cell_type": "code", "source": ["print(1)"], "outputs": '
+        '[{"output_type": "stream", "name": "stdout", "text": ["' + sortie_echappee + '\\n"]}]}], '
+        '"metadata": {}, "nbformat": 4, "nbformat_minor": 5}'
+    )
+
 
 @pytest.fixture
 def depot(tmp_path):
@@ -79,6 +95,33 @@ def test_exige_toutes_les_sections_d_une_parcelle(depot):
     page = PAGE_PARCELLE_VALIDE.replace('id="mots"', 'id="autre"')
     ecrire(depot, "docs/parcelles/00-test/index.html", page)
     assert any("section #mots manquante" in probleme for probleme in verifier_depot(depot, []))
+
+
+def test_une_page_de_jour_complete_passe(depot):
+    ecrire(depot, "docs/jours/jour-001/index.html", PAGE_JOUR_VALIDE)
+    assert verifier_depot(depot, []) == []
+
+
+def test_exige_toutes_les_sections_d_une_page_de_jour(depot):
+    page = PAGE_JOUR_VALIDE.replace('id="notions"', 'id="autre"')
+    ecrire(depot, "docs/jours/jour-001/index.html", page)
+    assert any("section #notions manquante" in probleme for probleme in verifier_depot(depot, []))
+
+
+def test_la_page_qui_liste_les_jours_n_exige_pas_de_sections(depot):
+    ecrire(depot, "docs/jours/index.html", '<html lang="fr"><title>100 jours</title></html>')
+    assert verifier_depot(depot, []) == []
+
+
+def test_detecte_un_chemin_local_dans_la_sortie_d_un_carnet(depot):
+    ecrire(depot, "docs/jours/jour-001/jour-001.ipynb", carnet_avec_sortie(FAUX_CHEMIN_LOCAL))
+    assert any("chemin local" in probleme for probleme in verifier_depot(depot, []))
+
+
+def test_un_carnet_avec_des_grands_nombres_passe(depot):
+    # Les grands nombres à la française (espaces) ne doivent pas passer pour un téléphone.
+    ecrire(depot, "docs/jours/jour-001/jour-001.ipynb", carnet_avec_sortie("13 605 052 trajets, 2 219 474 en juillet"))
+    assert verifier_depot(depot, []) == []
 
 
 def test_detecte_un_lien_brise(depot):

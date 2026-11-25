@@ -18,10 +18,16 @@ RACINE_DEPOT = Path(__file__).resolve().parent.parent
 FICHIER_MOTS_INTERDITS = RACINE_DEPOT / "contexte" / "mots_interdits.txt"
 REPERE_TEXTE_A_ECRIRE = "À ÉCRIRE PAR AKRAM"
 REPERE_GABARIT_NON_REMPLI = "{{"
-SECTIONS_OBLIGATOIRES_PARCELLE = ("regarde", "demo", "main", "mots", "sources")
+# Sections exigées d'une page docs/<rubrique>/<page>/index.html, selon la rubrique.
+SECTIONS_OBLIGATOIRES_PAR_RUBRIQUE = {
+    "parcelles": ("regarde", "demo", "main", "mots", "sources"),
+    "jours": ("notions", "demo", "main", "mots", "sources"),
+}
 TAILLE_MAX_FICHIER_OCTETS = 5 * 1024 * 1024
+# Un carnet .ipynb est du JSON : ses sorties peuvent contenir un chemin local ou un mot privé.
 EXTENSIONS_TEXTE = {
-    ".css", ".csv", ".html", ".ini", ".js", ".json", ".md", ".py", ".svg", ".toml", ".txt", ".yaml", ".yml",
+    ".css", ".csv", ".html", ".ini", ".ipynb", ".js", ".json", ".md", ".py", ".svg", ".toml", ".txt", ".yaml",
+    ".yml",
 }
 # Des données de recherche ou des modèles n'ont rien à faire dans un dépôt public.
 EXTENSIONS_INTERDITES = {
@@ -29,7 +35,8 @@ EXTENSIONS_INTERDITES = {
 }
 MOTIFS_GENERIQUES = {
     "numéro de téléphone": re.compile(r"(?<![\d.])\d{3}[-. ]\d{3}[-. ]\d{4}(?![\d.])"),
-    "chemin local Windows": re.compile(r"[A-Za-z]:[\\/]Users[\\/]"),
+    # Plusieurs barres obliques inverses : le JSON d'un carnet les double (C:\\Users).
+    "chemin local Windows": re.compile(r"[A-Za-z]:(?:\\+|/)Users(?:\\+|/)"),
     "chemin local Git Bash": re.compile(r"/[a-z]/Users/"),
 }
 MOTIF_LIEN_LOCAL = re.compile(r"""(?:href|src)\s*=\s*["']([^"'#?]+)""", re.IGNORECASE)
@@ -90,21 +97,20 @@ def verifier_page_html(racine, chemin_relatif, texte):
     return problemes
 
 
-def verifier_parcelle(chemin_relatif, texte):
+def sections_obligatoires(chemin_relatif):
+    """Sections exigées d'une page docs/<rubrique>/<page>/index.html ; aucune pour les autres fichiers."""
+    parties = chemin_relatif.parts
+    if len(parties) == 4 and parties[0] == "docs" and chemin_relatif.name == "index.html":
+        return SECTIONS_OBLIGATOIRES_PAR_RUBRIQUE.get(parties[1], ())
+    return ()
+
+
+def verifier_sections(chemin_relatif, texte, sections):
     problemes = []
-    for section in SECTIONS_OBLIGATOIRES_PARCELLE:
+    for section in sections:
         if not re.search(rf"""\bid\s*=\s*["']{section}["']""", texte):
             problemes.append(f"{chemin_relatif} : section #{section} manquante")
     return problemes
-
-
-def est_page_parcelle(chemin_relatif):
-    parties = chemin_relatif.parts
-    return (
-        len(parties) == 4
-        and parties[:2] == ("docs", "parcelles")
-        and chemin_relatif.name == "index.html"
-    )
 
 
 def verifier_depot(racine, mots_interdits):
@@ -124,8 +130,7 @@ def verifier_depot(racine, mots_interdits):
         problemes += verifier_texte(chemin_relatif, texte, mots_interdits)
         if extension == ".html" and chemin_relatif.parts[0] == "docs":
             problemes += verifier_page_html(racine, chemin_relatif, texte)
-        if est_page_parcelle(chemin_relatif):
-            problemes += verifier_parcelle(chemin_relatif, texte)
+        problemes += verifier_sections(chemin_relatif, texte, sections_obligatoires(chemin_relatif))
     return problemes
 
 

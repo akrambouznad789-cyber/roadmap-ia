@@ -15,4 +15,4 @@ Pose **trois questions, une à la fois**, et attends sa réponse avant la suivan
 
 Après chaque réponse, dis ce qui est juste, puis ce qui manque, en deux ou trois phrases. Ne donne pas la réponse avant qu'il ait essayé.
 
-À la fin, dis clairement si le projet est acquis. Note les trous dans `contexte/journal.md` pour les revoir plus tard. C'est un outil pour lui : aucun résultat de quiz ne va sur le site.
+À la fin, dis clairement si le projet est acquis. Note les trous dans `contexte/journal.md` pour les revoir plus tard. Mets aussi à jour le suivi de la classe concernée (`../Intensive AI Engineering Class/contexte/suivi.md`, par exemple) : une réponse ratée fait baisser d'un cran le niveau de la sous-compétence et ajoute une révision due au jour suivant. C'est un outil pour lui : aucun résultat de quiz ne va sur le site.

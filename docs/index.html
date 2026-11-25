@@ -3,107 +3,344 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Parcours IA d'Akram Bouznad</title>
-<meta name="description" content="Feuille de route en intelligence artificielle : des réseaux de neurones à l'affinage d'un modèle de langage ouvert, avec des cas pratiques.">
+<title>Parcours IA</title>
+<meta name="description" content="Deux classes intensives de 140 jours menées en parallèle : construire avec des modèles d'IA, et les faire tourner sur sa propre machine. La théorie d'abord, une page par jour.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Overpass:wght@800&family=Overpass+Mono:wght@500&display=swap">
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
+<style>
+/* Page d'accueil du parcours : deux lignes parallèles, une par classe, comme la ligne de l'atlas.
+   Charte « Quiet Light indigo » ; la classe IA prend l'indigo (série 1), la classe Inférence la sarcelle (série 3). */
+:root {
+  --fond: #F5F5F5; --surface: #FFFFFF; --texte: #333333; --secondaire: #6B6B7E; --filet: #D9D9E3;
+  --accent: #4F4FC4; --ia: #4F4FC4; --inference: #008B7E;
+  --police-texte: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --police-code: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --fond: #1C1C24; --surface: #262632; --texte: #E6E6EE; --secondaire: #A3A3B5; --filet: #3A3A4A;
+    --accent: #9C9CF2; --ia: #7C7CE8; --inference: #2FA898; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --fond: #1C1C24; --surface: #262632; --texte: #E6E6EE; --secondaire: #A3A3B5; --filet: #3A3A4A;
+  --accent: #9C9CF2; --ia: #7C7CE8; --inference: #2FA898; color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--fond); color: var(--texte); font-family: var(--police-texte); font-size: 17px; line-height: 1.6; }
+.accueil {
+  max-width: 1080px; margin: 0 auto; display: grid; gap: 56px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 64px;
+}
+.accueil > * { min-width: 0; }
+h1, h2, h3 { margin: 0; line-height: 1.12; text-wrap: balance; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 700; }
+h2 { font-size: clamp(1.4rem, 2.6vw, 1.8rem); font-weight: 700; }
+h3 { font-size: 1.2rem; font-weight: 700; }
+p, ol, ul { margin: 0; }
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+section { display: grid; gap: 18px; }
+section > * { min-width: 0; }
+.surtitre { font-family: var(--police-code); font-size: 0.82rem; color: var(--secondaire); letter-spacing: 0.02em; }
+.entete { display: grid; gap: 14px; }
+.liens-haut a {
+  display: inline-flex; align-items: center; min-height: 40px; padding: 8px 14px; border-radius: 999px;
+  border: 1px solid var(--filet); background: var(--surface); font-weight: 600; font-size: 0.92rem; text-decoration: none;
+}
+.chapeau { font-size: 1.15rem; max-width: 68ch; }
+.faits { display: flex; flex-wrap: wrap; gap: 6px 26px; color: var(--secondaire); }
+.faits b { color: var(--texte); font-size: 1.35rem; font-weight: 700; margin-right: 6px; font-variant-numeric: tabular-nums; }
+.explication { max-width: 72ch; }
+
+/* Les deux lignes : un schéma qui défile de côté sur téléphone plutôt que de rétrécir. */
+.carte-lignes { margin: 0; display: grid; gap: 8px; }
+.defilant { overflow-x: auto; border: 1px solid var(--filet); border-radius: 12px; background: var(--surface); }
+#deux-lignes { display: block; width: 100%; min-width: 860px; height: auto; }
+figcaption { color: var(--secondaire); font-size: 0.9rem; max-width: 80ch; }
+.zone { fill: color-mix(in oklab, var(--texte) 6%, var(--surface)); }
+.segment { stroke: none; }
+.segment.ia { fill: var(--ia); }
+.segment.inference { fill: var(--inference); }
+#deux-lignes a:hover .segment, #deux-lignes a:focus-visible .segment { stroke: var(--texte); stroke-width: 2; }
+#deux-lignes a { outline: none; }
+.titre-ligne { font: 700 15px var(--police-texte); }
+.titre-ligne.ia { fill: var(--ia); }
+.titre-ligne.inference { fill: var(--inference); }
+.langue { font: 400 13px var(--police-texte); fill: var(--secondaire); }
+.etiquette { font: 600 12px var(--police-texte); fill: var(--texte); }
+.rencontre { font: italic 600 12px var(--police-texte); fill: var(--texte); paint-order: stroke; stroke: var(--surface); stroke-width: 5px; stroke-linejoin: round; }
+.trait-rencontre { stroke: var(--secondaire); stroke-width: 1; stroke-dasharray: 3 4; }
+.axe { stroke: var(--filet); stroke-width: 1; }
+.axe-texte { font: 400 11px var(--police-code); fill: var(--secondaire); }
+
+/* Les deux classes */
+.classes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+.classe {
+  background: var(--surface); border: 1px solid var(--filet); border-top: 4px solid var(--couleur);
+  border-radius: 12px; padding: 20px; display: grid; gap: 14px; align-content: start;
+}
+.classe.ia { --couleur: var(--ia); }
+.classe.inference { --couleur: var(--inference); }
+.phases-carte { list-style: none; padding: 0; display: grid; gap: 6px; font-size: 0.95rem; }
+.phases-carte li { display: grid; grid-template-columns: 1.8em minmax(0, 1fr) auto; gap: 8px; align-items: baseline; }
+.phases-carte .num { font-family: var(--police-code); font-weight: 500; color: var(--couleur); }
+.phases-carte .jours { font-family: var(--police-code); font-size: 0.8rem; color: var(--secondaire); white-space: nowrap; }
+.bouton-classe {
+  justify-self: start; font: 600 0.95rem/1 var(--police-texte); padding: 11px 16px 10px; border-radius: 999px;
+  background: var(--couleur); color: var(--surface); text-decoration: none;
+}
+.bouton-classe:hover { filter: brightness(1.08); }
+
+/* Avant les classes */
+.avant { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
+.avant li { background: var(--surface); border: 1px solid var(--filet); border-radius: 12px; padding: 16px; display: grid; gap: 6px; align-content: start; }
+.avant .etat { font-family: var(--police-code); font-size: 0.78rem; color: var(--secondaire); }
+.avant h3 { font-size: 1.02rem; }
+.avant .notions { font-size: 0.88rem; color: var(--secondaire); }
+.avant p { font-size: 0.95rem; }
+
+footer { display: grid; gap: 8px; color: var(--secondaire); font-size: 0.9rem; border-top: 1px solid var(--filet); padding-top: 20px; }
+footer ul { padding-left: 1.2em; display: grid; gap: 4px; }
+
+@media (max-width: 760px) {
+  .classes { grid-template-columns: minmax(0, 1fr); }
+  .accueil { gap: 44px; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
 </head>
 <body>
-<main class="page">
-  <header>
-    <p class="surtitre">Feuille de route</p>
+<main class="accueil">
+  <header class="entete">
+    <p class="liens-haut"><a href="https://akrambouznad789-cyber.github.io/">← Akram Bouznad · la vitrine</a></p>
+    <p class="surtitre">Parcours IA · deux classes en parallèle</p>
     <h1>Parcours IA</h1>
+    <p class="chapeau">Deux classes intensives de 140 jours, menées en même temps. L'une apprend à construire avec des modèles, des données jusqu'à un modèle de langage mis en service ; l'autre apprend à les faire tourner sur sa propre machine, de la mémoire jusqu'à une appliance privée. La théorie d'abord, une page par jour, un projet tous les 7 à 10 jours, et chaque projet vise un modèle qui tourne en local.</p>
+    <p class="faits"><span><b>2</b>classes</span><span><b>140</b>jours chacune</span><span><b>1 h + 1 h</b>par jour</span></p>
   </header>
 
-  <div class="legende">
-    <span><i class="pastille"></i> À venir</span>
-    <span><i class="pastille en-cours"></i> En cours</span>
-    <span><i class="pastille publiee"></i> Publié</span>
-  </div>
+  <section aria-labelledby="lignes-titre">
+    <h2 id="lignes-titre">Les deux lignes</h2>
+    <p class="explication">Chaque ligne est une classe ; chaque segment, une phase, large comme son nombre de jours. Les deux classes avancent au même numéro de jour, et les bandes grises marquent les jours où elles se répondent. Clique une phase pour ouvrir sa route.</p>
+    <figure class="carte-lignes">
+      <div class="defilant">
+        <svg id="deux-lignes" viewBox="0 0 960 346" role="group" aria-label="Les deux classes sur 140 jours, phase par phase, avec leurs trois rencontres prévues"></svg>
+      </div>
+      <figcaption>Les rencontres sont prévues, pas encore faites. Jours 41 à 50 : l'attention d'un côté, son cache de l'autre. Jours 51 à 64 : se servir d'un modèle de langage local d'un côté, le servir de l'autre. Jours 127 à 140 : la mise en service des deux côtés.</figcaption>
+    </figure>
+  </section>
 
-  <section class="bloc" aria-labelledby="projets-titre">
-    <h2 id="projets-titre">Projets d'application</h2>
-    <p class="note">Chaque projet porte le nom de ses méthodes ; le jeu de données n'est que le cas pratique. Code, résultats et README sur GitHub.</p>
-    <ol class="plan">
-      <li class="station ligne-projets publiee"><span class="point"></span>
-        <h3><span class="numero">P1</span><a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/projets/P1-boosting-validation">Boosting, validation et fuites</a></h3>
+  <section aria-labelledby="classes-titre">
+    <h2 id="classes-titre">Les deux classes</h2>
+    <div class="classes" id="classes"></div>
+  </section>
+
+  <section aria-labelledby="avant-titre">
+    <h2 id="avant-titre">Avant les classes</h2>
+    <p class="explication">Trois projets d'application et deux stations, faits avant les deux classes. Chaque projet porte le nom de ses méthodes ; le jeu de données n'est que le cas pratique.</p>
+    <ul class="avant">
+      <li>
+        <p class="etat">P1 · publié</p>
+        <h3><a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/projets/P1-boosting-validation">Boosting, validation et fuites</a></h3>
         <p class="notions">boosting de gradient · validation temporelle · détection de fuite · importance par permutation</p>
         <p>Cas pratique : les retards de livraison (DataCo, 180 519 lignes). Fuite détectée et retirée ; 72,2 % d'exactitude et AUC de 0,774 sur le test.</p>
       </li>
-      <li class="station ligne-projets publiee"><span class="point"></span>
-        <h3><span class="numero">P2</span><a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/projets/P2-clustering-did">Clustering et différence de différences</a></h3>
+      <li>
+        <p class="etat">P2 · publié</p>
+        <h3><a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/projets/P2-clustering-did">Clustering et différence de différences</a></h3>
         <p class="notions">K-moyennes · ACP · différence de différences · tendances parallèles · test placebo</p>
         <p>Cas pratique : le vélo à Montréal. Trois profils de stations BIXI ; effet du REV Saint-Denis sur la piste Brébeuf : de −38 % à −64 % de passages.</p>
       </li>
-      <li class="station ligne-projets publiee"><span class="point"></span>
-        <h3><span class="numero">P3</span><a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/projets/P3-pytorch-plongements">Réseau PyTorch et plongements</a></h3>
+      <li>
+        <p class="etat">P3 · publié</p>
+        <h3><a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/projets/P3-pytorch-plongements">Réseau PyTorch et plongements</a></h3>
         <p class="notions">PyTorch · plongements · boosting de gradient · validation temporelle · mesure en local</p>
         <p>Cas pratique : la durée des trajets BIXI. Le boosting reste le plus précis (3,28 min d'erreur sur le test) ; le réseau suit à 3,34 min, 4 fois plus léger. Sans la distance, ses plongements redessinent en partie la carte de Montréal.</p>
       </li>
-      <li class="station ligne-projets"><span class="point"></span>
-        <h3><span class="numero">P4 à P7</span>À venir</h3>
-        <p>Transformer, IA embarquée, réseaux de neurones sur graphe et affinage d'un modèle de langage ouvert.</p>
+      <li>
+        <p class="etat">P4 · en cours</p>
+        <h3>Tokenisation BPE et mini-Transformer</h3>
+        <p>Commencé ; il se termine pendant la phase 3 de l'Intensive AI Engineering Class, une fois l'attention vue en théorie.</p>
       </li>
-    </ol>
-  </section>
-
-  <section class="bloc" aria-labelledby="stations-titre">
-    <h2 id="stations-titre">Stations du parcours</h2>
-
-  <ol class="plan">
-    <li class="nom-ligne ligne-orange"><h2>Fondements de l'apprentissage profond</h2></li>
-    <li class="station ligne-orange publiee"><span class="point"></span>
-      <h3><span class="numero">1</span>Réseaux de neurones : perceptron multicouche</h3>
-      <p class="notions">couches denses · ReLU, sigmoïde · coût MSE · descente de gradient stochastique · mini-lots · normalisation</p>
-      <p>Cas pratique : estimation du débit à la 30e heure sur les débits de circulation du MTMD.</p>
-    </li>
-    <li class="station ligne-orange publiee"><span class="point"></span>
-      <h3><span class="numero">2</span>Rétropropagation et différentiation automatique</h3>
-      <p class="notions">dérivation en chaîne · graphe de calcul · gradients · autograd</p>
-      <p>Cas pratique : un moteur de rétropropagation maison, vérifié contre PyTorch sur les débits de circulation du MTMD.</p>
-    </li>
-
-    <li class="nom-ligne ligne-verte"><h2>Modèles de langage</h2></li>
-    <li class="station ligne-verte"><span class="point"></span>
-      <h3><span class="numero">3</span>Modélisation du langage et plongements vectoriels</h3>
-      <p class="notions">modèle de langage · entropie croisée · embeddings · similarité cosinus · normalisation par lots</p>
-    </li>
-    <li class="station ligne-verte"><span class="point"></span>
-      <h3><span class="numero">4</span>Mécanisme d'attention et architecture Transformer</h3>
-      <p class="notions">auto-attention · requêtes, clés, valeurs · attention multi-têtes · encodage positionnel · tokenisation BPE</p>
-    </li>
-
-    <li class="nom-ligne ligne-bleue"><h2>Modèles ouverts : exécution et évaluation</h2></li>
-    <li class="station ligne-bleue"><span class="point"></span>
-      <h3><span class="numero">5</span>Exécution locale de modèles ouverts</h3>
-      <p class="notions">quantification · format GGUF · inférence sur processeur · jetons par seconde · mémoire</p>
-    </li>
-    <li class="station ligne-bleue"><span class="point"></span>
-      <h3><span class="numero">6</span>Intégration des LLM : prompts et sorties structurées</h3>
-      <p class="notions">conception de prompts · sorties JSON validées · hallucinations · modèle de référence</p>
-    </li>
-    <li class="station ligne-bleue"><span class="point"></span>
-      <h3><span class="numero">7</span>Évaluation des LLM</h3>
-      <p class="notions">jeux de test · grilles de notation · LLM juge · analyse des échecs</p>
-    </li>
-
-    <li class="nom-ligne ligne-jaune"><h2>Spécialisation d'un modèle ouvert</h2></li>
-    <li class="station ligne-jaune"><span class="point"></span>
-      <h3><span class="numero">8</span>Affinage supervisé : LoRA et QLoRA</h3>
-      <p class="notions">jeux d'instructions · gabarits de conversation · LoRA, QLoRA · surapprentissage · comparaison au modèle de base</p>
-    </li>
-    <li class="station ligne-jaune"><span class="point"></span>
-      <h3><span class="numero">9</span>Déploiement d'un modèle affiné</h3>
-      <p class="notions">fusion des adaptateurs · conversion GGUF · service local · API FastAPI</p>
-    </li>
-  </ol>
+      <li>
+        <p class="etat">Station 1 · publiée</p>
+        <h3><a href="parcelles/01-reseau-neurones/">Réseaux de neurones : perceptron multicouche</a></h3>
+        <p class="notions">couches denses · ReLU, sigmoïde · coût MSE · descente de gradient stochastique · mini-lots · normalisation</p>
+        <p>Cas pratique : estimation du débit à la 30e heure sur les débits de circulation du MTMD.</p>
+      </li>
+      <li>
+        <p class="etat">Station 2 · publiée</p>
+        <h3><a href="parcelles/02-retropropagation/">Rétropropagation et différentiation automatique</a></h3>
+        <p class="notions">dérivation en chaîne · graphe de calcul · gradients · autograd</p>
+        <p>Cas pratique : un moteur de rétropropagation maison, vérifié contre PyTorch sur les débits de circulation du MTMD.</p>
+      </li>
+    </ul>
   </section>
 
   <footer>
-    <p><a href="https://github.com/akrambouznad789-cyber/roadmap-ia">Dépôt GitHub</a></p>
+    <p>Les dépôts GitHub :</p>
+    <ul>
+      <li><a href="https://github.com/akrambouznad789-cyber/roadmap-ia">roadmap-ia</a> : cette page, les projets et les stations</li>
+      <li><a href="https://github.com/akrambouznad789-cyber/intensive-ai-engineering-class">intensive-ai-engineering-class</a></li>
+      <li><a href="https://github.com/akrambouznad789-cyber/intensive-inference-engineering-class">intensive-inference-engineering-class</a></li>
+    </ul>
+    <p>Mise en page et textes de cette page : l'assistant IA. Projets, carnets, figures et mots : Akram.</p>
   </footer>
 </main>
+
+<script>
+  const NOMBRE_DE_JOURS = 140;
+  // Les phases de chaque classe. Elles reprennent la route publiée de chaque classe (son docs/index.html) :
+  // un changement de phase se reporte ici.
+  const CLASSES = [
+    {
+      cle: "ia", nom: "Intensive AI Engineering Class", langue: "en français",
+      adresse: "https://akrambouznad789-cyber.github.io/intensive-ai-engineering-class/",
+      surtitre: "Classe 1 · en français · 9 phases",
+      resume: "Construire avec des modèles : des données jusqu'à un modèle de langage ouvert mis en service en local, en passant par l'évaluation, le RAG et les agents. Les cas pratiques viennent du transport.",
+      bouton: "Voir la route des 140 jours →",
+      phases: [
+        { numero: 1, nom: "Apprendre à partir de données", court: "Données", debut: 1, fin: 8 },
+        { numero: 2, nom: "Réseaux de neurones et PyTorch", court: "Réseaux et PyTorch", debut: 9, fin: 26 },
+        { numero: 3, nom: "Langage et Transformer", court: "Langage et Transformer", debut: 27, fin: 50 },
+        { numero: 4, nom: "Se servir d'un LLM ouvert en local", court: "LLM ouvert en local", debut: 51, fin: 64 },
+        { numero: 5, nom: "Évaluation", court: "Évaluation", debut: 65, fin: 78 },
+        { numero: 6, nom: "RAG", court: "RAG", debut: 79, fin: 92 },
+        { numero: 7, nom: "Agents", court: "Agents", debut: 93, fin: 112 },
+        { numero: 8, nom: "Affinage", court: "Affinage", debut: 113, fin: 126 },
+        { numero: 9, nom: "Mise en service et bilan", court: "Mise en service", debut: 127, fin: 140 },
+      ],
+    },
+    {
+      cle: "inference", nom: "Intensive Inference Engineering Class", langue: "en anglais",
+      adresse: "https://akrambouznad789-cyber.github.io/intensive-inference-engineering-class/",
+      surtitre: "Classe 2 · en anglais · 6 phases",
+      resume: "Faire tourner les modèles sur sa propre machine : mémoire, quantification, service, mélange d'experts, jusqu'à une appliance privée mesurée avant et après.",
+      bouton: "Voir la route des 140 jours (en anglais) →",
+      phases: [
+        { numero: 1, nom: "Les fondations et la machine", court: "La machine", debut: 1, fin: 16 },
+        { numero: 2, nom: "Faire tourner des modèles", court: "Faire tourner des modèles", debut: 17, fin: 40 },
+        { numero: 3, nom: "Attention et service", court: "Attention et service", debut: 41, fin: 70 },
+        { numero: 4, nom: "La frontière : experts, déchargement, décodage spéculatif", court: "La frontière", debut: 71, fin: 98 },
+        { numero: 5, nom: "Production et embarqué", court: "Production et embarqué", debut: 99, fin: 122 },
+        { numero: 6, nom: "Projet final : l'appliance privée", court: "Projet final", debut: 123, fin: 140 },
+      ],
+    },
+  ];
+  // Les jours où les deux classes se répondent. `ancre` place le texte dans la bande grise.
+  const RENCONTRES = [
+    { debut: 41, fin: 50, texte: "attention ↔ cache KV", y: 148, ancre: "middle" },
+    { debut: 51, fin: 64, texte: "se servir d'un LLM ↔ le servir", y: 180, ancre: "middle" },
+    { debut: 127, fin: 140, texte: "mise en service ↔ appliance privée", y: 164, ancre: "end" },
+  ];
+  // Géométrie du schéma (viewBox 960 × 340) : la classe IA en haut, la classe Inférence en bas.
+  const GAUCHE = 40;
+  const LARGEUR_UTILE = 880;
+  const HAUTEUR_BARRE = 14;
+  const POSITIONS = {
+    ia: { yTitre: 26, yBarre: 80, yEtiquettes: [52, 69] },
+    inference: { yTitre: 300, yBarre: 214, yEtiquettes: [249, 267] },
+  };
+  const xDuJour = (jour) => GAUCHE + ((jour - 1) * LARGEUR_UTILE) / NOMBRE_DE_JOURS;
+  const SVG = "http://www.w3.org/2000/svg";
+
+  function element(nom, attributs, parent) {
+    const noeud = document.createElementNS(SVG, nom);
+    for (const [cle, valeur] of Object.entries(attributs)) noeud.setAttribute(cle, valeur);
+    parent.append(noeud);
+    return noeud;
+  }
+
+  function texte(parent, contenu, attributs) {
+    const noeud = element("text", attributs, parent);
+    noeud.textContent = contenu;
+    return noeud;
+  }
+
+  function dessinerLesDeuxLignes() {
+    const svg = document.getElementById("deux-lignes");
+    for (const rencontre of RENCONTRES) {
+      element("rect", {
+        class: "zone", rx: 6, x: xDuJour(rencontre.debut), y: 40,
+        width: xDuJour(rencontre.fin + 1) - xDuJour(rencontre.debut), height: 238,
+      }, svg);
+    }
+    for (const classe of CLASSES) {
+      const position = POSITIONS[classe.cle];
+      const titre = texte(svg, classe.nom, { class: `titre-ligne ${classe.cle}`, x: GAUCHE, y: position.yTitre });
+      const langue = element("tspan", { class: "langue" }, titre);
+      langue.textContent = `  · ${classe.langue}`;
+      for (const phase of classe.phases) {
+        const description = `Phase ${phase.numero} · ${phase.nom} · jours ${phase.debut} à ${phase.fin}`;
+        const lien = element("a", { href: `${classe.adresse}#phase-${phase.numero}`, "aria-label": description }, svg);
+        const infobulle = element("title", {}, lien);
+        infobulle.textContent = description;
+        const debut = xDuJour(phase.debut);
+        const fin = xDuJour(phase.fin + 1);
+        element("rect", {
+          class: `segment ${classe.cle}`, x: debut + 1.5, y: position.yBarre, rx: HAUTEUR_BARRE / 2,
+          width: fin - debut - 3, height: HAUTEUR_BARRE,
+        }, lien);
+        // Les étiquettes alternent sur deux rangées pour ne pas se chevaucher.
+        const rangee = position.yEtiquettes[(phase.numero - 1) % 2];
+        texte(lien, `${phase.numero} · ${phase.court}`, { class: "etiquette", x: (debut + fin) / 2, y: rangee, "text-anchor": "middle" });
+      }
+    }
+    for (const rencontre of RENCONTRES) {
+      const debut = xDuJour(rencontre.debut);
+      const fin = xDuJour(rencontre.fin + 1);
+      const milieu = (debut + fin) / 2;
+      element("line", { class: "trait-rencontre", x1: milieu, y1: POSITIONS.ia.yBarre + HAUTEUR_BARRE + 4, x2: milieu, y2: POSITIONS.inference.yBarre - 4 }, svg);
+      const x = rencontre.ancre === "end" ? fin - 6 : milieu;
+      texte(svg, rencontre.texte, { class: "rencontre", x, y: rencontre.y, "text-anchor": rencontre.ancre });
+    }
+    const yAxe = 334;
+    element("line", { class: "axe", x1: GAUCHE, y1: yAxe - 14, x2: GAUCHE + LARGEUR_UTILE, y2: yAxe - 14 }, svg);
+    for (const jour of [1, 20, 40, 60, 80, 100, 120, 140]) {
+      const x = xDuJour(jour) + LARGEUR_UTILE / NOMBRE_DE_JOURS / 2;
+      element("line", { class: "axe", x1: x, y1: yAxe - 18, x2: x, y2: yAxe - 10 }, svg);
+      texte(svg, jour === 1 ? "jour 1" : String(jour), { class: "axe-texte", x, y: yAxe + 4, "text-anchor": "middle" });
+    }
+  }
+
+  function dessinerUneCarte(classe) {
+    const carte = document.createElement("article");
+    carte.className = `classe ${classe.cle}`;
+    const surtitre = document.createElement("p");
+    surtitre.className = "surtitre";
+    surtitre.textContent = classe.surtitre;
+    const titre = document.createElement("h3");
+    titre.textContent = classe.nom;
+    const resume = document.createElement("p");
+    resume.textContent = classe.resume;
+    const liste = document.createElement("ol");
+    liste.className = "phases-carte";
+    for (const phase of classe.phases) {
+      const ligne = document.createElement("li");
+      const numero = document.createElement("span");
+      numero.className = "num";
+      numero.textContent = phase.numero;
+      const nom = document.createElement("span");
+      nom.textContent = phase.nom;
+      const jours = document.createElement("span");
+      jours.className = "jours";
+      jours.textContent = `jours ${phase.debut}–${phase.fin}`;
+      ligne.append(numero, nom, jours);
+      liste.append(ligne);
+    }
+    const bouton = document.createElement("a");
+    bouton.className = "bouton-classe";
+    bouton.href = classe.adresse;
+    bouton.textContent = classe.bouton;
+    carte.append(surtitre, titre, resume, liste, bouton);
+    return carte;
+  }
+
+  dessinerLesDeuxLignes();
+  document.getElementById("classes").append(...CLASSES.map(dessinerUneCarte));
+</script>
 </body>
 </html>

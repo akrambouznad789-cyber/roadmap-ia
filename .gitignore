@@ -7,6 +7,7 @@ contexte/
 # Données des stations et des projets : jamais dans le dépôt, seulement les petits CSV de résultats.
 archives/stations/*/donnees/
 projets/*/donnees/
+docs/jours/*/donnees/
 
 # Fichiers de travail
 .vscode/

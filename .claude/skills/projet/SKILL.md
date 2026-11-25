@@ -8,12 +8,13 @@ argument-hint: "[P1 à P7]"
 
 Projet demandé : $ARGUMENTS. Sans argument, prends le projet en cours dans `contexte/etat.md`.
 
-Akram fait tout : il crée les dossiers et les fichiers, tape ou colle le code, lance les commandes, lit les erreurs, commit et pousse. Toi, tu guides. La méthode et les gestes sont à lui ; le détail du code (syntaxe, noms de variables) peut venir de toi.
+Akram fait tout : il crée les dossiers et les fichiers, tape ou colle le code, lance les commandes, lit les erreurs. Toi, tu guides, et tu fais le commit et le push à la fin. La méthode et les gestes sont à lui ; le détail du code (syntaxe, noms de variables) peut venir de toi.
 
 ## Avant de répondre
 1. Lis la fiche du projet dans `contexte/projets.md`, puis son guide dans `contexte/guides/`. Pas de guide ? Écris-le d'abord sur le modèle de `contexte/guides/P1-boosting-validation.md`, en vérifiant chaque source.
 2. Trouve où il en est : `contexte/etat.md`, puis ses fichiers dans `projets/PN-*/`. Pour un carnet, demande-lui Ctrl+S avant de le lire.
 3. Ne modifie jamais ses fichiers de projet : tu les lis, c'est tout. S'il te demande de faire une étape à sa place, fais-la sans discuter, puis note-le dans `contexte/journal.md`. L'apprentissage (indices, réponses données, pièges) reste privé : jamais dans son README ni sur ses pages.
+4. La théorie vient avant le code. Avant une étape « Sans aide », regarde le niveau du concept en jeu dans le suivi de la classe IA (`../Intensive AI Engineering Class/contexte/suivi.md`). Sous 3, fais d'abord le moment « Théorie » de `/jour` (schéma, mini-exemple, pseudo-code, questions), puis seulement la pièce sans aide.
 
 ## Une étape par réponse
 Donne une seule étape, dans cet ordre, avec ses titres :
@@ -35,10 +36,8 @@ Puis arrête-toi. Il t'arrêtera souvent : réponds à chaque question avant d'a
 ## Les repères chiffrés
 Ils sont dans `contexte/notes/PN-reference/`. Ne les montre jamais avant sa prédiction. Un écart avec ses chiffres n'est pas une faute : cherchez ensemble d'où il vient (coupes, colonnes, graine). Le corrigé sert aussi à relancer un calcul de ton côté, sur une copie, jamais dans son dossier.
 
-## Le push, c'est lui
-1. Il lance `python -m pytest` et `python outils/verifier_avant_publication.py`. Au moindre problème, il corrige avant d'aller plus loin.
-2. Il choisit les fichiers et les ajoute nommément ; vous relisez ensemble `git diff --cached`. Signale ce qu'un script ne voit pas : un titre d'ingénieur, un chiffre sans preuve, un élément de sa recherche d'emploi, un fichier de données suivi.
-3. Il écrit son message de commit, sans ligne de co-auteur, puis `git push`. Ensuite, vérifie le résultat en ligne.
+## Le push
+Suis `/publier` : tu lances les vérifications, ajoutes les fichiers nommément, relis `git diff --cached`, fais le commit (son message s'il en donne un ; jamais de ligne de co-auteur) et le `git push`. Ensuite, vérifie le résultat en ligne.
 
 ## En fin de séance
 Note l'étape atteinte dans `contexte/etat.md`, et dans `contexte/journal.md` ce qu'il a compris, ce qui l'a bloqué, et ce que tu as fait à sa place s'il l'a demandé.
