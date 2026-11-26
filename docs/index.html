@@ -7,24 +7,24 @@
 <meta name="description" content="Two 140-day intensive classes run in parallel: building with AI models, and running them on your own machine. Theory first, one page a day.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..600;1,300..600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Overpass+Mono:wght@400;500&family=Overpass:ital,wght@0,200..700;1,300..500&display=swap">
 <style>
 /* Page d'accueil du parcours : deux lignes parallèles, une par classe.
-   Identité « Route de nuit », la même que les classes et la vitrine : graphite bleuté, ambre, courbes de niveau ;
-   Newsreader (titres), Hanken Grotesk en poids fins (texte), IBM Plex Mono (étiquettes). Sombre seulement.
-   La classe Applied AI prend l'ambre (série 1), la classe AI Inference la sarcelle (série 2). */
+   Identité « Carte d'étude », la même que les classes et la vitrine : le charbon neutre d'une carte d'étude, une trame
+   de points, des traits fins ; Overpass et Overpass Mono. Sombre seulement. Couleurs validées pour les daltoniens :
+   la classe Applied AI prend le saumon (série 1), la classe AI Inference la menthe (série 2). */
 :root {
-  --fond: #232830; --surface: #2A3039; --relief: #323944; --texte: #ECE7DD; --secondaire: #AAB2BE; --discret: #959EAC;
-  --filet: #3B4350; --filet-fort: #4E5866; --signature: #EDBA5C; --accent: #EDBA5C;
-  --ia: #CB9027; --inference: #2FAE9D;
-  --police-titre: "Newsreader", Georgia, "Times New Roman", serif;
-  --police-texte: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
-  --police-code: "IBM Plex Mono", ui-monospace, Consolas, monospace;
+  --fond: #1D1D21; --surface: #25252C; --relief: #2E2E36; --texte: #F2F2F2; --secondaire: #ABABB3; --discret: #8E8E98;
+  --filet: #3A3A44; --filet-fort: #55555F; --signature: #A9CBF2; --accent: #A9CBF2; --sur-marque: #151517;
+  --police-titre: "Overpass", "Segoe UI", system-ui, sans-serif;
+  --police-texte: "Overpass", "Segoe UI", system-ui, sans-serif;
+  --police-code: "Overpass Mono", ui-monospace, Consolas, monospace;
+  --ia: #C95A50; --ia-texte: #E58376; --inference: #41B490; --inference-texte: #5CC9A5;
   color-scheme: dark;
 }
 * { box-sizing: border-box; }
 body {
-  margin: 0; background: var(--fond); color: var(--texte); font-family: var(--police-texte); font-weight: 300;
+  margin: 0; background-color: var(--fond); background-image: radial-gradient(circle at 1px 1px, rgb(255 255 255 / 0.05) 1px, transparent 1.5px); background-size: 22px 22px; color: var(--texte); font-family: var(--police-texte); font-weight: 300;
   font-size: 17px; line-height: 1.7; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
 }
 ::selection { background: color-mix(in oklab, var(--signature) 35%, transparent); }
@@ -34,7 +34,7 @@ body {
 }
 .accueil > * { min-width: 0; }
 h1, h2, h3 { margin: 0; text-wrap: balance; font-family: var(--police-titre); font-weight: 400; letter-spacing: -0.01em; }
-h1 { font-size: clamp(2.7rem, 7vw, 4.6rem); line-height: 1.02; font-weight: 300; }
+h1 { font-size: clamp(2.7rem, 7vw, 4.6rem); line-height: 1; font-weight: 200; letter-spacing: -0.035em; }
 h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); line-height: 1.12; }
 h3 { font-size: 1.22rem; line-height: 1.25; }
 strong, b { font-weight: 500; }
@@ -55,11 +55,6 @@ section > * { min-width: 0; }
 
 /* En-tête : courbes de niveau discrètes */
 .entete { display: grid; gap: 18px; position: relative; isolation: isolate; padding-top: 34px; }
-.entete::before {
-  content: ""; position: absolute; z-index: -1; top: 58px; right: 0; width: min(520px, 72%); height: 280px;
-  background: var(--signature); opacity: 0.14; pointer-events: none;
-  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 440 230' fill='none' stroke='black' stroke-width='1'%3E%3Cg transform='translate(300 108)'%3E%3Cpath vector-effect='non-scaling-stroke' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(5) scale(.8)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(10) scale(.61)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(16) scale(.43)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(23) scale(.26)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-8) scale(.5)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-2) scale(.3)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3C/g%3E%3C/svg%3E") no-repeat right top / contain; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 440 230' fill='none' stroke='black' stroke-width='1'%3E%3Cg transform='translate(300 108)'%3E%3Cpath vector-effect='non-scaling-stroke' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(5) scale(.8)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(10) scale(.61)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(16) scale(.43)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(23) scale(.26)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-8) scale(.5)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-2) scale(.3)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3C/g%3E%3C/svg%3E") no-repeat right top / contain;
-}
 .surtitre { font: 400 0.72rem/1.5 var(--police-code); letter-spacing: 0.12em; text-transform: uppercase; color: var(--discret); }
 .chapeau { font-size: 1.15rem; color: var(--secondaire); max-width: 64ch; }
 .faits { display: flex; flex-wrap: wrap; border-top: 1px solid var(--filet); border-bottom: 1px solid var(--filet); margin-top: 8px; }
@@ -86,8 +81,8 @@ figcaption { color: var(--secondaire); font-size: 0.88rem; max-width: 80ch; }
 #deux-lignes a:hover .segment, #deux-lignes a:focus-visible .segment { stroke: var(--texte); stroke-width: 1.2; }
 #deux-lignes a { outline: none; }
 .titre-ligne { font: 400 18px var(--police-titre); }
-.titre-ligne.ia { fill: var(--ia); }
-.titre-ligne.inference { fill: var(--inference); }
+.titre-ligne.ia { fill: var(--ia-texte); }
+.titre-ligne.inference { fill: var(--inference-texte); }
 .langue { font: 300 13px var(--police-texte); fill: var(--secondaire); }
 .etiquette { font: 400 12px var(--police-texte); fill: var(--texte); }
 .rencontre { font: italic 400 14px var(--police-titre); fill: var(--texte); paint-order: stroke; stroke: var(--surface); stroke-width: 5px; stroke-linejoin: round; }
@@ -98,15 +93,15 @@ figcaption { color: var(--secondaire); font-size: 0.88rem; max-width: 80ch; }
 /* Les deux classes : une grille à filets */
 .classes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--filet); border-left: 1px solid var(--filet); }
 .classe { border-right: 1px solid var(--filet); border-bottom: 1px solid var(--filet); padding: 26px 24px; display: grid; gap: 16px; align-content: start; }
-.classe.ia { --couleur: var(--ia); }
-.classe.inference { --couleur: var(--inference); }
+.classe.ia { --couleur: var(--ia); --couleur-texte: var(--ia-texte); }
+.classe.inference { --couleur: var(--inference); --couleur-texte: var(--inference-texte); }
 .classe .surtitre { display: flex; align-items: center; gap: 10px; }
 .classe .surtitre::before { content: ""; width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--couleur); flex: none; }
 .classe h3 { font-size: 1.7rem; font-weight: 300; }
 .classe > p { color: var(--secondaire); }
 .phases-carte { list-style: none; padding: 0; display: grid; font-size: 0.95rem; border-top: 1px solid var(--filet); }
 .phases-carte li { display: grid; grid-template-columns: 1.8em minmax(0, 1fr) auto; gap: 8px; align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--filet); }
-.phases-carte .num { font: 500 0.75rem var(--police-code); color: var(--couleur); }
+.phases-carte .num { font: 500 0.75rem var(--police-code); color: var(--couleur-texte); }
 .phases-carte .jours { font: 400 0.72rem var(--police-code); color: var(--discret); white-space: nowrap; }
 .bouton-classe {
   justify-self: start; font: 500 0.72rem/1 var(--police-code); letter-spacing: 0.1em; text-transform: uppercase;
@@ -133,6 +128,16 @@ footer ul { padding-left: 1.2em; display: grid; gap: 4px; }
   .accueil { gap: 52px; }
   .faits span { padding-right: 18px; margin-right: 18px; }
 }
+/* Le pied de page, le même sur tous les sites : des colonnes de liens, puis le nom en très grand. */
+.pied { display: grid; gap: 28px; padding-top: 34px; border-top: 1px solid var(--filet); }
+.pied-colonnes { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 22px; }
+.pied-titre { font: 400 0.7rem/1.4 var(--police-code); letter-spacing: 0.06em; text-transform: uppercase; color: var(--discret); margin-bottom: 8px; }
+.pied ul { list-style: none; padding: 0; display: grid; gap: 4px; }
+.pied ul a { color: var(--texte); text-decoration: none; font-size: 0.95rem; }
+.pied ul a:hover { color: var(--accent); }
+.pied-nom { display: block; width: 100%; height: auto; }
+.pied-nom text { font-family: var(--police-titre); font-weight: 300; fill: var(--texte); }
+.pied-bas { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 6px 20px; font: 400 0.72rem/1.4 var(--police-code); color: var(--discret); }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
 </head>
@@ -211,14 +216,16 @@ footer ul { padding-left: 1.2em; display: grid; gap: 4px; }
     </ul>
   </section>
 
-  <footer>
-    <p>The GitHub repositories:</p>
-    <ul>
-      <li><a href="https://github.com/akrambouznad789-cyber/roadmap-ia">roadmap-ia</a>: this page, the projects and the stations</li>
-      <li><a href="https://github.com/akrambouznad789-cyber/applied-ai-intensive-class">applied-ai-intensive-class</a></li>
-      <li><a href="https://github.com/akrambouznad789-cyber/ai-inference-intensive-class">ai-inference-intensive-class</a></li>
-    </ul>
-    <p>Layout and text of this page: the AI assistant. Projects, notebooks, figures and words: Akram.</p>
+<footer class="pied">
+    <div class="pied-colonnes">
+      <div><p class="pied-titre">Classes</p><ul><li><a href="https://akrambouznad789-cyber.github.io/applied-ai-intensive-class/">Applied AI</a></li><li><a href="https://akrambouznad789-cyber.github.io/ai-inference-intensive-class/">AI Inference</a></li></ul></div>
+      <div><p class="pied-titre">Path</p><ul><li><a href="https://akrambouznad789-cyber.github.io/">Showcase</a></li><li><a href="https://akrambouznad789-cyber.github.io/roadmap-ia/">Roadmap</a></li></ul></div>
+      <div><p class="pied-titre">Code</p><ul><li><a href="https://github.com/akrambouznad789-cyber">GitHub</a></li></ul></div>
+      <div><p class="pied-titre">Contact</p><ul><li><a href="https://www.linkedin.com/in/akram-bouznad-68aa7b292/">LinkedIn</a></li></ul></div>
+    </div>
+    <svg class="pied-nom" viewBox="0 0 1000 128" role="img" aria-label="Akram Bouznad"><text x="0" y="106" font-size="150" textLength="1000" lengthAdjust="spacingAndGlyphs">akram bouznad</text></svg>
+    <p class="pied-bas"><span>Layout and text of this page: the AI assistant. Projects, notebooks, figures and words: Akram.</span></p>
+    <p class="pied-bas"><span>Local models and running things on premise.</span><span>Polytechnique Montréal · CIRANO</span></p>
   </footer>
 </main>
 

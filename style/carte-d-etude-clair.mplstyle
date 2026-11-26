@@ -1,11 +1,11 @@
-# Charte « Route de nuit » des figures, version claire (les README sur GitHub en thème clair).
+# Charte « Carte d'étude » des figures, version claire (les README sur GitHub en thème clair).
 # Ne pas charger à la main : passer par style/charte.py (charger_charte, sauver_clair_et_sombre).
-# Ordre des séries, à garder fixe : ambre, sarcelle, bleu. Validé avec le validateur de la compétence dataviz
+# Ordre des séries, à garder fixe : saumon, menthe, bleu. Validé avec le validateur de la compétence dataviz
 # (lisible pour les daltoniens, contraste >= 3:1 sur blanc).
 
-font.family: Hanken Grotesk
+font.family: Overpass
 font.size: 10
-text.color: 2A2F37
+text.color: 1F1F23
 
 figure.facecolor: FFFFFF
 figure.dpi: 110
@@ -14,28 +14,28 @@ savefig.dpi: 150
 savefig.bbox: tight
 
 axes.facecolor: FFFFFF
-axes.edgecolor: D5D8DE
+axes.edgecolor: D6D6DC
 axes.linewidth: 0.8
-axes.labelcolor: 5F6773
+axes.labelcolor: 5E5E68
 axes.labelsize: 10
 axes.titlesize: 12
 axes.titleweight: medium
 axes.titlelocation: left
 axes.titlepad: 12
-axes.titlecolor: 2A2F37
+axes.titlecolor: 1F1F23
 axes.spines.top: False
 axes.spines.right: False
 axes.grid: True
 axes.axisbelow: True
-axes.prop_cycle: cycler('color', ['A8700F', '00917F', '3A6FD8'])
+axes.prop_cycle: cycler('color', ['A23B33', '1B9C77', '3B6FC4'])
 
-grid.color: ECEEF1
+grid.color: EDEDF0
 grid.linewidth: 0.6
 
-xtick.color: D5D8DE
-ytick.color: D5D8DE
-xtick.labelcolor: 5F6773
-ytick.labelcolor: 5F6773
+xtick.color: D6D6DC
+ytick.color: D6D6DC
+xtick.labelcolor: 5E5E68
+ytick.labelcolor: 5E5E68
 xtick.labelsize: 9
 ytick.labelsize: 9
 
@@ -44,4 +44,4 @@ patch.edgecolor: FFFFFF
 
 legend.frameon: False
 legend.fontsize: 9
-legend.labelcolor: 2A2F37
+legend.labelcolor: 1F1F23

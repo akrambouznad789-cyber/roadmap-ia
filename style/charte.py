@@ -1,4 +1,4 @@
-"""Charte « Route de nuit » des figures : polices, couleurs par rôle, export clair et sombre.
+"""Charte « Carte d'étude » des figures : polices, couleurs par rôle, export clair et sombre.
 
 Usage dans un carnet (adapter le chemin vers style/) :
     import sys
@@ -21,22 +21,22 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import FuncFormatter
 
 DOSSIER_STYLE = Path(__file__).resolve().parent
-STYLE_CLAIR = [DOSSIER_STYLE / "route-de-nuit-clair.mplstyle"]
-STYLE_SOMBRE = [DOSSIER_STYLE / "route-de-nuit-clair.mplstyle", DOSSIER_STYLE / "route-de-nuit-sombre.mplstyle"]
+STYLE_CLAIR = [DOSSIER_STYLE / "carte-d-etude-clair.mplstyle"]
+STYLE_SOMBRE = [DOSSIER_STYLE / "carte-d-etude-clair.mplstyle", DOSSIER_STYLE / "carte-d-etude-sombre.mplstyle"]
 
 # Couleurs par rôle. « accent » = ce qu'on veut montrer ; « neutre » = le contexte (bases, comparaisons) ;
-# « trait » = lignes et contours secondaires. Accent, second et troisième (ambre, sarcelle, bleu : l'ordre fixe
+# « trait » = lignes et contours secondaires. Accent, second et troisième (saumon, menthe, bleu : l'ordre fixe
 # des séries) validés pour les daltoniens avec le validateur de la compétence dataviz, sur blanc et sur le fond sombre.
 COULEURS = {
-    "clair": {"accent": "#A8700F", "second": "#00917F", "troisieme": "#3A6FD8", "neutre": "#C9CDD6", "trait": "#6B7380",
-              "texte": "#2A2F37", "secondaire": "#5F6773"},
-    "sombre": {"accent": "#CB9027", "second": "#2FAE9D", "troisieme": "#5E8FE6", "neutre": "#4E5866", "trait": "#AAB2BE",
-               "texte": "#ECE7DD", "secondaire": "#AAB2BE"},
+    "clair": {"accent": "#A23B33", "second": "#1B9C77", "troisieme": "#3B6FC4", "neutre": "#C9C9CF", "trait": "#6B6B75",
+              "texte": "#1F1F23", "secondaire": "#5E5E68"},
+    "sombre": {"accent": "#C95A50", "second": "#41B490", "troisieme": "#6E9EE2", "neutre": "#55555F", "trait": "#ABABB3",
+               "texte": "#F2F2F2", "secondaire": "#ABABB3"},
 }
 
 
 def charger_charte():
-    """Fait connaître les polices (Hanken Grotesk, IBM Plex) à matplotlib et applique le thème clair aux figures du carnet."""
+    """Fait connaître les polices (Overpass, IBM Plex) à matplotlib et applique le thème clair aux figures du carnet."""
     for police in (DOSSIER_STYLE / "polices").glob("*.ttf"):
         fm.fontManager.addfont(police)
     plt.style.use(STYLE_CLAIR)

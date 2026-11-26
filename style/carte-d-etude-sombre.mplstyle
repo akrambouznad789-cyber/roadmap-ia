@@ -1,0 +1,19 @@
+# Variante sombre de la charte « Carte d'étude », à charger PAR-DESSUS carte-d-etude-clair.mplstyle.
+# Sert aux pages des sites (toujours sombres) et à la version sombre des figures dans les README.
+# Séries validées sur le fond #1D1D21 et la surface #25252C : saumon, menthe, bleu.
+
+text.color: F2F2F2
+figure.facecolor: 1D1D21
+savefig.facecolor: 1D1D21
+axes.facecolor: 1D1D21
+axes.edgecolor: 55555F
+axes.labelcolor: ABABB3
+axes.titlecolor: F2F2F2
+axes.prop_cycle: cycler('color', ['C95A50', '41B490', '6E9EE2'])
+grid.color: 2E2E36
+xtick.color: 55555F
+ytick.color: 55555F
+xtick.labelcolor: ABABB3
+ytick.labelcolor: ABABB3
+legend.labelcolor: F2F2F2
+patch.edgecolor: 1D1D21
