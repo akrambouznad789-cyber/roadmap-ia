@@ -8,8 +8,8 @@ A public path in artificial intelligence: two 140-day intensive classes, run in 
 
 | Class | In short | Links |
 |---|---|---|
-| Intensive AI Engineering Class | Building with models: from data up to an open language model served locally, in 9 phases | [route](https://akrambouznad789-cyber.github.io/intensive-ai-engineering-class/) · [repository](https://github.com/akrambouznad789-cyber/intensive-ai-engineering-class) |
-| Intensive Inference Engineering Class | Running models on your own machine: memory, quantization, serving, up to a private appliance, in 6 phases | [route](https://akrambouznad789-cyber.github.io/intensive-inference-engineering-class/) · [repository](https://github.com/akrambouznad789-cyber/intensive-inference-engineering-class) |
+| Applied AI Intensive Class | Building with models: from data up to an open language model served locally, in 9 phases | [route](https://akrambouznad789-cyber.github.io/applied-ai-intensive-class/) · [repository](https://github.com/akrambouznad789-cyber/applied-ai-intensive-class) |
+| AI Inference Intensive Class | Running models on your own machine: memory, quantization, serving, up to a private appliance, in 6 phases | [route](https://akrambouznad789-cyber.github.io/ai-inference-intensive-class/) · [repository](https://github.com/akrambouznad789-cyber/ai-inference-intensive-class) |
 
 Both classes move forward on the same day number. A day always follows the same order: theory first (a diagram, a worked numeric example, pseudo-code), an interactive demo, practice that produces a figure or a measurement, then a few sentences on what was understood. Every project aims at a model that runs locally.
 
@@ -19,7 +19,7 @@ The projects and stations below were done before the two classes; their write-up
 
 ### Applied projects
 
-Each project is named after its methods; the dataset is only the practical case. Project P4 (BPE tokenization and a mini-Transformer) ends during phase 3 of the Intensive AI Engineering Class.
+Each project is named after its methods; the dataset is only the practical case. Project P4 (BPE tokenization and a mini-Transformer) ends during phase 3 of the Applied AI Intensive Class.
 
 | Project | Question | Methods |
 |---|---|---|
