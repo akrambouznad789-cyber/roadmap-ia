@@ -7,107 +7,131 @@
 <meta name="description" content="Two 140-day intensive classes run in parallel: building with AI models, and running them on your own machine. Theory first, one page a day.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..600;1,300..600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300..500;1,6..72,300..500&display=swap">
 <style>
-/* Home page of the path: two parallel lines, one per class.
-   "Quiet Light indigo" style; the AI class takes indigo (series 1), the Inference class teal (series 3). */
+/* Page d'accueil du parcours : deux lignes parallèles, une par classe.
+   Identité « Route de nuit », la même que les classes et la vitrine : graphite bleuté, ambre, courbes de niveau ;
+   Newsreader (titres), Hanken Grotesk en poids fins (texte), IBM Plex Mono (étiquettes). Sombre seulement.
+   La classe Applied AI prend l'ambre (série 1), la classe AI Inference la sarcelle (série 2). */
 :root {
-  --fond: #F5F5F5; --surface: #FFFFFF; --texte: #333333; --secondaire: #6B6B7E; --filet: #D9D9E3;
-  --accent: #4F4FC4; --ia: #4F4FC4; --inference: #008B7E;
-  --police-texte: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+  --fond: #232830; --surface: #2A3039; --relief: #323944; --texte: #ECE7DD; --secondaire: #AAB2BE; --discret: #959EAC;
+  --filet: #3B4350; --filet-fort: #4E5866; --signature: #EDBA5C; --accent: #EDBA5C;
+  --ia: #CB9027; --inference: #2FAE9D;
+  --police-titre: "Newsreader", Georgia, "Times New Roman", serif;
+  --police-texte: "Hanken Grotesk", "Segoe UI", system-ui, sans-serif;
   --police-code: "IBM Plex Mono", ui-monospace, Consolas, monospace;
-  color-scheme: light;
-}
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --fond: #1C1C24; --surface: #262632; --texte: #E6E6EE; --secondaire: #A3A3B5; --filet: #3A3A4A;
-    --accent: #9C9CF2; --ia: #7C7CE8; --inference: #2FA898; color-scheme: dark;
-  }
-}
-:root[data-theme="dark"] {
-  --fond: #1C1C24; --surface: #262632; --texte: #E6E6EE; --secondaire: #A3A3B5; --filet: #3A3A4A;
-  --accent: #9C9CF2; --ia: #7C7CE8; --inference: #2FA898; color-scheme: dark;
+  color-scheme: dark;
 }
 * { box-sizing: border-box; }
-body { margin: 0; background: var(--fond); color: var(--texte); font-family: var(--police-texte); font-size: 17px; line-height: 1.6; }
+body {
+  margin: 0; background: var(--fond); color: var(--texte); font-family: var(--police-texte); font-weight: 300;
+  font-size: 17px; line-height: 1.7; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+}
+::selection { background: color-mix(in oklab, var(--signature) 35%, transparent); }
 .accueil {
-  max-width: 1080px; margin: 0 auto; display: grid; gap: 56px;
-  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 32px 64px;
+  max-width: 1080px; margin: 0 auto; display: grid; gap: 68px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 22px 76px;
 }
 .accueil > * { min-width: 0; }
-h1, h2, h3 { margin: 0; line-height: 1.12; text-wrap: balance; letter-spacing: -0.01em; }
-h1 { font-size: clamp(2.2rem, 5vw, 3.2rem); font-weight: 700; }
-h2 { font-size: clamp(1.4rem, 2.6vw, 1.8rem); font-weight: 700; }
-h3 { font-size: 1.2rem; font-weight: 700; }
+h1, h2, h3 { margin: 0; text-wrap: balance; font-family: var(--police-titre); font-weight: 400; letter-spacing: -0.01em; }
+h1 { font-size: clamp(2.7rem, 7vw, 4.6rem); line-height: 1.02; font-weight: 300; }
+h2 { font-size: clamp(1.6rem, 3vw, 2.1rem); line-height: 1.12; }
+h3 { font-size: 1.22rem; line-height: 1.25; }
+strong, b { font-weight: 500; }
 p, ol, ul { margin: 0; }
-a { color: var(--accent); text-underline-offset: 3px; }
-a:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
-section { display: grid; gap: 18px; }
+a { color: var(--accent); text-decoration-thickness: 1px; text-underline-offset: 3px; text-decoration-color: color-mix(in oklab, var(--accent) 45%, transparent); }
+a:hover { text-decoration-color: var(--accent); }
+a:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+section { display: grid; gap: 20px; }
 section > * { min-width: 0; }
-.surtitre { font-family: var(--police-code); font-size: 0.82rem; color: var(--secondaire); letter-spacing: 0.02em; }
-.entete { display: grid; gap: 14px; }
-.liens-haut a {
-  display: inline-flex; align-items: center; min-height: 40px; padding: 8px 14px; border-radius: 999px;
-  border: 1px solid var(--filet); background: var(--surface); font-weight: 600; font-size: 0.92rem; text-decoration: none;
-}
-.chapeau { font-size: 1.15rem; max-width: 68ch; }
-.faits { display: flex; flex-wrap: wrap; gap: 6px 26px; color: var(--secondaire); }
-.faits b { color: var(--texte); font-size: 1.35rem; font-weight: 700; margin-right: 6px; font-variant-numeric: tabular-nums; }
-.explication { max-width: 72ch; }
 
-/* The two lines: a diagram that scrolls sideways on a phone rather than shrinking. */
-.carte-lignes { margin: 0; display: grid; gap: 8px; }
-.defilant { overflow-x: auto; border: 1px solid var(--filet); border-radius: 12px; background: var(--surface); }
+/* Barre du haut, la même sur tous les sites */
+.barre { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 10px 24px; padding-bottom: 14px; border-bottom: 1px solid var(--filet); }
+.signature { display: inline-flex; align-items: center; gap: 10px; color: var(--texte); text-decoration: none; font: 500 0.78rem/1 var(--police-code); letter-spacing: 0.06em; }
+.signature svg { width: 30px; height: 10px; color: var(--signature); flex: none; }
+.liens-haut { display: flex; flex-wrap: wrap; gap: 6px 22px; list-style: none; padding: 0; margin: 0; }
+.liens-haut a { font: 400 0.72rem/1.4 var(--police-code); letter-spacing: 0.1em; text-transform: uppercase; color: var(--secondaire); text-decoration: none; }
+.liens-haut a:hover { color: var(--texte); }
+
+/* En-tête : courbes de niveau discrètes */
+.entete { display: grid; gap: 18px; position: relative; isolation: isolate; padding-top: 34px; }
+.entete::before {
+  content: ""; position: absolute; z-index: -1; top: 58px; right: 0; width: min(520px, 72%); height: 280px;
+  background: var(--signature); opacity: 0.14; pointer-events: none;
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 440 230' fill='none' stroke='black' stroke-width='1'%3E%3Cg transform='translate(300 108)'%3E%3Cpath vector-effect='non-scaling-stroke' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(5) scale(.8)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(10) scale(.61)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(16) scale(.43)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(23) scale(.26)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-8) scale(.5)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-2) scale(.3)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3C/g%3E%3C/svg%3E") no-repeat right top / contain; mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 440 230' fill='none' stroke='black' stroke-width='1'%3E%3Cg transform='translate(300 108)'%3E%3Cpath vector-effect='non-scaling-stroke' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(5) scale(.8)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(10) scale(.61)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(16) scale(.43)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='rotate(23) scale(.26)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-8) scale(.5)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3Cpath vector-effect='non-scaling-stroke' transform='translate(-232 70) rotate(-2) scale(.3)' d='M-150-8C-142-70-62-104 18-98S162-52 156 8 88 108 0 102-158 52-150-8Z'/%3E%3C/g%3E%3C/svg%3E") no-repeat right top / contain;
+}
+.surtitre { font: 400 0.72rem/1.5 var(--police-code); letter-spacing: 0.12em; text-transform: uppercase; color: var(--discret); }
+.chapeau { font-size: 1.15rem; color: var(--secondaire); max-width: 64ch; }
+.faits { display: flex; flex-wrap: wrap; border-top: 1px solid var(--filet); border-bottom: 1px solid var(--filet); margin-top: 8px; }
+.faits span {
+  display: grid; gap: 4px; padding: 14px 28px 14px 0; margin-right: 28px; border-right: 1px solid var(--filet);
+  font: 400 0.68rem/1.4 var(--police-code); letter-spacing: 0.12em; text-transform: uppercase; color: var(--discret);
+}
+.faits span:last-child { border-right: none; margin-right: 0; }
+.faits b { font: 300 2.3rem/1 var(--police-titre); letter-spacing: 0; text-transform: none; color: var(--texte); }
+.explication { max-width: 72ch; color: var(--secondaire); }
+
+/* Les deux lignes : un plan de métro qui défile de côté sur téléphone plutôt que de rétrécir. */
+.carte-lignes { margin: 0; display: grid; gap: 10px; }
+.defilant { overflow-x: auto; border: 1px solid var(--filet); border-radius: 3px; background: var(--surface); }
 #deux-lignes { display: block; width: 100%; min-width: 860px; height: auto; }
-figcaption { color: var(--secondaire); font-size: 0.9rem; max-width: 80ch; }
-.zone { fill: color-mix(in oklab, var(--texte) 6%, var(--surface)); }
+figcaption { color: var(--secondaire); font-size: 0.88rem; max-width: 80ch; }
+.zone { fill: color-mix(in oklab, var(--texte) 5%, var(--surface)); }
 .segment { stroke: none; }
 .segment.ia { fill: var(--ia); }
 .segment.inference { fill: var(--inference); }
-#deux-lignes a:hover .segment, #deux-lignes a:focus-visible .segment { stroke: var(--texte); stroke-width: 2; }
+.station { fill: var(--surface); stroke-width: 2; }
+.station.ia { stroke: var(--ia); }
+.station.inference { stroke: var(--inference); }
+#deux-lignes a:hover .segment, #deux-lignes a:focus-visible .segment { stroke: var(--texte); stroke-width: 1.2; }
 #deux-lignes a { outline: none; }
-.titre-ligne { font: 700 15px var(--police-texte); }
+.titre-ligne { font: 400 18px var(--police-titre); }
 .titre-ligne.ia { fill: var(--ia); }
 .titre-ligne.inference { fill: var(--inference); }
-.langue { font: 400 13px var(--police-texte); fill: var(--secondaire); }
-.etiquette { font: 600 12px var(--police-texte); fill: var(--texte); }
-.rencontre { font: italic 600 12px var(--police-texte); fill: var(--texte); paint-order: stroke; stroke: var(--surface); stroke-width: 5px; stroke-linejoin: round; }
-.trait-rencontre { stroke: var(--secondaire); stroke-width: 1; stroke-dasharray: 3 4; }
-.axe { stroke: var(--filet); stroke-width: 1; }
-.axe-texte { font: 400 11px var(--police-code); fill: var(--secondaire); }
+.langue { font: 300 13px var(--police-texte); fill: var(--secondaire); }
+.etiquette { font: 400 12px var(--police-texte); fill: var(--texte); }
+.rencontre { font: italic 400 14px var(--police-titre); fill: var(--texte); paint-order: stroke; stroke: var(--surface); stroke-width: 5px; stroke-linejoin: round; }
+.trait-rencontre { stroke: var(--discret); stroke-width: 1; stroke-dasharray: 2 4; }
+.axe { stroke: var(--filet-fort); stroke-width: 1; }
+.axe-texte { font: 400 10.5px var(--police-code); fill: var(--discret); letter-spacing: 0.06em; }
 
-/* The two classes */
-.classes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
-.classe {
-  background: var(--surface); border: 1px solid var(--filet); border-top: 4px solid var(--couleur);
-  border-radius: 12px; padding: 20px; display: grid; gap: 14px; align-content: start;
-}
+/* Les deux classes : une grille à filets */
+.classes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px solid var(--filet); border-left: 1px solid var(--filet); }
+.classe { border-right: 1px solid var(--filet); border-bottom: 1px solid var(--filet); padding: 26px 24px; display: grid; gap: 16px; align-content: start; }
 .classe.ia { --couleur: var(--ia); }
 .classe.inference { --couleur: var(--inference); }
-.phases-carte { list-style: none; padding: 0; display: grid; gap: 6px; font-size: 0.95rem; }
-.phases-carte li { display: grid; grid-template-columns: 1.8em minmax(0, 1fr) auto; gap: 8px; align-items: baseline; }
-.phases-carte .num { font-family: var(--police-code); font-weight: 500; color: var(--couleur); }
-.phases-carte .jours { font-family: var(--police-code); font-size: 0.8rem; color: var(--secondaire); white-space: nowrap; }
+.classe .surtitre { display: flex; align-items: center; gap: 10px; }
+.classe .surtitre::before { content: ""; width: 9px; height: 9px; border-radius: 50%; border: 2px solid var(--couleur); flex: none; }
+.classe h3 { font-size: 1.7rem; font-weight: 300; }
+.classe > p { color: var(--secondaire); }
+.phases-carte { list-style: none; padding: 0; display: grid; font-size: 0.95rem; border-top: 1px solid var(--filet); }
+.phases-carte li { display: grid; grid-template-columns: 1.8em minmax(0, 1fr) auto; gap: 8px; align-items: baseline; padding: 7px 0; border-bottom: 1px solid var(--filet); }
+.phases-carte .num { font: 500 0.75rem var(--police-code); color: var(--couleur); }
+.phases-carte .jours { font: 400 0.72rem var(--police-code); color: var(--discret); white-space: nowrap; }
 .bouton-classe {
-  justify-self: start; font: 600 0.95rem/1 var(--police-texte); padding: 11px 16px 10px; border-radius: 999px;
-  background: var(--couleur); color: var(--surface); text-decoration: none;
+  justify-self: start; font: 500 0.72rem/1 var(--police-code); letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 12px 16px 11px; border: 1px solid var(--couleur); border-radius: 2px; color: var(--texte); text-decoration: none;
 }
-.bouton-classe:hover { filter: brightness(1.08); }
+.bouton-classe:hover { background: color-mix(in oklab, var(--couleur) 18%, transparent); }
 
-/* Before the classes */
-.avant { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
-.avant li { background: var(--surface); border: 1px solid var(--filet); border-radius: 12px; padding: 16px; display: grid; gap: 6px; align-content: start; }
-.avant .etat { font-family: var(--police-code); font-size: 0.78rem; color: var(--secondaire); }
-.avant h3 { font-size: 1.02rem; }
-.avant .notions { font-size: 0.88rem; color: var(--secondaire); }
-.avant p { font-size: 0.95rem; }
+/* Avant les classes : une grille à filets */
+.avant { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); border-top: 1px solid var(--filet); border-left: 1px solid var(--filet); }
+.avant li { border-right: 1px solid var(--filet); border-bottom: 1px solid var(--filet); padding: 22px; display: grid; gap: 8px; align-content: start; transition: background 0.15s; }
+.avant li:hover { background: var(--surface); }
+.avant .etat { font: 400 0.68rem/1.4 var(--police-code); letter-spacing: 0.12em; text-transform: uppercase; color: var(--signature); }
+.avant h3 { font-size: 1.22rem; }
+.avant h3 a { color: var(--texte); text-decoration: none; }
+.avant h3 a:hover { color: var(--accent); }
+.avant .notions { font: 400 0.74rem/1.6 var(--police-code); color: var(--discret); }
+.avant p { font-size: 0.95rem; color: var(--secondaire); }
 
-footer { display: grid; gap: 8px; color: var(--secondaire); font-size: 0.9rem; border-top: 1px solid var(--filet); padding-top: 20px; }
+footer { display: grid; gap: 10px; color: var(--secondaire); font-size: 0.88rem; border-top: 1px solid var(--filet); padding-top: 22px; }
 footer ul { padding-left: 1.2em; display: grid; gap: 4px; }
 
 @media (max-width: 760px) {
   .classes { grid-template-columns: minmax(0, 1fr); }
-  .accueil { gap: 44px; }
+  .accueil { gap: 52px; }
+  .faits span { padding-right: 18px; margin-right: 18px; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
 </style>
@@ -115,7 +139,14 @@ footer ul { padding-left: 1.2em; display: grid; gap: 4px; }
 <body>
 <main class="accueil">
   <header class="entete">
-    <p class="liens-haut"><a href="https://akrambouznad789-cyber.github.io/">← Akram Bouznad · showcase</a></p>
+    <nav class="barre" aria-label="Related pages">
+      <a class="signature" href="https://akrambouznad789-cyber.github.io/"><svg viewBox="0 0 30 10" aria-hidden="true"><circle cx="4" cy="5" r="3.2" fill="currentColor"/><line x1="7.6" y1="5" x2="22.4" y2="5" stroke="currentColor" stroke-width="1.4"/><circle cx="26" cy="5" r="3" fill="none" stroke="currentColor" stroke-width="1.4"/></svg>akram bouznad</a>
+      <ul class="liens-haut">
+        <li><a href="https://akrambouznad789-cyber.github.io/">Showcase</a></li>
+        <li><a href="https://akrambouznad789-cyber.github.io/applied-ai-intensive-class/">Applied AI class</a></li>
+        <li><a href="https://akrambouznad789-cyber.github.io/ai-inference-intensive-class/">AI Inference class</a></li>
+      </ul>
+    </nav>
     <p class="surtitre">AI Roadmap · two classes in parallel</p>
     <h1>AI Roadmap</h1>
     <p class="chapeau">Two 140-day intensive classes, run at the same time. One learns to build with models, from data up to a language model in service; the other learns to run them on your own machine, from memory up to a private appliance. Theory first, one page a day, a project every 7 to 10 days, and every project aims at a model that runs locally.</p>
@@ -183,7 +214,7 @@ footer ul { padding-left: 1.2em; display: grid; gap: 4px; }
   <footer>
     <p>The GitHub repositories:</p>
     <ul>
-      <li><a href="https://github.com/akrambouznad789-cyber/roadmap-ia">roadmap-ia</a> : this page, the projects and the stations</li>
+      <li><a href="https://github.com/akrambouznad789-cyber/roadmap-ia">roadmap-ia</a>: this page, the projects and the stations</li>
       <li><a href="https://github.com/akrambouznad789-cyber/applied-ai-intensive-class">applied-ai-intensive-class</a></li>
       <li><a href="https://github.com/akrambouznad789-cyber/ai-inference-intensive-class">ai-inference-intensive-class</a></li>
     </ul>
@@ -239,7 +270,7 @@ footer ul { padding-left: 1.2em; display: grid; gap: 4px; }
   // Geometry of the diagram (viewBox 960 × 340): the AI class on top, the Inference class below.
   const GAUCHE = 40;
   const LARGEUR_UTILE = 880;
-  const HAUTEUR_BARRE = 14;
+  const HAUTEUR_BARRE = 8;
   const POSITIONS = {
     ia: { yTitre: 26, yBarre: 80, yEtiquettes: [52, 69] },
     inference: { yTitre: 300, yBarre: 214, yEtiquettes: [249, 267] },
@@ -281,9 +312,10 @@ footer ul { padding-left: 1.2em; display: grid; gap: 4px; }
         const debut = xDuJour(phase.debut);
         const fin = xDuJour(phase.fin + 1);
         element("rect", {
-          class: `segment ${classe.cle}`, x: debut + 1.5, y: position.yBarre, rx: HAUTEUR_BARRE / 2,
+          class: `segment ${classe.cle}`, x: debut + 1.5, y: position.yBarre, rx: 1,
           width: fin - debut - 3, height: HAUTEUR_BARRE,
         }, lien);
+        element("circle", { class: `station ${classe.cle}`, cx: debut + 4, cy: position.yBarre + HAUTEUR_BARRE / 2, r: 4.5 }, lien);
         // Labels alternate between two rows so they do not overlap.
         const rangee = position.yEtiquettes[(phase.numero - 1) % 2];
         texte(lien, `${phase.numero} · ${phase.court}`, { class: "etiquette", x: (debut + fin) / 2, y: rangee, "text-anchor": "middle" });

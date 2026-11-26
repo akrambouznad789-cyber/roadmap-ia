@@ -1,0 +1,19 @@
+# Variante sombre de la charte « Route de nuit », à charger PAR-DESSUS route-de-nuit-clair.mplstyle.
+# Sert aux pages des sites (toujours sombres) et à la version sombre des figures dans les README.
+# Séries validées sur le fond #232830 et la surface #2A3039 : ambre, sarcelle, bleu.
+
+text.color: ECE7DD
+figure.facecolor: 232830
+savefig.facecolor: 232830
+axes.facecolor: 232830
+axes.edgecolor: 4E5866
+axes.labelcolor: AAB2BE
+axes.titlecolor: ECE7DD
+axes.prop_cycle: cycler('color', ['CB9027', '2FAE9D', '5E8FE6'])
+grid.color: 323944
+xtick.color: 4E5866
+ytick.color: 4E5866
+xtick.labelcolor: AAB2BE
+ytick.labelcolor: AAB2BE
+legend.labelcolor: ECE7DD
+patch.edgecolor: 232830
