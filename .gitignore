@@ -2,7 +2,7 @@
 CLAUDE.md
 CLAUDE.local.md
 contexte/
-.claude/settings.local.json
+.claude/
 
 # Données des stations et des projets : jamais dans le dépôt, seulement les petits CSV de résultats.
 archives/stations/*/donnees/

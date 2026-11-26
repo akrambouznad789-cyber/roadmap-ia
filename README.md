@@ -11,7 +11,7 @@ A public path in artificial intelligence: two 140-day intensive classes, run in 
 | Intensive AI Engineering Class | Building with models: from data up to an open language model served locally, in 9 phases | [route](https://akrambouznad789-cyber.github.io/intensive-ai-engineering-class/) · [repository](https://github.com/akrambouznad789-cyber/intensive-ai-engineering-class) |
 | Intensive Inference Engineering Class | Running models on your own machine: memory, quantization, serving, up to a private appliance, in 6 phases | [route](https://akrambouznad789-cyber.github.io/intensive-inference-engineering-class/) · [repository](https://github.com/akrambouznad789-cyber/intensive-inference-engineering-class) |
 
-Both classes move forward on the same day number, about an hour each per day. A day always follows the same order: theory first (a diagram, a worked numeric example, pseudo-code), an interactive demo, practice that produces a figure or a measurement, then a few sentences on what was understood. Every project aims at a model that runs locally.
+Both classes move forward on the same day number. A day always follows the same order: theory first (a diagram, a worked numeric example, pseudo-code), an interactive demo, practice that produces a figure or a measurement, then a few sentences on what was understood. Every project aims at a model that runs locally.
 
 ## Before the classes
 
