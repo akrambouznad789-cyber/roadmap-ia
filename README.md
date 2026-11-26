@@ -1,50 +1,52 @@
-# Roadmap IA
+# AI Roadmap
 
-Un parcours public en intelligence artificielle : deux classes intensives de 140 jours, menées en parallèle, et les projets faits avant elles.
+A public path in artificial intelligence: two 140-day intensive classes, run in parallel, and the projects done before them.
 
-**Site : https://akrambouznad789-cyber.github.io/roadmap-ia/**
+**Site: https://akrambouznad789-cyber.github.io/roadmap-ia/**
 
-## Les deux classes
+## The two classes
 
-| Classe | En bref | Langue | Liens |
-|---|---|---|---|
-| Intensive AI Engineering Class | Construire avec des modèles : des données jusqu'à un modèle de langage ouvert mis en service en local, en 9 phases | français | [route](https://akrambouznad789-cyber.github.io/intensive-ai-engineering-class/) · [dépôt](https://github.com/akrambouznad789-cyber/intensive-ai-engineering-class) |
-| Intensive Inference Engineering Class | Faire tourner les modèles sur sa propre machine : mémoire, quantification, service, jusqu'à une appliance privée, en 6 phases | anglais | [route](https://akrambouznad789-cyber.github.io/intensive-inference-engineering-class/) · [dépôt](https://github.com/akrambouznad789-cyber/intensive-inference-engineering-class) |
-
-Les deux classes avancent au même numéro de jour, environ une heure chacune par jour. Une journée suit toujours le même ordre : la théorie d'abord (un schéma, un mini-exemple chiffré, un pseudo-code), une démo interactive, une pratique qui produit une figure ou une mesure, puis quelques phrases sur ce qui a été compris. Chaque projet vise un modèle qui tourne en local.
-
-## Avant les classes
-
-### Projets d'application
-
-Chaque projet porte le nom de ses méthodes ; le jeu de données n'est que le cas pratique. Le projet P4 (tokenisation BPE et mini-Transformer) se termine pendant la phase 3 de l'Intensive AI Engineering Class.
-
-| Projet | Question | Méthodes |
+| Class | In short | Links |
 |---|---|---|
-| [P1 · Boosting, validation et fuites](projets/P1-boosting-validation/) | Au moment de la commande, peut-on prédire qu'une livraison sera en retard ? | Boosting de gradient, validation temporelle, détection de fuite |
-| [P2 · Clustering et différence de différences](projets/P2-clustering-did/) | Les stations BIXI ont-elles des profils d'usage ? Le REV Saint-Denis a-t-il pris des cyclistes à la piste Brébeuf ? | K-moyennes, ACP, différence de différences |
-| [P3 · Réseau PyTorch et plongements](projets/P3-pytorch-plongements/) | Un réseau qui apprend la durée des trajets BIXI redessine-t-il la carte de Montréal dans ses plongements de stations ? | Réseau PyTorch, plongements, boosting de gradient, validation temporelle, mesure en local |
+| Intensive AI Engineering Class | Building with models: from data up to an open language model served locally, in 9 phases | [route](https://akrambouznad789-cyber.github.io/intensive-ai-engineering-class/) · [repository](https://github.com/akrambouznad789-cyber/intensive-ai-engineering-class) |
+| Intensive Inference Engineering Class | Running models on your own machine: memory, quantization, serving, up to a private appliance, in 6 phases | [route](https://akrambouznad789-cyber.github.io/intensive-inference-engineering-class/) · [repository](https://github.com/akrambouznad789-cyber/intensive-inference-engineering-class) |
+
+Both classes move forward on the same day number, about an hour each per day. A day always follows the same order: theory first (a diagram, a worked numeric example, pseudo-code), an interactive demo, practice that produces a figure or a measurement, then a few sentences on what was understood. Every project aims at a model that runs locally.
+
+## Before the classes
+
+The projects and stations below were done before the two classes; their write-ups are in French.
+
+### Applied projects
+
+Each project is named after its methods; the dataset is only the practical case. Project P4 (BPE tokenization and a mini-Transformer) ends during phase 3 of the Intensive AI Engineering Class.
+
+| Project | Question | Methods |
+|---|---|---|
+| [P1 · Boosting, validation and leakage](projets/P1-boosting-validation/) | At order time, can we predict that a delivery will be late? | Gradient boosting, time-based validation, leakage detection |
+| [P2 · Clustering and difference-in-differences](projets/P2-clustering-did/) | Do BIXI stations have usage profiles? Did the Saint-Denis REV bike lane take cyclists away from the Brébeuf path? | k-means, PCA, difference-in-differences |
+| [P3 · PyTorch network and embeddings](projets/P3-pytorch-plongements/) | Does a network that learns BIXI trip durations redraw the map of Montreal in its station embeddings? | PyTorch network, embeddings, gradient boosting, time-based validation, local measurement |
 
 ### Stations
 
-| Station | Exemple | Page |
+| Station | Example | Page |
 |---|---|---|
-| 1 · Réseaux de neurones : perceptron multicouche | Estimation du débit à la 30e heure à partir des débits de circulation publics du Québec | [Voir](https://akrambouznad789-cyber.github.io/roadmap-ia/parcelles/01-reseau-neurones/) |
-| 2 · Rétropropagation et différentiation automatique | Un moteur de rétropropagation maison entraîne un petit réseau sur 200 sections de route du Québec, avec les mêmes pertes que PyTorch | [Voir](https://akrambouznad789-cyber.github.io/roadmap-ia/parcelles/02-retropropagation/) |
+| 1 · Neural networks: the multilayer perceptron | Estimating the 30th-highest hourly volume from Québec's public traffic counts | [View](https://akrambouznad789-cyber.github.io/roadmap-ia/parcelles/01-reseau-neurones/) |
+| 2 · Backpropagation and automatic differentiation | A home-made backpropagation engine trains a small network on 200 road sections in Québec, with the same losses as PyTorch | [View](https://akrambouznad789-cyber.github.io/roadmap-ia/parcelles/02-retropropagation/) |
 
-Le code de chaque station est rangé dans [`archives/stations/`](archives/stations/).
+The code of each station is stored in [`archives/stations/`](archives/stations/).
 
-## Contenu du dépôt
+## Repository contents
 
-| Dossier | Contenu |
+| Folder | Contents |
 |---|---|
-| `docs/` | Le site : la page d'accueil des deux classes et les pages des stations |
-| `projets/` | Les projets d'application, un dossier par projet : carnets, résultats et README |
-| `style/` | La charte commune des figures |
-| `archives/stations/` | Le code et les résultats de chaque station |
-| `outils/`, `tests/` | Outils de mesure et de vérification des pages avant publication, avec leurs tests |
-| `gabarits/` | Le modèle des pages de station |
+| `docs/` | The site: the home page of the two classes and the station pages |
+| `projets/` | The applied projects, one folder per project: notebooks, results and README |
+| `style/` | The shared figure style |
+| `archives/stations/` | The code and results of each station |
+| `outils/`, `tests/` | Measurement tools and the checks run on the pages before publishing, with their tests |
+| `gabarits/` | The template of the station pages |
 
-## Données
+## Data
 
-Les données brutes ne sont pas versionnées, seulement les résultats. Chaque source est créditée sur la page de son exemple.
+Raw data is not versioned, only results. Each source is credited on the page of its example.

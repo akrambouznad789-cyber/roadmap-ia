@@ -1,16 +1,16 @@
 <!doctype html>
-<html lang="fr">
+<html lang="en">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Parcours IA</title>
-<meta name="description" content="Deux classes intensives de 140 jours menées en parallèle : construire avec des modèles d'IA, et les faire tourner sur sa propre machine. La théorie d'abord, une page par jour.">
+<title>AI Roadmap</title>
+<meta name="description" content="Two 140-day intensive classes run in parallel: building with AI models, and running them on your own machine. Theory first, one page a day.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;600;700&display=swap">
 <style>
-/* Page d'accueil du parcours : deux lignes parallèles, une par classe, comme la ligne de l'atlas.
-   Charte « Quiet Light indigo » ; la classe IA prend l'indigo (série 1), la classe Inférence la sarcelle (série 3). */
+/* Home page of the path: two parallel lines, one per class.
+   "Quiet Light indigo" style; the AI class takes indigo (series 1), the Inference class teal (series 3). */
 :root {
   --fond: #F5F5F5; --surface: #FFFFFF; --texte: #333333; --secondaire: #6B6B7E; --filet: #D9D9E3;
   --accent: #4F4FC4; --ia: #4F4FC4; --inference: #008B7E;
@@ -55,7 +55,7 @@ section > * { min-width: 0; }
 .faits b { color: var(--texte); font-size: 1.35rem; font-weight: 700; margin-right: 6px; font-variant-numeric: tabular-nums; }
 .explication { max-width: 72ch; }
 
-/* Les deux lignes : un schéma qui défile de côté sur téléphone plutôt que de rétrécir. */
+/* The two lines: a diagram that scrolls sideways on a phone rather than shrinking. */
 .carte-lignes { margin: 0; display: grid; gap: 8px; }
 .defilant { overflow-x: auto; border: 1px solid var(--filet); border-radius: 12px; background: var(--surface); }
 #deux-lignes { display: block; width: 100%; min-width: 860px; height: auto; }
@@ -76,7 +76,7 @@ figcaption { color: var(--secondaire); font-size: 0.9rem; max-width: 80ch; }
 .axe { stroke: var(--filet); stroke-width: 1; }
 .axe-texte { font: 400 11px var(--police-code); fill: var(--secondaire); }
 
-/* Les deux classes */
+/* The two classes */
 .classes { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
 .classe {
   background: var(--surface); border: 1px solid var(--filet); border-top: 4px solid var(--couleur);
@@ -94,7 +94,7 @@ figcaption { color: var(--secondaire); font-size: 0.9rem; max-width: 80ch; }
 }
 .bouton-classe:hover { filter: brightness(1.08); }
 
-/* Avant les classes */
+/* Before the classes */
 .avant { list-style: none; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(290px, 1fr)); gap: 16px; }
 .avant li { background: var(--surface); border: 1px solid var(--filet); border-radius: 12px; padding: 16px; display: grid; gap: 6px; align-content: start; }
 .avant .etat { font-family: var(--police-code); font-size: 0.78rem; color: var(--secondaire); }
@@ -115,128 +115,128 @@ footer ul { padding-left: 1.2em; display: grid; gap: 4px; }
 <body>
 <main class="accueil">
   <header class="entete">
-    <p class="liens-haut"><a href="https://akrambouznad789-cyber.github.io/">← Akram Bouznad · la vitrine</a></p>
-    <p class="surtitre">Parcours IA · deux classes en parallèle</p>
-    <h1>Parcours IA</h1>
-    <p class="chapeau">Deux classes intensives de 140 jours, menées en même temps. L'une apprend à construire avec des modèles, des données jusqu'à un modèle de langage mis en service ; l'autre apprend à les faire tourner sur sa propre machine, de la mémoire jusqu'à une appliance privée. La théorie d'abord, une page par jour, un projet tous les 7 à 10 jours, et chaque projet vise un modèle qui tourne en local.</p>
-    <p class="faits"><span><b>2</b>classes</span><span><b>140</b>jours chacune</span><span><b>1 h + 1 h</b>par jour</span></p>
+    <p class="liens-haut"><a href="https://akrambouznad789-cyber.github.io/">← Akram Bouznad · showcase</a></p>
+    <p class="surtitre">AI Roadmap · two classes in parallel</p>
+    <h1>AI Roadmap</h1>
+    <p class="chapeau">Two 140-day intensive classes, run at the same time. One learns to build with models, from data up to a language model in service; the other learns to run them on your own machine, from memory up to a private appliance. Theory first, one page a day, a project every 7 to 10 days, and every project aims at a model that runs locally.</p>
+    <p class="faits"><span><b>2</b>classes</span><span><b>140</b>days each</span><span><b>1 h + 1 h</b>a day</span></p>
   </header>
 
   <section aria-labelledby="lignes-titre">
-    <h2 id="lignes-titre">Les deux lignes</h2>
-    <p class="explication">Chaque ligne est une classe ; chaque segment, une phase, large comme son nombre de jours. Les deux classes avancent au même numéro de jour, et les bandes grises marquent les jours où elles se répondent. Clique une phase pour ouvrir sa route.</p>
+    <h2 id="lignes-titre">The two lines</h2>
+    <p class="explication">Each line is a class; each segment, a phase, as wide as its number of days. Both classes move forward on the same day number, and the grey bands mark the days where they answer each other. Click a phase to open its route.</p>
     <figure class="carte-lignes">
       <div class="defilant">
-        <svg id="deux-lignes" viewBox="0 0 960 346" role="group" aria-label="Les deux classes sur 140 jours, phase par phase, avec leurs trois rencontres prévues"></svg>
+        <svg id="deux-lignes" viewBox="0 0 960 346" role="group" aria-label="The two classes over 140 days, phase by phase, with their three planned meeting points"></svg>
       </div>
-      <figcaption>Les rencontres sont prévues, pas encore faites. Jours 41 à 50 : l'attention d'un côté, son cache de l'autre. Jours 51 à 64 : se servir d'un modèle de langage local d'un côté, le servir de l'autre. Jours 127 à 140 : la mise en service des deux côtés.</figcaption>
+      <figcaption>The meeting points are planned, not done yet. Days 41 to 50: attention on one side, its cache on the other. Days 51 to 64: using a local language model on one side, serving it on the other. Days 127 to 140: putting models into service on both sides.</figcaption>
     </figure>
   </section>
 
   <section aria-labelledby="classes-titre">
-    <h2 id="classes-titre">Les deux classes</h2>
+    <h2 id="classes-titre">The two classes</h2>
     <div class="classes" id="classes"></div>
   </section>
 
   <section aria-labelledby="avant-titre">
-    <h2 id="avant-titre">Avant les classes</h2>
-    <p class="explication">Trois projets d'application et deux stations, faits avant les deux classes. Chaque projet porte le nom de ses méthodes ; le jeu de données n'est que le cas pratique.</p>
+    <h2 id="avant-titre">Before the classes</h2>
+    <p class="explication">Three applied projects and two stations, done before the two classes; their write-ups are in French. Each project is named after its methods; the dataset is only the practical case.</p>
     <ul class="avant">
       <li>
-        <p class="etat">P1 · publié</p>
-        <h3><a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/projets/P1-boosting-validation">Boosting, validation et fuites</a></h3>
-        <p class="notions">boosting de gradient · validation temporelle · détection de fuite · importance par permutation</p>
-        <p>Cas pratique : les retards de livraison (DataCo, 180 519 lignes). Fuite détectée et retirée ; 72,2 % d'exactitude et AUC de 0,774 sur le test.</p>
+        <p class="etat">P1 · published</p>
+        <h3><a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/projets/P1-boosting-validation">Boosting, validation and leakage</a></h3>
+        <p class="notions">gradient boosting · time-based validation · leakage detection · permutation importance</p>
+        <p>Case: late deliveries (DataCo, 180,519 rows). Leakage detected and removed; 72.2% accuracy and an AUC of 0.774 on the test set.</p>
       </li>
       <li>
-        <p class="etat">P2 · publié</p>
-        <h3><a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/projets/P2-clustering-did">Clustering et différence de différences</a></h3>
-        <p class="notions">K-moyennes · ACP · différence de différences · tendances parallèles · test placebo</p>
-        <p>Cas pratique : le vélo à Montréal. Trois profils de stations BIXI ; effet du REV Saint-Denis sur la piste Brébeuf : de −38 % à −64 % de passages.</p>
+        <p class="etat">P2 · published</p>
+        <h3><a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/projets/P2-clustering-did">Clustering and difference-in-differences</a></h3>
+        <p class="notions">k-means · PCA · difference-in-differences · parallel trends · placebo test</p>
+        <p>Case: cycling in Montreal. Three profiles of BIXI stations; effect of the Saint-Denis REV bike lane on the Brébeuf path: −38% to −64% in cyclist counts.</p>
       </li>
       <li>
-        <p class="etat">P3 · publié</p>
-        <h3><a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/projets/P3-pytorch-plongements">Réseau PyTorch et plongements</a></h3>
-        <p class="notions">PyTorch · plongements · boosting de gradient · validation temporelle · mesure en local</p>
-        <p>Cas pratique : la durée des trajets BIXI. Le boosting reste le plus précis (3,28 min d'erreur sur le test) ; le réseau suit à 3,34 min, 4 fois plus léger. Sans la distance, ses plongements redessinent en partie la carte de Montréal.</p>
+        <p class="etat">P3 · published</p>
+        <h3><a href="https://github.com/akrambouznad789-cyber/roadmap-ia/tree/main/projets/P3-pytorch-plongements">PyTorch network and embeddings</a></h3>
+        <p class="notions">PyTorch · embeddings · gradient boosting · time-based validation · local measurement</p>
+        <p>Case: BIXI trip durations. Boosting stays the most accurate (3.28 min of error on the test set); the network follows at 3.34 min, 4 times lighter. Without the distance, its embeddings partly redraw the map of Montreal.</p>
       </li>
       <li>
-        <p class="etat">P4 · en cours</p>
-        <h3>Tokenisation BPE et mini-Transformer</h3>
-        <p>Commencé ; il se termine pendant la phase 3 de l'Intensive AI Engineering Class, une fois l'attention vue en théorie.</p>
+        <p class="etat">P4 · in progress</p>
+        <h3>BPE tokenization and a mini-Transformer</h3>
+        <p>Started; it ends during phase 3 of the Intensive AI Engineering Class, once attention has been covered in theory.</p>
       </li>
       <li>
-        <p class="etat">Station 1 · publiée</p>
-        <h3><a href="parcelles/01-reseau-neurones/">Réseaux de neurones : perceptron multicouche</a></h3>
-        <p class="notions">couches denses · ReLU, sigmoïde · coût MSE · descente de gradient stochastique · mini-lots · normalisation</p>
-        <p>Cas pratique : estimation du débit à la 30e heure sur les débits de circulation du MTMD.</p>
+        <p class="etat">Station 1 · published</p>
+        <h3><a href="parcelles/01-reseau-neurones/">Neural networks: the multilayer perceptron</a></h3>
+        <p class="notions">dense layers · ReLU, sigmoid · MSE cost · stochastic gradient descent · mini-batches · normalization</p>
+        <p>Case: estimating the 30th-highest hourly volume from the traffic counts of Québec's transport ministry (MTMD).</p>
       </li>
       <li>
-        <p class="etat">Station 2 · publiée</p>
-        <h3><a href="parcelles/02-retropropagation/">Rétropropagation et différentiation automatique</a></h3>
-        <p class="notions">dérivation en chaîne · graphe de calcul · gradients · autograd</p>
-        <p>Cas pratique : un moteur de rétropropagation maison, vérifié contre PyTorch sur les débits de circulation du MTMD.</p>
+        <p class="etat">Station 2 · published</p>
+        <h3><a href="parcelles/02-retropropagation/">Backpropagation and automatic differentiation</a></h3>
+        <p class="notions">chain rule · computation graph · gradients · autograd</p>
+        <p>Case: a home-made backpropagation engine, checked against PyTorch on the MTMD traffic counts.</p>
       </li>
     </ul>
   </section>
 
   <footer>
-    <p>Les dépôts GitHub :</p>
+    <p>The GitHub repositories:</p>
     <ul>
-      <li><a href="https://github.com/akrambouznad789-cyber/roadmap-ia">roadmap-ia</a> : cette page, les projets et les stations</li>
+      <li><a href="https://github.com/akrambouznad789-cyber/roadmap-ia">roadmap-ia</a> : this page, the projects and the stations</li>
       <li><a href="https://github.com/akrambouznad789-cyber/intensive-ai-engineering-class">intensive-ai-engineering-class</a></li>
       <li><a href="https://github.com/akrambouznad789-cyber/intensive-inference-engineering-class">intensive-inference-engineering-class</a></li>
     </ul>
-    <p>Mise en page et textes de cette page : l'assistant IA. Projets, carnets, figures et mots : Akram.</p>
+    <p>Layout and text of this page: the AI assistant. Projects, notebooks, figures and words: Akram.</p>
   </footer>
 </main>
 
 <script>
   const NOMBRE_DE_JOURS = 140;
-  // Les phases de chaque classe. Elles reprennent la route publiée de chaque classe (son docs/index.html) :
-  // un changement de phase se reporte ici.
+  // The phases of each class. They repeat the published route of each class (its docs/index.html):
+  // a change of phase is copied here.
   const CLASSES = [
     {
-      cle: "ia", nom: "Intensive AI Engineering Class", langue: "en français",
+      cle: "ia", nom: "Intensive AI Engineering Class", langue: "building with models",
       adresse: "https://akrambouznad789-cyber.github.io/intensive-ai-engineering-class/",
-      surtitre: "Classe 1 · en français · 9 phases",
-      resume: "Construire avec des modèles : des données jusqu'à un modèle de langage ouvert mis en service en local, en passant par l'évaluation, le RAG et les agents. Les cas pratiques viennent du transport.",
-      bouton: "Voir la route des 140 jours →",
+      surtitre: "Class 1 · 9 phases",
+      resume: "Building with models: from data up to an open language model served locally, through evaluation, RAG and agents. The practical cases come from transportation.",
+      bouton: "See the 140-day route →",
       phases: [
-        { numero: 1, nom: "Apprendre à partir de données", court: "Données", debut: 1, fin: 8 },
-        { numero: 2, nom: "Réseaux de neurones et PyTorch", court: "Réseaux et PyTorch", debut: 9, fin: 26 },
-        { numero: 3, nom: "Langage et Transformer", court: "Langage et Transformer", debut: 27, fin: 50 },
-        { numero: 4, nom: "Se servir d'un LLM ouvert en local", court: "LLM ouvert en local", debut: 51, fin: 64 },
-        { numero: 5, nom: "Évaluation", court: "Évaluation", debut: 65, fin: 78 },
+        { numero: 1, nom: "Learning from data", court: "Data", debut: 1, fin: 8 },
+        { numero: 2, nom: "Neural networks and PyTorch", court: "Networks and PyTorch", debut: 9, fin: 26 },
+        { numero: 3, nom: "Language and the Transformer", court: "Language and Transformer", debut: 27, fin: 50 },
+        { numero: 4, nom: "Using an open LLM locally", court: "Open LLM, locally", debut: 51, fin: 64 },
+        { numero: 5, nom: "Evaluation", court: "Evaluation", debut: 65, fin: 78 },
         { numero: 6, nom: "RAG", court: "RAG", debut: 79, fin: 92 },
         { numero: 7, nom: "Agents", court: "Agents", debut: 93, fin: 112 },
-        { numero: 8, nom: "Affinage", court: "Affinage", debut: 113, fin: 126 },
-        { numero: 9, nom: "Mise en service et bilan", court: "Mise en service", debut: 127, fin: 140 },
+        { numero: 8, nom: "Fine-tuning", court: "Fine-tuning", debut: 113, fin: 126 },
+        { numero: 9, nom: "Serving and wrap-up", court: "Serving", debut: 127, fin: 140 },
       ],
     },
     {
-      cle: "inference", nom: "Intensive Inference Engineering Class", langue: "en anglais",
+      cle: "inference", nom: "Intensive Inference Engineering Class", langue: "running models on your own machine",
       adresse: "https://akrambouznad789-cyber.github.io/intensive-inference-engineering-class/",
-      surtitre: "Classe 2 · en anglais · 6 phases",
-      resume: "Faire tourner les modèles sur sa propre machine : mémoire, quantification, service, mélange d'experts, jusqu'à une appliance privée mesurée avant et après.",
-      bouton: "Voir la route des 140 jours (en anglais) →",
+      surtitre: "Class 2 · 6 phases",
+      resume: "Running models on your own hardware: memory, quantization, serving, mixture of experts, up to a private appliance measured before and after.",
+      bouton: "See the 140-day route →",
       phases: [
-        { numero: 1, nom: "Les fondations et la machine", court: "La machine", debut: 1, fin: 16 },
-        { numero: 2, nom: "Faire tourner des modèles", court: "Faire tourner des modèles", debut: 17, fin: 40 },
-        { numero: 3, nom: "Attention et service", court: "Attention et service", debut: 41, fin: 70 },
-        { numero: 4, nom: "La frontière : experts, déchargement, décodage spéculatif", court: "La frontière", debut: 71, fin: 98 },
-        { numero: 5, nom: "Production et embarqué", court: "Production et embarqué", debut: 99, fin: 122 },
-        { numero: 6, nom: "Projet final : l'appliance privée", court: "Projet final", debut: 123, fin: 140 },
+        { numero: 1, nom: "Foundations & the machine", court: "The machine", debut: 1, fin: 16 },
+        { numero: 2, nom: "Running models", court: "Running models", debut: 17, fin: 40 },
+        { numero: 3, nom: "Attention & serving", court: "Attention & serving", debut: 41, fin: 70 },
+        { numero: 4, nom: "The frontier: experts, offloading, speculative decoding", court: "The frontier", debut: 71, fin: 98 },
+        { numero: 5, nom: "Production & edge", court: "Production & edge", debut: 99, fin: 122 },
+        { numero: 6, nom: "Capstone: the private appliance", court: "Capstone", debut: 123, fin: 140 },
       ],
     },
   ];
-  // Les jours où les deux classes se répondent. `ancre` place le texte dans la bande grise.
+  // The days where the two classes answer each other. `ancre` places the text inside the grey band.
   const RENCONTRES = [
-    { debut: 41, fin: 50, texte: "attention ↔ cache KV", y: 148, ancre: "middle" },
-    { debut: 51, fin: 64, texte: "se servir d'un LLM ↔ le servir", y: 180, ancre: "middle" },
-    { debut: 127, fin: 140, texte: "mise en service ↔ appliance privée", y: 164, ancre: "end" },
+    { debut: 41, fin: 50, texte: "attention ↔ KV cache", y: 148, ancre: "middle" },
+    { debut: 51, fin: 64, texte: "using an LLM ↔ serving it", y: 180, ancre: "middle" },
+    { debut: 127, fin: 140, texte: "serving ↔ private appliance", y: 164, ancre: "end" },
   ];
-  // Géométrie du schéma (viewBox 960 × 340) : la classe IA en haut, la classe Inférence en bas.
+  // Geometry of the diagram (viewBox 960 × 340): the AI class on top, the Inference class below.
   const GAUCHE = 40;
   const LARGEUR_UTILE = 880;
   const HAUTEUR_BARRE = 14;
@@ -274,7 +274,7 @@ footer ul { padding-left: 1.2em; display: grid; gap: 4px; }
       const langue = element("tspan", { class: "langue" }, titre);
       langue.textContent = `  · ${classe.langue}`;
       for (const phase of classe.phases) {
-        const description = `Phase ${phase.numero} · ${phase.nom} · jours ${phase.debut} à ${phase.fin}`;
+        const description = `Phase ${phase.numero} · ${phase.nom} · days ${phase.debut} to ${phase.fin}`;
         const lien = element("a", { href: `${classe.adresse}#phase-${phase.numero}`, "aria-label": description }, svg);
         const infobulle = element("title", {}, lien);
         infobulle.textContent = description;
@@ -284,7 +284,7 @@ footer ul { padding-left: 1.2em; display: grid; gap: 4px; }
           class: `segment ${classe.cle}`, x: debut + 1.5, y: position.yBarre, rx: HAUTEUR_BARRE / 2,
           width: fin - debut - 3, height: HAUTEUR_BARRE,
         }, lien);
-        // Les étiquettes alternent sur deux rangées pour ne pas se chevaucher.
+        // Labels alternate between two rows so they do not overlap.
         const rangee = position.yEtiquettes[(phase.numero - 1) % 2];
         texte(lien, `${phase.numero} · ${phase.court}`, { class: "etiquette", x: (debut + fin) / 2, y: rangee, "text-anchor": "middle" });
       }
@@ -302,7 +302,7 @@ footer ul { padding-left: 1.2em; display: grid; gap: 4px; }
     for (const jour of [1, 20, 40, 60, 80, 100, 120, 140]) {
       const x = xDuJour(jour) + LARGEUR_UTILE / NOMBRE_DE_JOURS / 2;
       element("line", { class: "axe", x1: x, y1: yAxe - 18, x2: x, y2: yAxe - 10 }, svg);
-      texte(svg, jour === 1 ? "jour 1" : String(jour), { class: "axe-texte", x, y: yAxe + 4, "text-anchor": "middle" });
+      texte(svg, jour === 1 ? "day 1" : String(jour), { class: "axe-texte", x, y: yAxe + 4, "text-anchor": "middle" });
     }
   }
 
@@ -327,7 +327,7 @@ footer ul { padding-left: 1.2em; display: grid; gap: 4px; }
       nom.textContent = phase.nom;
       const jours = document.createElement("span");
       jours.className = "jours";
-      jours.textContent = `jours ${phase.debut}–${phase.fin}`;
+      jours.textContent = `days ${phase.debut}–${phase.fin}`;
       ligne.append(numero, nom, jours);
       liste.append(ligne);
     }
